@@ -5,48 +5,74 @@
 <title>Private</title>
 
 <style>
+:root {
+  --bg: #111;
+  --card: #1c1c1c;
+  --text: #ffffff;
+  --accent: #ff4d6d;
+}
+
 body {
   margin: 0;
-  background: #111;
+  background: var(--bg);
   font-family: Arial, sans-serif;
+  color: var(--text);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  color: white;
+  transition: 0.4s;
 }
 
 .app {
   width: 90%;
   max-width: 400px;
-  text-align: center;
+  height: 90vh;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transition: 0.4s;
+}
+
+button {
+  padding: 12px;
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 15px;
 }
 
 input {
   padding: 12px;
-  width: 80%;
+  width: 100%;
   margin-top: 15px;
   border-radius: 8px;
   border: none;
 }
 
-button {
-  padding: 12px 20px;
-  margin-top: 15px;
-  border-radius: 8px;
-  border: none;
-  background: #3b82f6;
-  color: white;
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.small-btn {
+  width: auto;
+  padding: 6px 10px;
+  font-size: 12px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="app" id="app">
   <h2>Enter Password</h2>
-  <input type="password" id="pw" placeholder="Type password">
-  <br>
+  <input type="password" id="pw" placeholder="Only you know...">
   <button onclick="unlock()">Unlock</button>
   <p id="msg"></p>
 </div>
@@ -56,14 +82,25 @@ function unlock() {
   var password = document.getElementById("pw").value;
 
   if (password === "1234") {
-    document.querySelector(".app").innerHTML =
-      "<h2>Welcome ❤️</h2><p>This world is only for you.</p>";
+    loadHome();
   } else {
-    document.getElementById("msg").innerText =
-      "Wrong password. Try again.";
+    document.getElementById("msg").innerText = "Wrong password.";
   }
 }
-</script>
 
-</body>
-</html>
+function loadHome() {
+  document.getElementById("app").innerHTML = `
+    <div class="topbar">
+      <h3>Her World ❤️</h3>
+      <button class="small-btn" onclick="themeMenu()">🎨</button>
+    </div>
+
+    <button onclick="loadBirthday()">🎂 Birthday</button>
+    <button onclick="loadMemories()">📸 Memories</button>
+    <button onclick="loadLetters()">💌 Letters</button>
+
+    <div id="content" style="margin-top:20px;"></div>
+  `;
+}
+
+function loadBirthday() {
