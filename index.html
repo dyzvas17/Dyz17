@@ -276,6 +276,177 @@
     }
 </script>
 </body>
+</html>            // Re-attach upload listener if we're on the memories page
+            if(document.getElementById('uploadMemoryBtn')) attachUploadLogic();
+        }, 300);
+    }
+
+    function loadHome() {
+        fadeSwitch(`
+            <div class="floating-theme" onclick="themeMenu()">🎨</div>
+            <h2 style="margin-bottom:20px;">Main Menu</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+                <button class="square-btn" onclick="showBirthday()" style="background:#ff4d6d;">Birthday 🎂</button>
+                <button class="square-btn" onclick="showLetters()" style="background:#ff85a2;">Letters 💌</button>
+                <button class="square-btn" onclick="showMemories()" style="background:#1c8adb;">Memories 📸</button>
+                <button class="square-btn" onclick="showUs()" style="background:#8a2be2;">Us ❤️</button>
+            </div>
+        `);
+    }
+
+    // --- Letters ---
+    function showLetters() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h2>Letters 💌</h2>
+            <div style="display:flex; gap:10px; width:100%;">
+                <button class="big-btn" onclick="typeLetter('shivam')">Shivam</button>
+                <button class="big-btn" onclick="typeLetter('naqii')">Naqii</button>
+            </div>
+            <div id="letterText">Pick a letter to read...</div>
+        `);
+    }
+
+    function typeLetter(who) {
+        const box = document.getElementById("letterText");
+        const text = who === 'shivam' 
+            ? "Hey love ❤️, Shivam here! I hope your day is as beautiful as your smile. Happy Birthday!" 
+            : "Hi love 😘, Naqii here! Sending you a million hugs and all the warmth in the world!";
+        
+        box.innerHTML = "";
+        let i = 0;
+        function typing() {
+            if (i < text.length) {
+                box.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typing, 40);
+            }
+        }
+        typing();
+    }
+
+    // --- Memories ---
+    function showMemories() {
+        let html = `
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <button onclick="changeStyle('polaroid')" style="padding:5px; background:#444; color:#fff; border-radius:5px;">Polaroid</button>
+                <button onclick="changeStyle('circle')" style="padding:5px; background:#444; color:#fff; border-radius:5px;">Circle</button>
+                <button onclick="changeStyle('grid')" style="padding:5px; background:#444; color:#fff; border-radius:5px;">Grid</button>
+                <button id="uploadMemoryBtn" style="padding:5px; background:var(--accent); color:#fff; border-radius:5px;">+</button>
+                <input type="file" id="memUpload" style="display:none" accept="image/*">
+            </div>
+            <div class="memories-container ${currentMemoryStyle}">`;
+        
+        memories.forEach((src, i) => {
+            html += `<img src="${src}" style="--i:${i % 6}" onclick="openFullScreen('${src}')">`;
+        });
+        html += `</div>`;
+        fadeSwitch(html);
+    }
+
+    function changeStyle(s) { currentMemoryStyle = s; showMemories(); }
+
+    function attachUploadLogic() {
+        const btn = document.getElementById("uploadMemoryBtn");
+        const input = document.getElementById("memUpload");
+        btn.onclick = () => input.click();
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    memories.unshift(ev.target.result);
+                    showMemories();
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+    }
+
+    // --- Fullscreen & Birthday ---
+    function openFullScreen(src) {
+        document.getElementById("fsImg").src = src;
+        document.getElementById("fsOverlay").classList.add("show");
+    }
+    function closeFullScreen() { document.getElementById("fsOverlay").classList.remove("show"); }
+
+    function showBirthday() {
+        document.getElementById("birthdayCardContainer").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("birthdayCard").style.transform = "scale(1)";
+            startParticles();
+        }, 100);
+    }
+    function closeBirthday() {
+        document.getElementById("birthdayCard").style.transform = "scale(0)";
+        setTimeout(() => {
+            document.getElementById("birthdayCardContainer").style.display = "none";
+            animating = false;
+        }, 500);
+    }
+
+    // --- Themes ---
+    function themeMenu() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h3>Themes</h3>
+            <button class="big-btn" onclick="setTheme('#111','#ff4d6d','#1c1c1c','#fff')">Dark Rose</button>
+            <button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','#fff','#333')">Soft Pink</button>
+            <button class="big-btn" onclick="setTheme('#0a0a0f','#1c8adb','#11121a','#fff')">Nightwing</button>
+        `);
+    }
+
+    function setTheme(bg, accent, card, text) {
+        document.documentElement.style.setProperty('--bg', bg);
+        document.documentElement.style.setProperty('--accent', accent);
+        document.documentElement.style.setProperty('--glow', accent);
+        document.documentElement.style.setProperty('--card', card);
+        document.documentElement.style.setProperty('--text', text);
+    }
+
+    // --- Particle System ---
+    function startParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 4 + 1,
+                dx: (Math.random() - 0.5) * 2,
+                dy: (Math.random() - 0.5) * 2,
+                c: `hsl(${Math.random() * 360}, 70%, 60%)`
+            });
+        }
+        animating = true;
+        function frame() {
+            if (!animating) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.c; ctx.fill();
+            });
+            requestAnimationFrame(frame);
+        }
+        frame();
+    }
+
+    function showUs() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h2>Us ❤️</h2>
+            <p style="text-align:center">This space is just for us. No matter where we are, our memories live here.</p>
+        `);
+    }
+</script>
+</body>
 </html>    }
 
     function loadHome() {
