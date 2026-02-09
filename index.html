@@ -9,6 +9,8 @@
   --card: #1c1c1c;
   --text: #fff;
   --accent: #ff4d6d;
+  --bg-img: none;
+  --glow-color: #ff4d6d;
 }
 
 body {
@@ -16,12 +18,15 @@ body {
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  background-image: var(--bg-img);
+  background-size: cover;
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   overflow: hidden;
-  transition: background 0.4s;
+  transition: background 0.5s, color 0.5s, background-image 0.5s;
 }
 
 .app {
@@ -36,7 +41,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: background 0.4s;
+  transition: background 0.5s, color 0.5s;
 }
 
 button {
@@ -48,12 +53,17 @@ button {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.4s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+  box-shadow: 0 0 10px var(--glow-color);
+  animation: pulse 2s infinite alternate;
 }
-
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 0 8px var(--glow-color); }
+  to { box-shadow: 0 0 18px var(--glow-color); }
 }
 
 input {
@@ -71,174 +81,50 @@ p { line-height: 1.4; }
   align-self: flex-start;
   width: auto;
   padding: 8px 14px;
-  font-size: 14px;
 }
 
-/* Memories Styles */
-.memories-container {
-  position: relative;
-  flex: 1;
-}
+/* Memories container and styles */
+.memories-container { position: relative; flex: 1; }
+.memories-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; overflow-y: auto; }
+.memories-grid img { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 0 8px rgba(0,0,0,0.3);}
+.memories-grid img:hover { transform: scale(1.05); box-shadow: 0 0 18px var(--glow-color); }
 
-.memories-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  overflow-y: auto;
-}
+/* Polaroid */
+.polaroid img { width:120px; height:120px; object-fit:cover; border:5px solid #fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i))); transition: transform 0.3s, box-shadow 0.3s; }
+.polaroid img:hover { transform: scale(1.05) rotate(calc(-3deg + 6deg * var(--i))); box-shadow:0 0 20px var(--glow-color); }
 
-.memories-grid img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.memories-grid img:hover {
-  transform: scale(1.05);
-}
+/* Circle */
+.circle img { border-radius: 50%; width:100px; height:100px; object-fit:cover; transition: transform 0.3s, box-shadow 0.3s; }
+.circle img:hover { transform: scale(1.05); box-shadow:0 0 18px var(--glow-color); }
 
-/* Polaroid style */
-.polaroid img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border: 5px solid #fff;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-  transform: rotate(calc(-5deg + 10deg * var(--i)));
-}
+/* Grid */
+.grid img { width:100px; height:100px; object-fit:cover; border-radius:8px; transition: transform 0.3s, box-shadow 0.3s; }
+.grid img:hover { transform: scale(1.05); box-shadow:0 0 18px var(--glow-color); }
 
-/* Circle style */
-.circle img {
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-}
+/* Flip */
+.flip-container { perspective:1000px; display:inline-block; margin:5px; }
+.flip-card { width:120px; height:120px; text-align:center; transition: transform 0.6s; transform-style: preserve-3d; cursor:pointer; }
+.flip-card:hover { transform: rotateY(180deg) scale(1.05); }
+.flip-card-front, .flip-card-back { position:absolute; width:120px; height:120px; backface-visibility:hidden; border-radius:12px; transition: box-shadow 0.3s; }
+.flip-card-front { background-size:cover; }
+.flip-card-front:hover { box-shadow:0 0 18px var(--glow-color); }
+.flip-card-back { background: var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; transform:rotateY(180deg); }
 
-/* Grid style */
-.grid img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-}
+/* Masonry */
+.masonry { column-count:2; column-gap:10px; }
+.masonry img { width:100%; border-radius:12px; margin-bottom:10px; transition: transform 0.3s, box-shadow 0.3s; }
+.masonry img:hover { transform: scale(1.03); box-shadow:0 0 18px var(--glow-color); }
 
-/* Flip Card style */
-.flip-container {
-  perspective: 1000px;
-  display: inline-block;
-}
-.flip-card {
-  width: 120px;
-  height: 120px;
-  text-align: center;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  margin: 5px;
-  cursor: pointer;
-}
-.flip-card:hover {
-  transform: rotateY(180deg);
-}
-.flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  backface-visibility: hidden;
-  border-radius: 12px;
-}
-.flip-card-front {
-  background-size: cover;
-}
-.flip-card-back {
-  background: var(--accent);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: rotateY(180deg);
-}
+/* Style overlay */
+.style-btn { position:absolute; top:10px; right:10px; width:35px; height:35px; border-radius:8px; font-size:20px; display:flex; align-items:center; justify-content:center; padding:0; }
+.style-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:100; }
+.style-overlay button { width:70%; margin:10px 0; }
 
-/* Masonry style */
-.masonry {
-  column-count: 2;
-  column-gap: 10px;
-}
-.masonry img {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-
-/* Style overlay button */
-.style-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-.style-overlay {
-  position: absolute;
-  top: 0; left:0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-.style-overlay button {
-  width: 70%;
-  margin: 10px 0;
-}
-
-/* Fullscreen memory overlay */
-.fullscreen-overlay {
-  position: fixed;
-  top:0; left:0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.fullscreen-overlay.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.fullscreen-overlay img {
-  max-width: 95%;
-  max-height: 90%;
-  border-radius: 12px;
-  transition: transform 0.3s;
-}
-.fullscreen-overlay button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 20px;
-  background: var(--accent);
-  border-radius: 8px;
-  color: #fff;
-  padding: 8px 12px;
-}
+/* Fullscreen overlay */
+.fullscreen-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.95); display:flex; justify-content:center; align-items:center; z-index:200; opacity:0; pointer-events:none; transition: opacity 0.3s; }
+.fullscreen-overlay.show { opacity:1; pointer-events:all; }
+.fullscreen-overlay img { max-width:95%; max-height:90%; border-radius:12px; transition: transform 0.3s; }
+.fullscreen-overlay button { position:absolute; top:20px; right:20px; font-size:20px; background:var(--accent); border-radius:8px; color:#fff; padding:8px 12px; }
 </style>
 </head>
 <body>
@@ -250,7 +136,6 @@ p { line-height: 1.4; }
   <p id="msg"></p>
 </div>
 
-<!-- Fullscreen overlay -->
 <div class="fullscreen-overlay" id="fsOverlay">
   <img id="fsImg" src="">
   <button onclick="closeFullScreen()">✕</button>
@@ -259,32 +144,22 @@ p { line-height: 1.4; }
 <script>
 let currentMemoryStyle = "polaroid";
 const memories = [
-  "pic1.jpeg",
-  "pic2.jpeg",
-  "pic3.jpeg",
-  "pic4.jpeg",
-  "pic5.jpeg",
-  "pic6.jpeg"
+  "memory1.jpeg","memory2.jpeg","memory3.jpeg",
+  "memory4.jpeg","memory5.jpeg","memory6.jpeg"
 ];
 
-/* ---- Unlock ---- */
-function unlock() {
-  const password = document.getElementById("pw").value;
-  if(password === "1234"){
-    loadHome();
-  } else {
-    document.getElementById("msg").innerText = "Wrong password.";
-  }
+function unlock(){
+  const pw = document.getElementById("pw").value;
+  if(pw==="1234") loadHome();
+  else document.getElementById("msg").innerText="Wrong password.";
 }
 
-/* ---- Section Switching ---- */
 function fadeSwitch(newContent){
   const app = document.getElementById("app");
-  app.style.opacity = 0;
-  setTimeout(()=>{ app.innerHTML = newContent; app.style.opacity = 1; }, 300);
+  app.style.opacity=0;
+  setTimeout(()=>{ app.innerHTML=newContent; app.style.opacity=1; },300);
 }
 
-/* ---- Home ---- */
 function loadHome(){
   fadeSwitch(`
     <h3>Her World ❤️</h3>
@@ -295,132 +170,108 @@ function loadHome(){
   `);
 }
 
-/* ---- Birthday ---- */
 function showBirthday(){
-  fadeSwitch(`
-    <button class='back-btn' onclick='loadHome()'>← Back</button>
-    <h2>Birthday 🎂</h2>
-    <p>Here’s the birthday celebration area. Add photos, messages, gifts here!</p>
-  `);
+  fadeSwitch(`<button class='back-btn' onclick='loadHome()'>← Back</button>
+  <h2>Birthday 🎂</h2><p>Birthday celebrations, photos, and surprises here!</p>`);
 }
 
-/* ---- Memories ---- */
-function showMemories(){
-  renderMemories(currentMemoryStyle);
-}
+function showMemories(){ renderMemories(currentMemoryStyle); }
 
 function renderMemories(style){
-  let html = `<button class='back-btn' onclick='loadHome()'>← Back</button>`;
-  html += `<button class='style-btn' onclick='openStyleOverlay()'>🎨</button>`;
-  html += `<div class="memories-container ${style}">`;
+  let html=`<button class='back-btn' onclick='loadHome()'>← Back</button>
+            <button class='style-btn' onclick='openStyleOverlay()'>🎨</button>
+            <div class="memories-container ${style}">`;
   if(style==="flip"){
     memories.forEach((src,i)=>{
-      html += `
-      <div class="flip-container" onmousedown="openFullScreen('${src}')">
+      html+=`<div class="flip-container" onmousedown="openFullScreen('${src}')">
         <div class="flip-card">
           <div class="flip-card-front" style="background-image:url('${src}')"></div>
           <div class="flip-card-back">Memory ${i+1}</div>
-        </div>
-      </div>
-      `;
+        </div></div>`;
     });
   } else if(style==="masonry"){
-    html += `<div class="masonry">`;
-    memories.forEach((src,i)=>{
-      html += `<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`;
-    });
-    html += `</div>`;
+    html+=`<div class="masonry">`;
+    memories.forEach((src,i)=>{ html+=`<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
+    html+=`</div>`;
   } else {
-    memories.forEach((src,i)=>{
-      html += `<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`;
-    });
+    memories.forEach((src,i)=>{ html+=`<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
   }
-  html += `</div>`;
+  html+=`</div>`;
   fadeSwitch(html);
 }
 
-/* ---- Memory Styles Overlay ---- */
 function openStyleOverlay(){
-  let overlay = `<div class="style-overlay">
+  let overlay=`<div class="style-overlay">
     <h3>Choose Memory Style</h3>
     <button onclick="selectMemoryStyle('polaroid')">Polaroid</button>
     <button onclick="selectMemoryStyle('circle')">Circle</button>
     <button onclick="selectMemoryStyle('grid')">Grid</button>
     <button onclick="selectMemoryStyle('flip')">Flip Cards</button>
     <button onclick="selectMemoryStyle('masonry')">Masonry</button>
+    <h3>Choose Theme</h3>
+    <button onclick="setDark()">Dark</button>
+    <button onclick="setSoft()">Soft</button>
+    <button onclick="setClassic()">Classic</button>
+    <button onclick="setNightwing()">Nightwing</button>
+    <button onclick="setToji()">Toji</button>
     <button class='back-btn' onclick="renderMemories(currentMemoryStyle)">← Cancel</button>
   </div>`;
-  document.getElementById("app").innerHTML += overlay;
+  document.getElementById("app").innerHTML+=overlay;
 }
 
-function selectMemoryStyle(style){
-  currentMemoryStyle = style;
-  renderMemories(style);
-}
+function selectMemoryStyle(style){ currentMemoryStyle=style; renderMemories(style); }
 
-/* ---- Fullscreen memory ---- */
-function openFullScreen(src){
-  const overlay = document.getElementById("fsOverlay");
-  const img = document.getElementById("fsImg");
-  img.src = src;
-  overlay.classList.add("show");
+/* Fullscreen */
+function openFullScreen(src){ 
+  const img=document.getElementById("fsImg");
+  const overlay=document.getElementById("fsOverlay");
+  img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)";
+  setTimeout(()=>{ img.style.transform="scale(1)"; },50);
 }
-function closeFullScreen(){
-  document.getElementById("fsOverlay").classList.remove("show");
-}
+function closeFullScreen(){ document.getElementById("fsOverlay").classList.remove("show"); }
 
-/* ---- Letters Typewriter ---- */
+/* Letters */
 function showLetters(){
-  fadeSwitch(`
-    <button class='back-btn' onclick='loadHome()'>← Back</button>
-    <h2>Letters 💌</h2>
-    <div class="typewriter" id="letter"></div>
-  `);
-  const text = "Dear love,\nThis is our personal letters section. Each word typed here can tell a memory, a feeling, or a secret just for you ❤️";
-  let i=0;
-  const letterDiv = document.getElementById("letter");
-  function typeWriter(){
-    if(i<text.length){
-      letterDiv.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typeWriter,50);
-    }
-  }
+  fadeSwitch(`<button class='back-btn' onclick='loadHome()'>← Back</button>
+  <h2>Letters 💌</h2><div class="typewriter" id="letter"></div>`);
+  const text="Dear love, this is our letters section, each word for you ❤️";
+  let i=0; const letterDiv=document.getElementById("letter");
+  function typeWriter(){ if(i<text.length){ letterDiv.innerHTML+=text.charAt(i); i++; setTimeout(typeWriter,50);} }
   typeWriter();
 }
 
-/* ---- Theme ---- */
-function themeMenu(){
-  fadeSwitch(`
-    <h3>Select Theme</h3>
-    <button onclick='setDark()'>🌙 Dark</button>
-    <button onclick='setSoft()'>🌸 Soft</button>
-    <button onclick='setClassic()'>🖤 Classic</button>
-    <button class='back-btn' onclick='loadHome()'>← Back</button>
-  `);
+/* Themes */
+function themeMenu(){ fadeSwitch(`<h3>Select Theme</h3>
+<button onclick='setDark()'>Dark</button>
+<button onclick='setSoft()'>Soft</button>
+<button onclick='setClassic()'>Classic</button>
+<button onclick='setNightwing()'>Nightwing</button>
+<button onclick='setToji()'>Toji</button>
+<button class='back-btn' onclick='loadHome()'>← Back</button>`); }
+
+function setDark(){ document.documentElement.style.setProperty('--bg','#111'); document.documentElement.style.setProperty('--card','#1c1c1c'); document.documentElement.style.setProperty('--text','#fff'); document.documentElement.style.setProperty('--accent','#ff4d6d'); document.documentElement.style.setProperty('--glow-color','#ff4d6d'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setSoft(){ document.documentElement.style.setProperty('--bg','#ffeef2'); document.documentElement.style.setProperty('--card','#fff'); document.documentElement.style.setProperty('--text','#333'); document.documentElement.style.setProperty('--accent','#ff85a2'); document.documentElement.style.setProperty('--glow-color','#ff85a2'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setClassic(){ document.documentElement.style.setProperty('--bg','#fff'); document.documentElement.style.setProperty('--card','#f5f5f5'); document.documentElement.style.setProperty('--text','#000'); document.documentElement.style.setProperty('--accent','#000'); document.documentElement.style.setProperty('--glow-color','#000'); document.documentElement.style.setProperty('--bg-img','none'); }
+
+/* Nightwing Theme */
+function setNightwing(){
+  document.documentElement.style.setProperty('--bg','#0a0a0f');
+  document.documentElement.style.setProperty('--card','#11121a');
+  document.documentElement.style.setProperty('--text','#a8d0f0');
+  document.documentElement.style.setProperty('--accent','#1c8adb');
+  document.documentElement.style.setProperty('--glow-color','#1c8adb');
+  document.documentElement.style.setProperty('--bg-img','url("nightwing-bg.jpeg")');
 }
 
-function setDark(){
-  document.documentElement.style.setProperty('--bg', '#111');
-  document.documentElement.style.setProperty('--card', '#1c1c1c');
-  document.documentElement.style.setProperty('--text', '#ffffff');
-  document.documentElement.style.setProperty('--accent', '#ff4d6d');
-}
-
-function setSoft(){
-  document.documentElement.style.setProperty('--bg', '#ffeef2');
-  document.documentElement.style.setProperty('--card', '#ffffff');
-  document.documentElement.style.setProperty('--text', '#333333');
-  document.documentElement.style.setProperty('--accent', '#ff85a2');
-}
-
-function setClassic(){
-  document.documentElement.style.setProperty('--bg', '#ffffff');
-  document.documentElement.style.setProperty('--card', '#f5f5f5');
-  document.documentElement.style.setProperty('--text', '#000000');
-  document.documentElement.style.setProperty('--accent', '#000000');
+/* Toji Theme */
+function setToji(){
+  document.documentElement.style.setProperty('--bg','#000');
+  document.documentElement.style.setProperty('--card','#1a1a1a');
+  document.documentElement.style.setProperty('--text','#dcdfff');
+  document.documentElement.style.setProperty('--accent','#8a2be2');
+  document.documentElement.style.setProperty('--glow-color','#8a2be2');
+  document.documentElement.style.setProperty('--bg-img','url("toji-bg.jpeg")');
 }
 </script>
 </body>
 </html>
-
