@@ -9,9 +9,7 @@
 }
 body{
   margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text);
-  background-image: var(--bg-img); background-size:cover; background-position:center;
-  display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden;
-  transition:0.5s;
+  display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; transition:0.5s;
 }
 .app{
   width:90%; max-width:420px; height:90vh; background:var(--card); border-radius:25px;
@@ -28,12 +26,14 @@ button{border:none; cursor:pointer; transition:0.3s;}
 .square-btn:hover{transform:scale(1.05);}
 @keyframes pulse{from{box-shadow:0 0 10px var(--glow);} to{box-shadow:0 0 20px var(--glow);}}
 
+/* Floating theme button */
 .floating-theme{
   position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px;
   background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff;
   box-shadow:0 0 12px var(--glow); cursor:pointer; animation:pulse 2s infinite alternate;
 }
 
+/* Big buttons */
 .big-btn{
   margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px;
   background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
@@ -41,52 +41,31 @@ button{border:none; cursor:pointer; transition:0.3s;}
 .big-btn:hover{transform:scale(1.05);}
 input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px;}
 
-/* Memories */
-.memories-container{flex:1; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; position:relative;}
-.memories-container img{border-radius:12px; cursor:pointer; transition:0.3s;}
-.memories-container img:hover{transform:scale(1.05); box-shadow:0 0 18px var(--glow);}
-
-/* Polaroid */
-.polaroid img{width:120px; height:120px; object-fit:cover; border:5px solid #fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i)));}
-.polaroid img:hover{transform:scale(1.05) rotate(calc(-3deg + 6deg * var(--i))); box-shadow:0 0 20px var(--glow);}
-
-/* Circle style */
-.circle img{border-radius:50%; width:100px; height:100px; object-fit:cover;}
-
-/* Grid */
-.grid img{width:100px; height:100px; object-fit:cover; border-radius:8px;}
-
-/* Flip */
-.flip-container{perspective:1000px; display:inline-block; margin:5px;}
-.flip-card{width:120px; height:120px; transition:0.6s; transform-style:preserve-3d; cursor:pointer;}
-.flip-card:hover{transform:rotateY(180deg) scale(1.05);}
-.flip-card-front, .flip-card-back{position:absolute; width:120px; height:120px; backface-visibility:hidden; border-radius:12px;}
-.flip-card-front{background-size:cover;}
-.flip-card-back{background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; transform:rotateY(180deg);}
-
-/* Masonry */
-.masonry{column-count:2; column-gap:10px;}
-.masonry img{width:100%; border-radius:12px; margin-bottom:10px;}
-
-/* Memories style switch button */
-.mem-style-btn{
-  position:absolute; top:10px; right:10px; width:45px; height:45px; border-radius:8px;
-  background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; font-size:20px;
-  cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
-}
-
-/* Upload memory button */
-#uploadMemoryBtn{
-  position:absolute; top:65px; right:10px; width:45px; height:45px; border-radius:8px; background:var(--accent); color:#fff;
-  font-size:22px; cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
-}
-
-/* Fullscreen */
+/* Fullscreen overlay */
 .fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh; background:rgba(0,0,0,0.95);
 display:flex; justify-content:center; align-items:center; z-index:200; opacity:0; pointer-events:none; transition:0.3s;}
 .fullscreen-overlay.show{opacity:1; pointer-events:all;}
 .fullscreen-overlay img{max-width:95%; max-height:90%; border-radius:12px; transition:transform 0.3s;}
 .fullscreen-overlay button{position:absolute;top:20px; right:20px; font-size:22px; background:var(--accent); color:#fff; border-radius:8px; padding:8px 12px;}
+
+/* Birthday particles container */
+#particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:150;}
+
+/* Birthday card */
+#birthdayCard{
+  position:absolute; width:250px; height:350px; top:50%; left:50%; transform:translate(-50%, -50%) scale(0);
+  border-radius:20px; background:#ff4d6d url('https://via.placeholder.com/250x350.png?text=Love+Letter') center/cover no-repeat;
+  box-shadow:0 0 25px var(--glow); transition:0.6s; z-index:160; cursor:pointer;
+}
+#birthdayCard.glow{box-shadow:0 0 30px 10px #ff4d6d,0 0 20px #fff inset; animation:glowPulse 1s infinite alternate;}
+@keyframes glowPulse{from{box-shadow:0 0 20px 5px #ff4d6d;} to{box-shadow:0 0 40px 15px #ff4d6d;}}
+
+/* Swipe animation */
+.swipe{
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  transform: translateX(300px) rotate(15deg);
+  opacity:0;
+}
 </style>
 </head>
 <body>
@@ -98,10 +77,15 @@ display:flex; justify-content:center; align-items:center; z-index:200; opacity:0
   <p id="msg"></p>
 </div>
 
+<div id="particles"></div>
+<div id="birthdayCard"></div>
+
 <div class="fullscreen-overlay" id="fsOverlay">
   <img id="fsImg" src="">
   <button onclick="closeFullScreen()">✕</button>
 </div>
+
+<audio id="bdayMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
 <script>
 let currentMemoryStyle="polaroid";
@@ -116,7 +100,7 @@ function unlock(){
 function fadeSwitch(newContent){
   const app=document.getElementById("app");
   app.style.opacity=0;
-  setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1; addUploadMemoryFeature();},300);
+  setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1;},300);
 }
 
 /* Home Screen */
@@ -132,7 +116,60 @@ function loadHome(){
   `);
 }
 
-function showBirthday(){ fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Birthday 🎂</h2><p>Birthday celebrations and surprises!</p>`);}
+/* Birthday */
+function showBirthday(){
+  fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Birthday 🎂</h2>`);
+  playParticles();
+  setTimeout(()=>{showCard(); document.getElementById('bdayMusic').play();},800);
+}
+
+function playParticles(){
+  const container = document.getElementById('particles');
+  container.innerHTML='';
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');
+    p.style.position='absolute';
+    p.style.width='8px';
+    p.style.height='8px';
+    p.style.background=['#ff4d6d','#fff','#ffdd00','#00ffe0'][Math.floor(Math.random()*4)];
+    p.style.borderRadius='50%';
+    p.style.top='50%';
+    p.style.left='50%';
+    p.style.opacity=1;
+    p.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+    p.style.transition='all 1s ease-out';
+    container.appendChild(p);
+    setTimeout(()=>{p.style.top=Math.random()*100+'%'; p.style.left=Math.random()*100+'%'; p.style.opacity=0;},50);
+  }
+}
+
+/* Show Birthday Card */
+function showCard(){
+  const card=document.getElementById('birthdayCard');
+  card.style.transform='translate(-50%,-50%) scale(1)';
+  card.classList.add('glow');
+
+  let startX = 0;
+  let currentX = 0;
+  let swiping = false;
+
+  card.addEventListener('pointerdown', (e)=>{
+    startX = e.clientX;
+    swiping=true;
+  });
+  card.addEventListener('pointermove', (e)=>{
+    if(!swiping) return;
+    currentX = e.clientX - startX;
+    card.style.transform = `translate(calc(-50% + ${currentX}px), -50%) scale(1) rotate(${currentX/10}deg)`;
+  });
+  card.addEventListener('pointerup', ()=>{
+    if(currentX>100){ card.classList.add('swipe'); setTimeout(()=>{card.style.display='none';},500);}
+    else{ card.style.transform='translate(-50%,-50%) scale(1)';}
+    swiping=false; currentX=0;
+  });
+}
+
+/* Letters / Us */
 function showLetters(){ 
   fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Letters 💌</h2><div id="letter"></div>`); 
   const text="Dear love, this is our letters section, each word for you ❤️"; let i=0; const letterDiv=document.getElementById("letter");
@@ -147,10 +184,7 @@ function showMemories(){ renderMemories(currentMemoryStyle); }
 function renderMemories(style){
   let html=`<button class='big-btn' onclick='loadHome()'>← Back</button>
             <div class="memories-container ${style}">
-            <div class="mem-style-btn" onclick="styleMenu()">⚡</div>
-            <button id='uploadMemoryBtn'>+</button>
-            <input type='file' id='uploadMemoryInput' style='display:none' accept='image/*'>`;
-
+            <div class="mem-style-btn" onclick="styleMenu()">⚡</div>`;
   if(style==="flip"){
     memories.forEach((src,i)=>{
       html+=`<div class="flip-container" onmousedown="openFullScreen('${src}')">
@@ -159,10 +193,6 @@ function renderMemories(style){
         <div class="flip-card-back">Memory ${i+1}</div>
       </div></div>`;
     });
-  } else if(style==="masonry"){
-    html+=`<div class="masonry">`;
-    memories.forEach((src,i)=>{ html+=`<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
-    html+=`</div>`;
   } else {
     memories.forEach((src,i)=>{ html+=`<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
   }
@@ -170,37 +200,18 @@ function renderMemories(style){
   fadeSwitch(html);
 }
 
-/* Memory style menu */
-function styleMenu(){
-  const overlay=document.createElement('div');
-  overlay.style.cssText="position:absolute;top:60px;right:10px;background:rgba(0,0,0,0.8);padding:10px;border-radius:10px;display:flex;flex-direction:column;z-index:100;";
-  ["polaroid","circle","grid","flip","masonry"].forEach(s=>{
-    const b=document.createElement('button'); b.innerText=s.charAt(0).toUpperCase()+s.slice(1);
-    b.onclick=()=>{currentMemoryStyle=s; renderMemories(s);}
-    overlay.appendChild(b);
-  });
-  document.querySelector('.memories-container').appendChild(overlay);
-}
-
 /* Fullscreen */
-function openFullScreen(src){
-  const img=document.getElementById("fsImg");
-  const overlay=document.getElementById("fsOverlay");
-  img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)";
-  setTimeout(()=>{img.style.transform="scale(1)";},50);
-}
+function openFullScreen(src){ const img=document.getElementById("fsImg"); const overlay=document.getElementById("fsOverlay"); img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)"; setTimeout(()=>{img.style.transform="scale(1)";},50);}
 function closeFullScreen(){ document.getElementById("fsOverlay").classList.remove("show"); }
 
 /* Theme menu */
-function themeMenu(){
-  fadeSwitch(`<h3>Select Theme</h3>
-    <button class="big-btn" onclick='setDark()'>Dark</button>
-    <button class="big-btn" onclick='setSoft()'>Soft</button>
-    <button class="big-btn" onclick='setClassic()'>Classic</button>
-    <button class="big-btn" onclick='setNightwing()'>Nightwing</button>
-    <button class="big-btn" onclick='setToji()'>Toji</button>
-    <button class="big-btn" onclick='loadHome()'>← Back</button>`);
-}
+function themeMenu(){ fadeSwitch(`<h3>Select Theme</h3>
+<button class="big-btn" onclick='setDark()'>Dark</button>
+<button class="big-btn" onclick='setSoft()'>Soft</button>
+<button class="big-btn" onclick='setClassic()'>Classic</button>
+<button class="big-btn" onclick='setNightwing()'>Nightwing</button>
+<button class="big-btn" onclick='setToji()'>Toji</button>
+<button class="big-btn" onclick='loadHome()'>← Back</button>`); }
 
 /* Themes */
 function setDark(){ document.documentElement.style.setProperty('--bg','#111'); document.documentElement.style.setProperty('--card','#1c1c1c'); document.documentElement.style.setProperty('--text','#fff'); document.documentElement.style.setProperty('--accent','#ff4d6d'); document.documentElement.style.setProperty('--glow','#ff4d6d'); document.documentElement.style.setProperty('--bg-img','none'); }
@@ -209,29 +220,6 @@ function setClassic(){ document.documentElement.style.setProperty('--bg','#fff')
 function setNightwing(){ document.documentElement.style.setProperty('--bg','#0a0a0f'); document.documentElement.style.setProperty('--card','#11121a'); document.documentElement.style.setProperty('--text','#a8d0f0'); document.documentElement.style.setProperty('--accent','#1c8adb'); document.documentElement.style.setProperty('--glow','#1c8adb'); document.documentElement.style.setProperty('--bg-img','url("nightwing-bg.jpeg")'); }
 function setToji(){ document.documentElement.style.setProperty('--bg','#000'); document.documentElement.style.setProperty('--card','#1a1a1a'); document.documentElement.style.setProperty('--text','#dcdfff'); document.documentElement.style.setProperty('--accent','#8a2be2'); document.documentElement.style.setProperty('--glow','#8a2be2'); document.documentElement.style.setProperty('--bg-img','url("toji-bg.jpeg")'); }
 
-/* Upload memory feature */
-function addUploadMemoryFeature(){
-  const uploadBtn = document.getElementById('uploadMemoryBtn');
-  const uploadInput = document.getElementById('uploadMemoryInput');
-  const container = document.querySelector('.memories-container');
-  if(!uploadBtn) return;
-
-  uploadBtn.onclick = () => uploadInput.click();
-  uploadInput.onchange = (e) => {
-    const file = e.target.files[0]; if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(event){
-      const newImgSrc = event.target.result;
-      const img = document.createElement('img');
-      img.src = newImgSrc;
-      img.style.setProperty('--i', memories.length);
-      img.onmousedown = () => openFullScreen(newImgSrc);
-      container.appendChild(img);
-      memories.push(newImgSrc);
-    }
-    reader.readAsDataURL(file);
-  }
-}
 </script>
 
 </body>
