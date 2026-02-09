@@ -25,6 +25,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
+  transition: opacity 0.3s ease;
 }
 
 button {
@@ -62,37 +63,51 @@ function unlock() {
   var password = document.getElementById("pw").value;
 
   if (password === "1234") {
-    loadHome();
+    showHome();
   } else {
     document.getElementById("msg").innerText = "Wrong password.";
   }
 }
 
-function loadHome() {
+function fadeSwitch(content) {
   var app = document.getElementById("app");
-  app.innerHTML =
+  app.style.opacity = 0;
+
+  setTimeout(function() {
+    app.innerHTML = content;
+    app.style.opacity = 1;
+  }, 300);
+}
+
+function showHome() {
+  fadeSwitch(
     "<h3>Her World ❤️</h3>" +
-    "<button onclick='loadBirthday()'>🎂 Birthday</button>" +
-    "<button onclick='loadMemories()'>📸 Memories</button>" +
-    "<button onclick='loadLetters()'>💌 Letters</button>" +
-    "<div id='content' style='margin-top:20px;'></div>";
+    "<button onclick='showBirthday()'>🎂 Birthday</button>" +
+    "<button onclick='showMemories()'>📸 Memories</button>" +
+    "<button onclick='showLetters()'>💌 Letters</button>"
+  );
 }
 
-function loadBirthday() {
-  document.getElementById("content").innerHTML =
-    "<h4>Birthday Celebration</h4><p>This is where your birthday moments will live.</p>";
+function showBirthday() {
+  fadeSwitch(
+    "<button onclick='showHome()'>← Back</button>" +
+    "<h2>Birthday 🎂</h2>" +
+    "<p>This is where the birthday story goes.</p>"
+  );
 }
 
-function loadMemories() {
-  document.getElementById("content").innerHTML =
-    "<h4>Our Memories</h4><p>Gallery-style memories will go here.</p>";
+function showMemories() {
+  fadeSwitch(
+    "<button onclick='showHome()'>← Back</button>" +
+    "<h2>Memories 📸</h2>" +
+    "<p>Your gallery-style memories will live here.</p>"
+  );
 }
 
-function loadLetters() {
-  document.getElementById("content").innerHTML =
-    "<h4>Letters</h4><p>Your personal letters section.</p>";
+function showLetters() {
+  fadeSwitch(
+    "<button onclick='showHome()'>← Back</button>" +
+    "<h2>Letters 💌</h2>" +
+    "<p>Your personal letters section.</p>"
+  );
 }
-</script>
-
-</body>
-</html>
