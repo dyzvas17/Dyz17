@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #111; --card: rgba(28, 28, 28, 0.7); --text: #fff; --accent: #ff4d6d; --glow: #ff4d6d; --bg-img: none;
+            --bg: #111; --card: rgba(255, 255, 255, 0.1); --text: #fff; --accent: #ff4d6d; --glow: #ff4d6d; --bg-img: none;
         }
         body {
             margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text);
@@ -15,14 +15,14 @@
             display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
             transition: 0.8s ease;
         }
-        /* Glassmorphism Card */
+        /* Glassmorphism Main App */
         .app {
             width: 90%; max-width: 420px; height: 90vh; 
             background: var(--card); border-radius: 30px;
             padding: 25px; display: flex; flex-direction: column; align-items: center; 
             transition: 0.5s; overflow: hidden; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative; box-sizing: border-box;
         }
@@ -33,37 +33,41 @@
             justify-content: center; align-items: center; gap: 10px;
             box-shadow: 0 0 15px var(--glow); animation: pulse 2s infinite alternate; font-weight: 600;
         }
-        .square-btn:hover { transform: translateY(-5px) scale(1.02); }
+        .square-btn:hover { transform: translateY(-5px); }
         @keyframes pulse { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 25px var(--glow); } }
         
         .big-btn {
             margin-top: 15px; padding: 14px 0; width: 100%; border-radius: 15px; font-size: 16px;
-            background: var(--accent); color: #fff; box-shadow: 0 0 12px var(--glow); font-weight: 600;
+            background: var(--accent); color: #fff; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         input { 
             padding: 16px; width: 100%; border-radius: 15px; border: none; margin-top: 15px; 
             font-size: 16px; background: rgba(255,255,255,0.1); color: #fff; box-sizing: border-box; text-align: center;
         }
-        
-        /* Memories / Gallery */
+
+        /* Memories Gallery */
         .memories-container { flex: 1; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; overflow-y: auto; width: 100%; padding: 15px 0; }
-        .polaroid img { width: 110px; height: 110px; object-fit: cover; border: 6px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.4); transform: rotate(calc(-5deg + 10deg * var(--i))); margin: 8px; transition: 0.3s; }
-        .polaroid img:hover { transform: rotate(0deg) scale(1.1); z-index: 5; }
+        .polaroid img { width: 110px; height: 110px; object-fit: cover; border: 6px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.4); transform: rotate(calc(-5deg + 10deg * var(--i))); margin: 8px; transition: 0.3s; cursor: pointer; }
         
         /* Overlays */
         .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
         .fullscreen-overlay.show { opacity: 1; pointer-events: all; }
-        .fullscreen-overlay img { max-width: 90%; max-height: 80%; border-radius: 15px; box-shadow: 0 0 30px var(--accent); }
+        .fullscreen-overlay img { max-width: 90%; max-height: 85%; border-radius: 15px; border: 2px solid rgba(255,255,255,0.2); }
 
-        /* Countdown Style */
-        .countdown-timer { display: flex; gap: 10px; margin: 20px 0; font-weight: 600; }
-        .time-unit { background: var(--accent); padding: 10px; border-radius: 10px; min-width: 50px; color: #fff; }
-        
-        #letterText { 
-            font-family: 'Dancing Script', cursive; font-size: 22px; margin-top: 20px; padding: 20px; 
-            background: rgba(255,255,255,0.05); border-radius: 15px; line-height: 1.4; text-align: center; width: 100%; box-sizing: border-box; 
+        /* Countdown */
+        .countdown-timer { display: flex; gap: 10px; margin: 20px 0; }
+        .time-unit { background: var(--accent); padding: 12px; border-radius: 12px; min-width: 60px; color: #fff; text-align: center; }
+
+        /* Letter Selection Aesthetic */
+        .letter-card {
+            cursor: pointer; position: relative; width: 100%; max-width: 320px; height: 120px; 
+            border-radius: 20px; overflow: hidden; display: flex; align-items: center; 
+            border: 2px solid rgba(255,255,255,0.2); transition: 0.3s; margin-bottom: 15px;
         }
-        .floating-theme { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; z-index: 10; opacity: 0.7; }
+        .letter-card:hover { transform: scale(1.03); }
+        .letter-card img { width: 70px; height: 70px; border-radius: 50%; margin-left: 20px; border: 3px solid #fff; object-fit: cover; }
+        .letter-info { margin-left: 15px; color: #fff; }
+        .floating-theme { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; z-index: 10; }
     </style>
 </head>
 <body>
@@ -74,11 +78,10 @@
 
 <div class="app" id="app">
     <div id="lockScreen" style="width: 100%; text-align: center;">
-        <h1 style="font-weight: 300; letter-spacing: 2px;">PRIVATE HAVEN</h1>
-        <p style="opacity: 0.6; font-size: 14px;">A secret space for us.</p>
-        <input type="password" id="pw" placeholder="Enter Password">
-        <button class="big-btn" onclick="unlock()">Unlock</button>
-        <p id="msg" style="color: var(--accent); margin-top: 10px;"></p>
+        <h1 style="font-weight: 300; letter-spacing: 3px;">PRIVATE HAVEN</h1>
+        <input type="password" id="pw" placeholder="Unlock with Password">
+        <button class="big-btn" onclick="unlock()">Enter</button>
+        <p id="msg" style="color: var(--accent); margin-top: 10px; font-size: 14px;"></p>
     </div>
 </div>
 
@@ -87,23 +90,21 @@
 </div>
 
 <script>
-    // --- Configuration ---
     let memories = ["memory1.jpeg", "memory2.jpeg", "memory3.jpeg", "memory4.jpeg", "memory5.jpeg", "memory6.jpeg"];
-    const targetDate = new Date("December 31, 2025 00:00:00").getTime(); // Set your next big date here!
+    const targetDate = new Date("December 31, 2025 00:00:00").getTime();
 
-    // --- Persistence: Load Theme on Start ---
+    // Load saved theme
     window.onload = () => {
-        const savedTheme = JSON.parse(localStorage.getItem('userTheme'));
-        if(savedTheme) setTheme(savedTheme.bg, savedTheme.accent, savedTheme.card, savedTheme.text, false);
+        const saved = JSON.parse(localStorage.getItem('userTheme'));
+        if(saved) setTheme(saved.bg, saved.accent, saved.card, saved.text, false);
     };
 
     function unlock() {
-        const input = document.getElementById("pw").value;
-        if (input === "1234") {
-            document.getElementById("bgMusic").play(); // Start Music
+        if (document.getElementById("pw").value === "1234") {
+            document.getElementById("bgMusic").play().catch(() => console.log("Music needs interaction"));
             loadHome();
         } else {
-            document.getElementById("msg").innerText = "That's not it, try again!";
+            document.getElementById("msg").innerText = "Wrong password, yaar!";
         }
     }
 
@@ -119,80 +120,45 @@
     function loadHome() {
         fadeSwitch(`
             <div class="floating-theme" onclick="themeMenu()">🎨</div>
-            <h2 style="font-weight: 400; margin-bottom:20px;">Hello, Love ❤️</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%;">
+            <h2 style="font-weight: 400; margin-top: 40px;">Welcome Back ❤️</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 20px;">
                 <button class="square-btn" onclick="showBirthday()"><span>🎂</span>Birthday</button>
-                <button class="square-btn" onclick="showLetters()" style="background:var(--accent); opacity:0.9;"><span>💌</span>Letters</button>
-                <button class="square-btn" onclick="showMemories()" style="background:var(--accent); opacity:0.8;"><span>📸</span>Memories</button>
-                <button class="square-btn" onclick="showUs()" style="background:var(--accent); opacity:0.7;"><span>❤️</span>Our Space</button>
-            </div>
-            <p style="font-size:12px; margin-top:30px; opacity:0.5;">Music is playing...</p>
-        `);
-    }
-
-    // --- Countdown Logic ---
-    function startCountdown() {
-        const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const timerDiv = document.getElementById("timerDisplay");
-            if(timerDiv) {
-                timerDiv.innerHTML = `
-                    <div class="time-unit"><span>${days}</span><br><small>Days</small></div>
-                    <div class="time-unit"><span>${hours}</span><br><small>Hrs</small></div>
-                    <div class="time-unit"><span>${mins}</span><br><small>Min</small></div>
-                `;
-            }
-            if (distance < 0) clearInterval(timer);
-        }, 1000);
-    }
-
-    function showBirthday() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h2 style="margin-bottom:5px;">Countdown 🎁</h2>
-            <p style="font-size:14px; opacity:0.7;">Time until our next celebration:</p>
-            <div id="timerDisplay" class="countdown-timer"></div>
-            <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:20px; margin-top:10px;">
-                <p>"Every day with you is a gift, but I'm still counting down to this one!"</p>
+                <button class="square-btn" onclick="showLetters()"><span>💌</span>Letters</button>
+                <button class="square-btn" onclick="showMemories()"><span>📸</span>Memories</button>
+                <button class="square-btn" onclick="showUs()"><span>❤️</span>Us</button>
             </div>
         `);
-        setTimeout(startCountdown, 100);
     }
 
     function showLetters() {
         fadeSwitch(`
             <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h2>Personal Letters 💌</h2>
-            <div style="display:flex; gap:10px; width:100%;">
-                <button class="big-btn" onclick="typeLetter('shivam')">Shivam</button>
-                <button class="big-btn" onclick="typeLetter('naqii')">Naqii</button>
+            <h2 style="font-family:'Dancing Script'; font-size:32px; margin: 20px 0;">Selection 💌</h2>
+            
+            <div class="letter-card" onclick="openFullScreen('naqii_letter.jpg')" 
+                 style="background: linear-gradient(135deg, #ffafbd, #ffc3a0); box-shadow: 0 0 15px #ff85a2;">
+                <img src="naqii_profile.jpg">
+                <div class="letter-info">
+                    <h3 style="margin:0; font-family:'Dancing Script'; font-size:26px;">By Naqii</h3>
+                    <p style="margin:0; font-size:12px; opacity:0.9;">Hello Kitty Style 🎀</p>
+                </div>
             </div>
-            <div id="letterText">Pick a sender to reveal their message...</div>
+
+            <div class="letter-card" onclick="openFullScreen('shivam_letter.jpg')" 
+                 style="background: linear-gradient(135deg, #ed213a, #2376b0); box-shadow: 0 0 15px #ed213a;">
+                <img src="shivam_profile.jpg">
+                <div class="letter-info">
+                    <h3 style="margin:0; font-weight:600;">By Shivam</h3>
+                    <p style="margin:0; font-size:12px; opacity:0.9;">Spiderman Style 🕷️</p>
+                </div>
+            </div>
+            <p style="font-size:12px; opacity:0.6; margin-top:10px;">Tap a card to read the letter image</p>
         `);
     }
 
-    function typeLetter(who) {
-        const box = document.getElementById("letterText");
-        const text = who === 'shivam' 
-            ? "To my dearest Naqii, you are the best thing that ever happened to me. Every moment we spend together is a memory I'll keep forever. Happy Birthday, my love! ❤️" 
-            : "Hey Shivam, just wanted to leave a little note here to say how much I love you. This space is perfect, just like us! 😘";
-        box.innerHTML = ""; let i = 0;
-        function typing() {
-            if (i < text.length) { box.innerHTML += text.charAt(i); i++; setTimeout(typing, 40); }
-        }
-        typing();
-    }
-
     function showMemories() {
-        let html = `
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <div class="memories-container polaroid">`;
+        let html = `<button class="big-btn" onclick="loadHome()">← Back</button>
+                    <div class="memories-container polaroid">`;
         memories.forEach((src, i) => {
             html += `<img src="${src}" style="--i:${i % 6}" onclick="openFullScreen('${src}')">`;
         });
@@ -200,8 +166,39 @@
         fadeSwitch(html);
     }
 
+    function showBirthday() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h2 style="margin: 20px 0 5px;">Countdown 🎁</h2>
+            <div id="timerDisplay" class="countdown-timer"></div>
+            <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:20px; text-align:center;">
+                <p style="font-style:italic;">"Distance is just a test to see how far love can travel."</p>
+            </div>
+        `);
+        startCountdown();
+    }
+
+    function startCountdown() {
+        const update = () => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const timer = document.getElementById("timerDisplay");
+            if(timer) {
+                timer.innerHTML = `<div class="time-unit"><span>${d}</span><br><small>Days</small></div>
+                                   <div class="time-unit"><span>${h}</span><br><small>Hrs</small></div>
+                                   <div class="time-unit"><span>${m}</span><br><small>Min</small></div>`;
+            }
+        };
+        update();
+        setInterval(update, 60000);
+    }
+
     function openFullScreen(src) {
-        document.getElementById("fsImg").src = src;
+        const img = document.getElementById("fsImg");
+        img.src = src;
         document.getElementById("fsOverlay").classList.add("show");
     }
     function closeFullScreen() { document.getElementById("fsOverlay").classList.remove("show"); }
@@ -209,10 +206,10 @@
     function themeMenu() {
         fadeSwitch(`
             <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h3 style="margin-top:20px;">Personalize</h3>
-            <button class="big-btn" onclick="setTheme('#111','#ff4d6d','rgba(28,28,28,0.7)','#fff', true)">Midnight Rose</button>
-            <button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','rgba(255,255,255,0.6)','#333', true)">Soft Cotton</button>
-            <button class="big-btn" onclick="setTheme('#0a0a0f','#1c8adb','rgba(15,20,30,0.7)','#fff', true)">Nightwing Blue</button>
+            <h3 style="margin-top:20px;">Themes</h3>
+            <button class="big-btn" onclick="setTheme('#111','#ff4d6d','rgba(255,255,255,0.1)','#fff', true)">Midnight Pink</button>
+            <button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','rgba(255,255,255,0.5)','#333', true)">Soft Cotton</button>
+            <button class="big-btn" onclick="setTheme('#0a0a0f','#1c8adb','rgba(15,20,30,0.6)','#fff', true)">Nightwing</button>
         `);
     }
 
@@ -222,19 +219,16 @@
         document.documentElement.style.setProperty('--glow', accent);
         document.documentElement.style.setProperty('--card', card);
         document.documentElement.style.setProperty('--text', text);
-        if(save) {
-            localStorage.setItem('userTheme', JSON.stringify({bg, accent, card, text}));
-        }
+        if(save) localStorage.setItem('userTheme', JSON.stringify({bg, accent, card, text}));
     }
 
     function showUs() {
         fadeSwitch(`
             <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h2 style="font-family:'Dancing Script'; font-size:40px;">Us ❤️</h2>
-            <div style="text-align:center; padding:20px;">
-                <p>A private corner of the internet for two people who belong together.</p>
-                <p style="font-size:14px; opacity:0.6; font-style:italic;">"Distance means so little when someone means so much."</p>
-            </div>
+            <h2 style="font-family:'Dancing Script'; font-size:40px; margin-top:20px;">Us ❤️</h2>
+            <p style="text-align:center; padding:20px; line-height:1.6; opacity:0.8;">
+                This is our secret corner. A place where time stops and it's just you and me.
+            </p>
         `);
     }
 </script>
