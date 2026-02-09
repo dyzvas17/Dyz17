@@ -65,26 +65,6 @@ input {
   font-size: 16px;
 }
 
-.section {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  transition: opacity 0.5s;
-  overflow-y: auto;
-}
-
-.section.active {
-  opacity: 1;
-  z-index: 10;
-}
-
 h2,h3,h4 { margin: 0 0 15px 0; }
 p { line-height: 1.4; }
 .back-btn {
@@ -224,6 +204,41 @@ p { line-height: 1.4; }
   width: 70%;
   margin: 10px 0;
 }
+
+/* Fullscreen memory overlay */
+.fullscreen-overlay {
+  position: fixed;
+  top:0; left:0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.fullscreen-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.fullscreen-overlay img {
+  max-width: 95%;
+  max-height: 90%;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+.fullscreen-overlay button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  background: var(--accent);
+  border-radius: 8px;
+  color: #fff;
+  padding: 8px 12px;
+}
 </style>
 </head>
 <body>
@@ -235,15 +250,21 @@ p { line-height: 1.4; }
   <p id="msg"></p>
 </div>
 
+<!-- Fullscreen overlay -->
+<div class="fullscreen-overlay" id="fsOverlay">
+  <img id="fsImg" src="">
+  <button onclick="closeFullScreen()">✕</button>
+</div>
+
 <script>
 let currentMemoryStyle = "polaroid";
 const memories = [
-  "Pic1.jpeg",
-  "Pic2.jpeg",
-  "Pic3.jpeg",
-  "Pic4.jpeg",
-  "Pic5.jpeg",
-  "Pic6.jpeg"
+  "pic1.jpg",
+  "pic2.jpg",
+  "pic3.jpg",
+  "pic4.jpg",
+  "pic5.jpg",
+  "pic6.jpg"
 ];
 
 /* ---- Unlock ---- */
@@ -295,7 +316,7 @@ function renderMemories(style){
   if(style==="flip"){
     memories.forEach((src,i)=>{
       html += `
-      <div class="flip-container">
+      <div class="flip-container" onmousedown="openFullScreen('${src}')">
         <div class="flip-card">
           <div class="flip-card-front" style="background-image:url('${src}')"></div>
           <div class="flip-card-back">Memory ${i+1}</div>
@@ -306,12 +327,12 @@ function renderMemories(style){
   } else if(style==="masonry"){
     html += `<div class="masonry">`;
     memories.forEach((src,i)=>{
-      html += `<img src="${src}" alt="Memory ${i+1}">`;
+      html += `<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`;
     });
     html += `</div>`;
   } else {
     memories.forEach((src,i)=>{
-      html += `<img src="${src}" style="--i:${i}" alt="Memory ${i+1}">`;
+      html += `<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`;
     });
   }
   html += `</div>`;
@@ -335,6 +356,17 @@ function openStyleOverlay(){
 function selectMemoryStyle(style){
   currentMemoryStyle = style;
   renderMemories(style);
+}
+
+/* ---- Fullscreen memory ---- */
+function openFullScreen(src){
+  const overlay = document.getElementById("fsOverlay");
+  const img = document.getElementById("fsImg");
+  img.src = src;
+  overlay.classList.add("show");
+}
+function closeFullScreen(){
+  document.getElementById("fsOverlay").classList.remove("show");
 }
 
 /* ---- Letters Typewriter ---- */
@@ -391,4 +423,3 @@ function setClassic(){
 </script>
 </body>
 </html>
-
