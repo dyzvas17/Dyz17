@@ -3,7 +3,6 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Private</title>
-
 <style>
 body {
   margin: 0;
@@ -15,19 +14,15 @@ body {
   align-items: center;
   height: 100vh;
 }
-
 .app {
   width: 90%;
   max-width: 400px;
-  height: 90vh;
   background: #1c1c1c;
   border-radius: 20px;
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
-  transition: opacity 0.3s ease;
 }
-
 button {
   padding: 12px;
   width: 100%;
@@ -38,7 +33,6 @@ button {
   color: white;
   font-size: 15px;
 }
-
 input {
   padding: 12px;
   width: 100%;
@@ -48,66 +42,46 @@ input {
 }
 </style>
 </head>
-
 <body>
-
 <div class="app" id="app">
-  <h2>Enter Password</h2>
-  <input type="password" id="pw" placeholder="Only you know...">
-  <button onclick="unlock()">Unlock</button>
-  <p id="msg"></p>
+<h2>Enter Password</h2>
+<input type="password" id="pw" placeholder="Only you know...">
+<button onclick="unlock()">Unlock</button>
+<p id="msg"></p>
 </div>
-
 <script>
 function unlock() {
   var password = document.getElementById("pw").value;
-
-  if (password === "1234") {
-    showHome();
+  if(password === "1234"){
+    loadHome();
   } else {
     document.getElementById("msg").innerText = "Wrong password.";
   }
 }
-
-function fadeSwitch(content) {
+function loadHome(){
   var app = document.getElementById("app");
-  app.style.opacity = 0;
-
-  setTimeout(function() {
-    app.innerHTML = content;
-    app.style.opacity = 1;
-  }, 300);
-}
-
-function showHome() {
-  fadeSwitch(
+  app.innerHTML =
     "<h3>Her World ❤️</h3>" +
-    "<button onclick='showBirthday()'>🎂 Birthday</button>" +
-    "<button onclick='showMemories()'>📸 Memories</button>" +
-    "<button onclick='showLetters()'>💌 Letters</button>"
-  );
+    "<button onclick='loadBirthday()'>🎂 Birthday</button>" +
+    "<button onclick='loadMemories()'>📸 Memories</button>" +
+    "<button onclick='loadLetters()'>💌 Letters</button>" +
+    "<div id='content' style='margin-top:20px;'></div>";
 }
-
-function showBirthday() {
-  fadeSwitch(
-    "<button onclick='showHome()'>← Back</button>" +
-    "<h2>Birthday 🎂</h2>" +
-    "<p>This is where the birthday story goes.</p>"
-  );
+function loadBirthday(){
+  document.getElementById("content").innerHTML =
+    "<button onclick='loadHome()'>← Back</button>" +
+    "<h2>Birthday 🎂</h2><p>This is where your birthday story goes.</p>";
 }
-
-function showMemories() {
-  fadeSwitch(
-    "<button onclick='showHome()'>← Back</button>" +
-    "<h2>Memories 📸</h2>" +
-    "<p>Your gallery-style memories will live here.</p>"
-  );
+function loadMemories(){
+  document.getElementById("content").innerHTML =
+    "<button onclick='loadHome()'>← Back</button>" +
+    "<h2>Memories 📸</h2><p>Gallery-style memories will live here.</p>";
 }
-
-function showLetters() {
-  fadeSwitch(
-    "<button onclick='showHome()'>← Back</button>" +
-    "<h2>Letters 💌</h2>" +
-    "<p>Your personal letters section.</p>"
-  );
+function loadLetters(){
+  document.getElementById("content").innerHTML =
+    "<button onclick='loadHome()'>← Back</button>" +
+    "<h2>Letters 💌</h2><p>Your personal letters section.</p>";
 }
+</script>
+</body>
+</html>
