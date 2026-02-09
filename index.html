@@ -1,171 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Haven</title>
-    <style>
-        :root {
-            --bg: #111; --card: rgba(28, 28, 28, 0.9); --text: #fff; 
-            --accent: #ff4d6d; --glow: #ff4d6d; --bg-img: none;
-        }
-        body {
-            margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: var(--bg); color: var(--text);
-            background-image: var(--bg-img); background-size: cover; background-position: center;
-            display: flex; justify-content: center; align-items: center; height: 100vh; 
-            overflow: hidden; transition: 0.5s;
-        }
-        /* The main container */
-        .app {
-            width: 90%; max-width: 420px; height: 85vh; 
-            background: var(--card); border-radius: 30px;
-            padding: 25px; display: flex; flex-direction: column; 
-            align-items: center; transition: 0.5s; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        /* Buttons */
-        button { border: none; cursor: pointer; transition: 0.3s; }
-        .square-btn {
-            width: 140px; height: 140px; margin: 10px; border-radius: 20px; font-size: 18px;
-            background: var(--accent); color: #fff; display: flex; 
-            justify-content: center; align-items: center; font-weight: bold;
-            box-shadow: 0 0 12px var(--glow); animation: pulse 2s infinite alternate;
-        }
-        .big-btn {
-            margin-top: 15px; padding: 14px; width: 100%; border-radius: 12px; font-size: 16px;
-            background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--glow);
-        }
-        button:hover { transform: scale(1.05); }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Haven</title>
+<style>
+:root{
+  --bg:#111; --card:#1c1c1c; --text:#fff; --accent:#ff4d6d; --glow:#ff4d6d; --bg-img:none;
+}
+body{
+  margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text);
+  background-image: var(--bg-img); background-size:cover; background-position:center;
+  display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden;
+  transition:0.5s;
+}
+.app{
+  width:90%; max-width:420px; height:90vh; background:var(--card); border-radius:25px;
+  padding:20px; display:flex; flex-direction:column; align-items:center; transition:0.5s; overflow:hidden;
+}
+button{border:none; cursor:pointer; transition:0.3s;}
+.square-btn{
+  width:140px; height:140px; margin:10px; border-radius:15px; font-size:18px;
+  background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center;
+  box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
+}
+.square-btn:hover{transform:scale(1.05);}
+@keyframes pulse{from{box-shadow:0 0 10px var(--glow);} to{box-shadow:0 0 20px var(--glow);}}
+.floating-theme{
+  position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px;
+  background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff;
+  box-shadow:0 0 12px var(--glow); cursor:pointer; animation:pulse 2s infinite alternate;
+}
+.big-btn{
+  margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px;
+  background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
+}
+.big-btn:hover{transform:scale(1.05);}
+input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px;}
+.memories-container{flex:1; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; position:relative;}
+.memories-container img{border-radius:12px; cursor:pointer; transition:0.3s;}
+.memories-container img:hover{transform:scale(1.05); box-shadow:0 0 18px var(--glow);}
+.polaroid img{width:120px; height:120px; object-fit:cover; border:5px solid #fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i)));}
+.polaroid img:hover{transform:scale(1.05) rotate(calc(-3deg + 6deg * var(--i))); box-shadow:0 0 20px var(--glow);}
+.circle img{border-radius:50%; width:100px; height:100px; object-fit:cover;}
+.grid img{width:100px; height:100px; object-fit:cover; border-radius:8px;}
+.flip-container{perspective:1000px; display:inline-block; margin:5px;}
+.flip-card{width:120px; height:120px; transition:0.6s; transform-style:preserve-3d; cursor:pointer;}
+.flip-card:hover{transform:rotateY(180deg) scale(1.05);}
+.flip-card-front, .flip-card-back{position:absolute; width:120px; height:120px; backface-visibility:hidden; border-radius:12px;}
+.flip-card-front{background-size:cover;}
+.flip-card-back{background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; transform:rotateY(180deg);}
+.masonry{column-count:2; column-gap:10px;}
+.masonry img{width:100%; border-radius:12px; margin-bottom:10px;}
+.mem-style-btn{position:absolute; top:10px; right:10px; width:45px; height:45px; border-radius:8px;
+  background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; font-size:20px;
+  cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;}
+#uploadMemoryBtn{position:absolute; top:65px; right:10px; width:45px; height:45px; border-radius:8px; background:var(--accent); color:#fff;
+  font-size:22px; cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;}
+.fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh; background:rgba(0,0,0,0.95);
+display:flex; justify-content:center; align-items:center; z-index:200; opacity:0; pointer-events:none; transition:0.3s;}
+.fullscreen-overlay.show{opacity:1; pointer-events:all;}
+.fullscreen-overlay img{max-width:95%; max-height:90%; border-radius:12px; transition:transform 0.3s;}
+.fullscreen-overlay button{position:absolute;top:20px; right:20px; font-size:22px; background:var(--accent); color:#fff; border-radius:8px; padding:8px 12px;}
 
-        /* Memory Styles */
-        .memories-container { 
-            flex: 1; display: flex; flex-wrap: wrap; gap: 15px; 
-            justify-content: center; overflow-y: auto; width: 100%; padding-top: 20px;
-        }
-        .polaroid img {
-            width: 120px; height: 120px; object-fit: cover; border: 6px solid #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); transform: rotate(calc(-5deg + 10deg * var(--i)));
-        }
-
-        /* Letter Styling */
-        .letter-content {
-            margin-top: 20px; padding: 20px; border-radius: 15px;
-            background: rgba(255, 255, 255, 0.05); width: 90%; 
-            min-height: 100px; font-style: italic; text-align: center;
-        }
-
-        @keyframes pulse { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 20px var(--glow); } }
-        
-        /* Password Section */
-        .lock-screen { text-align: center; width: 100%; }
-        input { 
-            padding: 15px; width: 80%; border-radius: 12px; border: none; 
-            margin-bottom: 10px; background: #222; color: #fff; text-align: center; 
-        }
-    </style>
+/* Birthday full screen card + particles */
+#birthdayCardContainer{position:fixed;top:0;left:0;width:100vw;height:100vh;display:none;justify-content:center;align-items:center;z-index:300;}
+#birthdayCard{width:90%;height:90%;background:#fff;border-radius:25px;box-shadow:0 0 40px #ff4d6d;display:flex;justify-content:center;align-items:center;font-size:24px;color:#111;text-align:center;transform:scale(0);transition:transform 0.8s ease;position:relative;}
+canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;}
+.letters-options{display:flex;gap:20px; justify-content:center; flex-wrap:wrap; margin-top:30px;}
+.letters-options button{width:140px;height:140px;border-radius:20px;font-size:18px;background:linear-gradient(135deg,#ff85a2,#ff4d6d);color:#fff;box-shadow:0 0 15px #ff4d6d; display:flex; justify-content:center; align-items:center; transition:0.3s;}
+.letters-options button:hover{transform:scale(1.05); box-shadow:0 0 25px #ff4d6d;}
+#letterText{margin-top:20px; font-size:18px; text-align:center;}
+</style>
 </head>
 <body>
 
 <div class="app" id="app">
-    <div class="lock-screen">
-        <h2>🔒 Private Haven</h2>
-        <input type="password" id="pw" placeholder="Enter Password...">
-        <button class="big-btn" onclick="unlock()">Unlock</button>
-        <p id="msg" style="color: var(--accent);"></p>
-    </div>
+  <h2>Enter Password</h2>
+  <input type="password" id="pw" placeholder="Only you know...">
+  <button class="big-btn" onclick="unlock()">Unlock</button>
+  <p id="msg"></p>
+</div>
+
+<div class="fullscreen-overlay" id="fsOverlay">
+  <img id="fsImg" src="">
+  <button onclick="closeFullScreen()">✕</button>
+</div>
+
+<div id="birthdayCardContainer">
+  <canvas id="particleCanvas"></canvas>
+  <div id="birthdayCard">Happy Birthday! ❤️<br>Swipe to open your special surprise!</div>
 </div>
 
 <script>
-let memories = ["memory1.jpeg", "memory2.jpeg", "memory3.jpeg"]; // Add your image names here
+let currentMemoryStyle="polaroid";
+const memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
 
-function unlock() {
-    const pw = document.getElementById("pw").value;
-    if (pw === "1234") {
-        loadHome();
-    } else {
-        document.getElementById("msg").innerText = "Access Denied.";
+// Unlock
+function unlock(){
+  const pw=document.getElementById("pw").value;
+  if(pw==="1234") loadHome();
+  else document.getElementById("msg").innerText="Wrong password.";
+}
+
+// Fade content
+function fadeSwitch(newContent){
+  const app=document.getElementById("app");
+  app.style.opacity=0;
+  setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1; addUploadMemoryFeature();},300);
+}
+
+// Home
+function loadHome(){
+  fadeSwitch(`
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
+      <button class="square-btn" onclick="showBirthday()">Birthday 🎂</button>
+      <button class="square-btn" onclick="showLetters()">Letters 💌</button>
+      <button class="square-btn" onclick="showMemories()">Memories 📸</button>
+      <button class="square-btn" onclick="showUs()">Us ❤️</button>
+    </div>
+  `);
+}
+
+// Birthday
+function showBirthday(){
+  const container=document.getElementById("birthdayCardContainer");
+  const card=document.getElementById("birthdayCard");
+  container.style.display="flex";
+  setTimeout(()=>{card.style.transform="scale(1)"; playParticles();},50);
+}
+function closeBirthday(){
+  const container=document.getElementById("birthdayCardContainer");
+  const card=document.getElementById("birthdayCard");
+  card.style.transform="scale(0)";
+  setTimeout(()=>{container.style.display="none"; stopParticles();},500);
+}
+
+// Letters
+function showLetters(){
+  fadeSwitch(`
+    <button class='big-btn' onclick='loadHome()'>← Back</button>
+    <h2>Letters 💌</h2>
+    <div class="letters-options">
+      <button onclick="typeLetter('shivam')">By Shivam</button>
+      <button onclick="typeLetter('naqii')">By Naqii</button>
+    </div>
+    <div id="letterText"></div>
+  `);
+}
+
+function typeLetter(who){
+  const letterDiv=document.getElementById("letterText");
+  letterDiv.innerHTML="";
+  let text="";
+  if(who==="shivam") text="Dear Naqii, this is a special letter from me, filled with love ❤️";
+  if(who==="naqii") text="Dear Shivam, this is a sweet letter from me, full of hugs and kisses 💌";
+  let i=0;
+  function typeWriter(){
+    if(i<text.length){
+      letterDiv.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(typeWriter,50);
     }
+  }
+  typeWriter();
 }
 
-function fadeSwitch(content) {
-    const app = document.getElementById("app");
-    app.style.opacity = 0;
-    setTimeout(() => {
-        app.innerHTML = content;
-        app.style.opacity = 1;
-    }, 300);
+// Us
+function showUs(){ fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Us ❤️</h2><p>All our special memories together in one place!</p>`);}
+
+// Memories
+function showMemories(){ renderMemories(currentMemoryStyle); }
+function renderMemories(style){
+  let html=`<button class='big-btn' onclick='loadHome()'>← Back</button>
+            <div class="memories-container ${style}">
+            <div class="mem-style-btn" onclick="styleMenu()">⚡</div>
+            <button id='uploadMemoryBtn'>+</button>
+            <input type='file' id='uploadMemoryInput' style='display:none' accept='image/*'>`;
+  if(style==="flip"){
+    memories.forEach((src,i)=>{ html+=`<div class="flip-container" onmousedown="openFullScreen('${src}')">
+      <div class="flip-card">
+        <div class="flip-card-front" style="background-image:url('${src}')"></div>
+        <div class="flip-card-back">Memory ${i+1}</div>
+      </div></div>`; });
+  } else if(style==="masonry"){
+    html+=`<div class="masonry">`; memories.forEach((src,i)=>{ html+=`<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; }); html+=`</div>`;
+  } else { memories.forEach((src,i)=>{ html+=`<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; }); }
+  html+=`</div>`; fadeSwitch(html);
 }
 
-function loadHome() {
-    fadeSwitch(`
-        <h2 style="margin-bottom:20px;">Welcome Back ❤️</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button class="square-btn" onclick="showLetters()" style="background:#ff85a2;">Letters 💌</button>
-            <button class="square-btn" onclick="showMemories()" style="background:#1c8adb;">Memories 📸</button>
-            <button class="square-btn" onclick="themeMenu()" style="background:#8a2be2;">Themes 🎨</button>
-            <button class="square-btn" onclick="location.reload()" style="background:#444;">Lock 🔐</button>
-        </div>
-    `);
+// Memory style menu
+function styleMenu(){
+  const overlay=document.createElement('div');
+  overlay.style.cssText="position:absolute;top:60px;right:10px;background:rgba(0,0,0,0.8);padding:10px;border-radius:10px;display:flex;flex-direction:column;z-index:100;";
+  ["polaroid","circle","grid","flip","masonry"].forEach(s=>{
+    const b=document.createElement('button'); b.innerText=s.charAt(0).toUpperCase()+s.slice(1);
+    b.onclick=()=>{currentMemoryStyle=s; renderMemories(s);}
+    overlay.appendChild(b);
+  });
+  document.querySelector('.memories-container').appendChild(overlay);
 }
 
-function showMemories() {
-    let memoryHtml = `<button class="big-btn" onclick="loadHome()">← Back</button><div class="memories-container polaroid">`;
-    memories.forEach((src, i) => {
-        memoryHtml += `<img src="${src}" style="--i:${i % 5}" alt="Memory">`;
-    });
-    memoryHtml += `</div>`;
-    fadeSwitch(memoryHtml);
+// Fullscreen images
+function openFullScreen(src){
+  const img=document.getElementById("fsImg");
+  const overlay=document.getElementById("fsOverlay");
+  img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)";
+  setTimeout(()=>{img.style.transform="scale(1)";},50);
+}
+function closeFullScreen(){ document.getElementById("fsOverlay").classList.remove("show"); }
+
+// Theme menu
+function themeMenu(){
+  fadeSwitch(`<h3>Select Theme</h3>
+    <button class="big-btn" onclick='setDark()'>Dark</button>
+    <button class="big-btn" onclick='setSoft()'>Soft</button>
+    <button class="big-btn" onclick='setClassic()'>Classic</button>
+    <button class="big-btn" onclick='setNightwing()'>Nightwing</button>
+    <button class="big-btn" onclick='setToji()'>Toji</button>
+    <button class="big-btn" onclick='loadHome()'>← Back</button>`);
 }
 
-function showLetters() {
-    fadeSwitch(`
-        <button class="big-btn" onclick="loadHome()">← Back</button>
-        <h3>Personal Letters</h3>
-        <div id="letterBox" class="letter-content">Click a sender below...</div>
-        <div style="display:flex; gap:10px; margin-top:20px;">
-            <button class="big-btn" onclick="typeLetter('shivam')">From Shivam</button>
-            <button class="big-btn" onclick="typeLetter('naqii')">From Naqii</button>
-        </div>
-    `);
-}
+// Themes
+function setDark(){ document.documentElement.style.setProperty('--bg','#111'); document.documentElement.style.setProperty('--card','#1c1c1c'); document.documentElement.style.setProperty('--text','#fff'); document.documentElement.style.setProperty('--accent','#ff4d6d'); document.documentElement.style.setProperty('--glow','#ff4d6d'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setSoft(){ document.documentElement.style.setProperty('--bg','#ffeef2'); document.documentElement.style.setProperty('--card','#fff'); document.documentElement.style.setProperty('--text','#333'); document.documentElement.style.setProperty('--accent','#ff85a2'); document.documentElement.style.setProperty('--glow','#ff85a2'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setClassic(){ document.documentElement.style.setProperty('--bg','#fff'); document.documentElement.style.setProperty('--card','#f5f5f5'); document.documentElement.style.setProperty('--text','#000'); document.documentElement.style.setProperty('--accent','#000'); document.documentElement.style.setProperty('--glow','#000'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setNightwing(){ document.documentElement.style.setProperty('--bg','#0a0a0f'); document.documentElement.style.setProperty('--card','#11121a'); document.documentElement.style.setProperty('--text','#a8d0f0'); document.documentElement.style.setProperty('--accent','#1c8adb'); document.documentElement.style.setProperty('--glow','#1c8adb'); document.documentElement.style.setProperty('--bg-img','url(\"nightwing-bg.jpeg\")'); }
+function setToji(){ document.documentElement.style.setProperty('--bg','#000'); document.documentElement.style.setProperty('--card','#1a1a1a'); document.documentElement.style.setProperty('--text','#dcdfff'); document.documentElement.style.setProperty('--accent','#8a2be2'); document.documentElement.style.setProperty('--glow','#8a2be2'); document.documentElement.style.setProperty('--bg-img','url(\"toji-bg.jpeg\")'); }
 
-function typeLetter(sender) {
-    const box = document.getElementById("letterBox");
-    const text = sender === 'shivam' 
-        ? "Hey love ❤️, Shivam here! I wanted to remind you how much you mean to me. Happy Birthday!" 
-        : "Hi love 😘, Naqii here! Sending you all the hugs and warmth in the world today!";
-    
-    box.innerHTML = "";
-    let i = 0;
-    function type() {
-        if (i < text.length) {
-            box.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, 50);
-        }
+// Upload Memory
+function addUploadMemoryFeature(){
+  const uploadBtn=document.getElementById('uploadMemoryBtn');
+  const uploadInput=document.getElementById('uploadMemoryInput');
+  const container=document.querySelector('.memories-container');
+  if(!uploadBtn) return;
+  uploadBtn.onclick=()=>uploadInput.click();
+  uploadInput.onchange=(e)=>{
+    const file=e.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=function(event){
+      const newImgSrc=event.target.result;
+      const img=document.createElement('img');
+      img.src=newImgSrc; img.style.setProperty('--i',memories.length);
+      img.onmousedown=()=>openFullScreen(newImgSrc);
+      container.appendChild(img); memories.push(newImgSrc);
     }
-    type();
+    reader.readAsDataURL(file);
+  }
 }
 
-function themeMenu() {
-    fadeSwitch(`
-        <h3>Select Theme</h3>
-        <button class="big-btn" onclick="setTheme('#111', '#ff4d6d')">Night Rose</button>
-        <button class="big-btn" onclick="setTheme('#0a0a0f', '#1c8adb')">Deep Sea</button>
-        <button class="big-btn" onclick="setTheme('#fff', '#ff85a2')">Soft Pink</button>
-        <button class="big-btn" onclick="loadHome()">← Back</button>
-    `);
-}
-
-function setTheme(bg, accent) {
-    document.documentElement.style.setProperty('--bg', bg);
-    document.documentElement.style.setProperty('--accent', accent);
-    document.documentElement.style.setProperty('--glow', accent);
-}
-</script>
-
-</body>
-</html>
+// Birthday Particles
+let particles=[], animating=false;
+function playParticles(){
+  const canvas=document.getElementById("particleCanvas");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  particles=[];
+  for(let i=0;i<150;i++){
+    particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*3+1,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,color:`hsl(${Math.random()*360},80%,60%)`});
+  }
+  animating=true;
+  function animate(){
+    if(!animating) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.dx; p.y+=p.dy;
