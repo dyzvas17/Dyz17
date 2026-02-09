@@ -66,6 +66,20 @@ display:flex; justify-content:center; align-items:center; z-index:200; opacity:0
 #birthdayCardContainer{position:fixed;top:0;left:0;width:100vw;height:100vh;display:none;justify-content:center;align-items:center;z-index:300;}
 #birthdayCard{width:80%;max-width:400px;height:80%;background:#fff;border-radius:25px;box-shadow:0 0 40px #ff4d6d;display:flex;justify-content:center;align-items:center;font-size:24px;color:#111;text-align:center;transform:scale(0);transition:transform 0.8s ease;}
 canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;}
+
+/* Letters upgraded buttons */
+.letters-options{
+  display:flex; justify-content:center; gap:20px; margin-top:20px;
+}
+.letters-options .square-btn{
+  width:130px; height:130px; border-radius:20px; font-size:16px;
+  background-size:cover; background-position:center; color:#fff; text-shadow:0 0 8px #000;
+}
+.letter-content{
+  margin-top:20px; padding:15px; border-radius:12px;
+  background:rgba(255,255,255,0.1); width:100%; text-align:center; min-height:80px;
+  font-size:16px; line-height:1.5; backdrop-filter: blur(4px);
+}
 </style>
 </head>
 <body>
@@ -91,164 +105,65 @@ canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:200;pointer
 let currentMemoryStyle="polaroid";
 const memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
 
-function unlock(){
-  const pw=document.getElementById("pw").value;
-  if(pw==="1234") loadHome();
-  else document.getElementById("msg").innerText="Wrong password.";
-}
+function unlock(){const pw=document.getElementById("pw").value;if(pw==="1234") loadHome();else document.getElementById("msg").innerText="Wrong password.";}
+function fadeSwitch(newContent){const app=document.getElementById("app"); app.style.opacity=0; setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1; addUploadMemoryFeature();},300);}
+function loadHome(){fadeSwitch(`<div class="floating-theme" onclick="themeMenu()">🎨</div>
+<div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
+  <button class="square-btn" onclick="showBirthday()" style="background:#ff4d6d;">Birthday 🎂</button>
+  <button class="square-btn" onclick="showLetters()" style="background:#ff85a2;">Letters 💌</button>
+  <button class="square-btn" onclick="showMemories()" style="background:#1c8adb;">Memories 📸</button>
+  <button class="square-btn" onclick="showUs()" style="background:#8a2be2;">Us ❤️</button>
+</div>`);}
+function showBirthday(){const container = document.getElementById("birthdayCardContainer"); const card = document.getElementById("birthdayCard"); container.style.display="flex"; setTimeout(()=>{card.style.transform="scale(1)"; playParticles();},50);}
+function closeBirthday(){const container = document.getElementById("birthdayCardContainer"); const card = document.getElementById("birthdayCard"); card.style.transform="scale(0)"; setTimeout(()=>{container.style.display="none"; stopParticles();},500);}
+function showUs(){fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Us ❤️</h2><p>All our special memories together in one place!</p>`);}
+function showMemories(){renderMemories(currentMemoryStyle);}
+function renderMemories(style){let html=`<button class='big-btn' onclick='loadHome()'>← Back</button>
+<div class="memories-container ${style}">
+<div class="mem-style-btn" onclick="styleMenu()">⚡</div>
+<button id='uploadMemoryBtn'>+</button>
+<input type='file' id='uploadMemoryInput' style='display:none' accept='image/*'>`;
+if(style==="flip"){memories.forEach((src,i)=>{html+=`<div class="flip-container" onmousedown="openFullScreen('${src}')"><div class="flip-card"><div class="flip-card-front" style="background-image:url('${src}')"></div><div class="flip-card-back">Memory ${i+1}</div></div></div>`;});}
+else if(style==="masonry"){html+=`<div class="masonry">`; memories.forEach((src,i)=>{ html+=`<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`;}); html+=`</div>`;}
+else{memories.forEach((src,i)=>{ html+=`<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`;});}
+html+=`</div>`; fadeSwitch(html);}
+function styleMenu(){const overlay=document.createElement('div'); overlay.style.cssText="position:absolute;top:60px;right:10px;background:rgba(0,0,0,0.8);padding:10px;border-radius:10px;display:flex;flex-direction:column;z-index:100;"; ["polaroid","circle","grid","flip","masonry"].forEach(s=>{const b=document.createElement('button'); b.innerText=s.charAt(0).toUpperCase()+s.slice(1); b.onclick=()=>{currentMemoryStyle=s; renderMemories(s);} overlay.appendChild(b);}); document.querySelector('.memories-container').appendChild(overlay);}
+function openFullScreen(src){const img=document.getElementById("fsImg"); const overlay=document.getElementById("fsOverlay"); img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)"; setTimeout(()=>{img.style.transform="scale(1)";},50);}
+function closeFullScreen(){document.getElementById("fsOverlay").classList.remove("show");}
+function themeMenu(){fadeSwitch(`<h3>Select Theme</h3>
+<button class="big-btn" onclick='setDark()'>Dark</button>
+<button class="big-btn" onclick='setSoft()'>Soft</button>
+<button class="big-btn" onclick='setClassic()'>Classic</button>
+<button class="big-btn" onclick='setNightwing()'>Nightwing</button>
+<button class="big-btn" onclick='setToji()'>Toji</button>
+<button class="big-btn" onclick='loadHome()'>← Back</button>`);}
+function setDark(){document.documentElement.style.setProperty('--bg','#111'); document.documentElement.style.setProperty('--card','#1c1c1c'); document.documentElement.style.setProperty('--text','#fff'); document.documentElement.style.setProperty('--accent','#ff4d6d'); document.documentElement.style.setProperty('--glow','#ff4d6d'); document.documentElement.style.setProperty('--bg-img','none');}
+function setSoft(){document.documentElement.style.setProperty('--bg','#ffeef2'); document.documentElement.style.setProperty('--card','#fff'); document.documentElement.style.setProperty('--text','#333'); document.documentElement.style.setProperty('--accent','#ff85a2'); document.documentElement.style.setProperty('--glow','#ff85a2'); document.documentElement.style.setProperty('--bg-img','none');}
+function setClassic(){document.documentElement.style.setProperty('--bg','#fff'); document.documentElement.style.setProperty('--card','#f5f5f5'); document.documentElement.style.setProperty('--text','#000'); document.documentElement.style.setProperty('--accent','#000'); document.documentElement.style.setProperty('--glow','#000'); document.documentElement.style.setProperty('--bg-img','none');}
+function setNightwing(){document.documentElement.style.setProperty('--bg','#0a0a0f'); document.documentElement.style.setProperty('--card','#11121a'); document.documentElement.style.setProperty('--text','#a8d0f0'); document.documentElement.style.setProperty('--accent','#1c8adb'); document.documentElement.style.setProperty('--glow','#1c8adb'); document.documentElement.style.setProperty('--bg-img','url("nightwing-bg.jpeg")');}
+function setToji(){document.documentElement.style.setProperty('--bg','#000'); document.documentElement.style.setProperty('--card','#1a1a1a'); document.documentElement.style.setProperty('--text','#dcdfff'); document.documentElement.style.setProperty('--accent','#8a2be2'); document.documentElement.style.setProperty('--glow','#8a2be2'); document.documentElement.style.setProperty('--bg-img','url("toji-bg.jpeg")');}
 
-function fadeSwitch(newContent){
-  const app=document.getElementById("app");
-  app.style.opacity=0;
-  setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1; addUploadMemoryFeature();},300);
-}
+function addUploadMemoryFeature(){const uploadBtn = document.getElementById('uploadMemoryBtn'); const uploadInput = document.getElementById('uploadMemoryInput'); const container = document.querySelector('.memories-container'); if(!uploadBtn) return; uploadBtn.onclick = () => uploadInput.click(); uploadInput.onchange = (e) => {const file = e.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(event){ const newImgSrc = event.target.result; const img = document.createElement('img'); img.src = newImgSrc; img.style.setProperty('--i', memories.length); img.onmousedown = () => openFullScreen(newImgSrc); container.appendChild(img); memories.push(newImgSrc); } reader.readAsDataURL(file); }}
 
-function loadHome(){
-  fadeSwitch(`
-    <div class="floating-theme" onclick="themeMenu()">🎨</div>
-    <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
-      <button class="square-btn" onclick="showBirthday()">Birthday 🎂</button>
-      <button class="square-btn" onclick="showLetters()">Letters 💌</button>
-      <button class="square-btn" onclick="showMemories()">Memories 📸</button>
-      <button class="square-btn" onclick="showUs()">Us ❤️</button>
-    </div>
-  `);
-}
+function playParticles(){const canvas = document.getElementById("particleCanvas"); const ctx = canvas.getContext("2d"); canvas.width = window.innerWidth; canvas.height = window.innerHeight; particles=[]; for(let i=0;i<150;i++){particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*3+1, dx:(Math.random()-0.5)*2, dy:(Math.random()-0.5)*2, color:`hsl(${Math.random()*360},80%,60%)`});} animating=true; function animate(){if(!animating)return; ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();}); requestAnimationFrame(animate);} animate();}
+function stopParticles(){animating=false;}
 
-function showBirthday(){
-  // Show particles + card
-  const container = document.getElementById("birthdayCardContainer");
-  const card = document.getElementById("birthdayCard");
-  container.style.display="flex";
-  setTimeout(()=>{card.style.transform="scale(1)"; playParticles();},50);
-}
-
-function closeBirthday(){ // call after swipe
-  const container = document.getElementById("birthdayCardContainer");
-  const card = document.getElementById("birthdayCard");
-  card.style.transform="scale(0)";
-  setTimeout(()=>{container.style.display="none"; stopParticles();},500);
-}
-
+/* Letters upgraded */
 function showLetters(){ 
-  fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Letters 💌</h2><div id="letter"></div>`); 
-  const text="Dear love, this is our letters section, each word for you ❤️"; let i=0; const letterDiv=document.getElementById("letter");
-  function typeWriter(){ if(i<text.length){letterDiv.innerHTML+=text.charAt(i); i++; setTimeout(typeWriter,50);} }
+  fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button>
+  <h2>Letters 💌</h2>
+  <div id="letter" class="letter-content"></div>
+  <div class="letters-options">
+    <button class="square-btn" onclick="showShivamLetter()" style="background:url('shivam-bg.jpeg');">By Shivam</button>
+    <button class="square-btn" onclick="showNaqiiLetter()" style="background:url('naqii-bg.jpeg');">By Naqii</button>
+  </div>`);
+
+  // default typewriter text
+  const text="Dear love, this is our letters section, each word for you ❤️"; 
+  let i=0; 
+  const letterDiv=document.getElementById("letter");
+  function typeWriter(){ if(i<text.length){letterDiv.innerHTML+=text.charAt(i); i++; setTimeout(typeWriter,30);} }
   typeWriter();
 }
 
-function showUs(){ fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Us ❤️</h2><p>All our special memories together in one place!</p>`);}
-function showMemories(){ renderMemories(currentMemoryStyle); }
-
-function renderMemories(style){
-  let html=`<button class='big-btn' onclick='loadHome()'>← Back</button>
-            <div class="memories-container ${style}">
-            <div class="mem-style-btn" onclick="styleMenu()">⚡</div>
-            <button id='uploadMemoryBtn'>+</button>
-            <input type='file' id='uploadMemoryInput' style='display:none' accept='image/*'>`;
-
-  if(style==="flip"){
-    memories.forEach((src,i)=>{
-      html+=`<div class="flip-container" onmousedown="openFullScreen('${src}')">
-      <div class="flip-card">
-        <div class="flip-card-front" style="background-image:url('${src}')"></div>
-        <div class="flip-card-back">Memory ${i+1}</div>
-      </div></div>`;
-    });
-  } else if(style==="masonry"){
-    html+=`<div class="masonry">`;
-    memories.forEach((src,i)=>{ html+=`<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
-    html+=`</div>`;
-  } else {
-    memories.forEach((src,i)=>{ html+=`<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
-  }
-  html+=`</div>`;
-  fadeSwitch(html);
-}
-
-function styleMenu(){
-  const overlay=document.createElement('div');
-  overlay.style.cssText="position:absolute;top:60px;right:10px;background:rgba(0,0,0,0.8);padding:10px;border-radius:10px;display:flex;flex-direction:column;z-index:100;";
-  ["polaroid","circle","grid","flip","masonry"].forEach(s=>{
-    const b=document.createElement('button'); b.innerText=s.charAt(0).toUpperCase()+s.slice(1);
-    b.onclick=()=>{currentMemoryStyle=s; renderMemories(s);}
-    overlay.appendChild(b);
-  });
-  document.querySelector('.memories-container').appendChild(overlay);
-}
-
-function openFullScreen(src){
-  const img=document.getElementById("fsImg");
-  const overlay=document.getElementById("fsOverlay");
-  img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)";
-  setTimeout(()=>{img.style.transform="scale(1)";},50);
-}
-function closeFullScreen(){ document.getElementById("fsOverlay").classList.remove("show"); }
-
-function themeMenu(){
-  fadeSwitch(`<h3>Select Theme</h3>
-    <button class="big-btn" onclick='setDark()'>Dark</button>
-    <button class="big-btn" onclick='setSoft()'>Soft</button>
-    <button class="big-btn" onclick='setClassic()'>Classic</button>
-    <button class="big-btn" onclick='setNightwing()'>Nightwing</button>
-    <button class="big-btn" onclick='setToji()'>Toji</button>
-    <button class="big-btn" onclick='loadHome()'>← Back</button>`);
-}
-
-function setDark(){ document.documentElement.style.setProperty('--bg','#111'); document.documentElement.style.setProperty('--card','#1c1c1c'); document.documentElement.style.setProperty('--text','#fff'); document.documentElement.style.setProperty('--accent','#ff4d6d'); document.documentElement.style.setProperty('--glow','#ff4d6d'); document.documentElement.style.setProperty('--bg-img','none'); }
-function setSoft(){ document.documentElement.style.setProperty('--bg','#ffeef2'); document.documentElement.style.setProperty('--card','#fff'); document.documentElement.style.setProperty('--text','#333'); document.documentElement.style.setProperty('--accent','#ff85a2'); document.documentElement.style.setProperty('--glow','#ff85a2'); document.documentElement.style.setProperty('--bg-img','none'); }
-function setClassic(){ document.documentElement.style.setProperty('--bg','#fff'); document.documentElement.style.setProperty('--card','#f5f5f5'); document.documentElement.style.setProperty('--text','#000'); document.documentElement.style.setProperty('--accent','#000'); document.documentElement.style.setProperty('--glow','#000'); document.documentElement.style.setProperty('--bg-img','none'); }
-function setNightwing(){ document.documentElement.style.setProperty('--bg','#0a0a0f'); document.documentElement.style.setProperty('--card','#11121a'); document.documentElement.style.setProperty('--text','#a8d0f0'); document.documentElement.style.setProperty('--accent','#1c8adb'); document.documentElement.style.setProperty('--glow','#1c8adb'); document.documentElement.style.setProperty('--bg-img','url(\"nightwing-bg.jpeg\")'); }
-function setToji(){ document.documentElement.style.setProperty('--bg','#000'); document.documentElement.style.setProperty('--card','#1a1a1a'); document.documentElement.style.setProperty('--text','#dcdfff'); document.documentElement.style.setProperty('--accent','#8a2be2'); document.documentElement.style.setProperty('--glow','#8a2be2'); document.documentElement.style.setProperty('--bg-img','url(\"toji-bg.jpeg\")'); }
-
-/* Upload Memory Feature */
-function addUploadMemoryFeature(){
-  const uploadBtn = document.getElementById('uploadMemoryBtn');
-  const uploadInput = document.getElementById('uploadMemoryInput');
-  const container = document.querySelector('.memories-container');
-  if(!uploadBtn) return;
-  uploadBtn.onclick = () => uploadInput.click();
-  uploadInput.onchange = (e) => {
-    const file = e.target.files[0]; if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(event){
-      const newImgSrc = event.target.result;
-      const img = document.createElement('img');
-      img.src = newImgSrc;
-      img.style.setProperty('--i', memories.length);
-      img.onmousedown = () => openFullScreen(newImgSrc);
-      container.appendChild(img);
-      memories.push(newImgSrc);
-    }
-    reader.readAsDataURL(file);
-  }
-}
-
-/* Particle background for birthday */
-let particles=[], animating=false;
-function playParticles(){
-  const canvas = document.getElementById("particleCanvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  particles = [];
-  for(let i=0;i<150;i++){
-    particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*3+1, dx:(Math.random()-0.5)*2, dy:(Math.random()-0.5)*2, color:`hsl(${Math.random()*360},80%,60%)`});
-  }
-  animating=true;
-  function animate(){
-    if(!animating) return;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p=>{
-      p.x+=p.dx; p.y+=p.dy;
-      if(p.x<0||p.x>canvas.width)p.dx*=-1;
-      if(p.y<0||p.y>canvas.height)p.dy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill();
-    });
-    requestAnimationFrame(animate);
-  }
-  animate();
-}
-function stopParticles(){ animating=false; }
-</script>
-</body>
-</html>
+function showShivamLetter(){const letterDiv=document.getElementById("letter"); letterDiv.innerHTML=""; const text="Hey love ❤️, Shivam here! Wishing you the happiest birthday ever! 🥰"; let i=0; function typeWriter
