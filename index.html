@@ -38,7 +38,6 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
-  position: relative;
   display: flex;
   flex-direction: column;
   transition: background 0.5s, color 0.5s;
@@ -83,37 +82,32 @@ p { line-height: 1.4; }
   padding: 8px 14px;
 }
 
-/* Memories container and styles */
-.memories-container { position: relative; flex: 1; }
-.memories-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; overflow-y: auto; }
-.memories-grid img { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 0 8px rgba(0,0,0,0.3);}
-.memories-grid img:hover { transform: scale(1.05); box-shadow: 0 0 18px var(--glow-color); }
+/* Memories */
+.memories-container { flex:1; overflow-y:auto; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+.memories-container img { border-radius:12px; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+.memories-container img:hover { transform:scale(1.05); box-shadow:0 0 18px var(--glow-color); }
 
 /* Polaroid */
-.polaroid img { width:120px; height:120px; object-fit:cover; border:5px solid #fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i))); transition: transform 0.3s, box-shadow 0.3s; }
-.polaroid img:hover { transform: scale(1.05) rotate(calc(-3deg + 6deg * var(--i))); box-shadow:0 0 20px var(--glow-color); }
+.polaroid img { width:120px; height:120px; object-fit:cover; border:5px solid #fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i))); }
+.polaroid img:hover { transform:scale(1.05) rotate(calc(-3deg + 6deg * var(--i))); box-shadow:0 0 20px var(--glow-color); }
 
 /* Circle */
-.circle img { border-radius: 50%; width:100px; height:100px; object-fit:cover; transition: transform 0.3s, box-shadow 0.3s; }
-.circle img:hover { transform: scale(1.05); box-shadow:0 0 18px var(--glow-color); }
+.circle img { border-radius:50%; width:100px; height:100px; object-fit:cover; }
 
 /* Grid */
-.grid img { width:100px; height:100px; object-fit:cover; border-radius:8px; transition: transform 0.3s, box-shadow 0.3s; }
-.grid img:hover { transform: scale(1.05); box-shadow:0 0 18px var(--glow-color); }
+.grid img { width:100px; height:100px; object-fit:cover; border-radius:8px; }
 
 /* Flip */
 .flip-container { perspective:1000px; display:inline-block; margin:5px; }
 .flip-card { width:120px; height:120px; text-align:center; transition: transform 0.6s; transform-style: preserve-3d; cursor:pointer; }
-.flip-card:hover { transform: rotateY(180deg) scale(1.05); }
-.flip-card-front, .flip-card-back { position:absolute; width:120px; height:120px; backface-visibility:hidden; border-radius:12px; transition: box-shadow 0.3s; }
+.flip-card:hover { transform:rotateY(180deg) scale(1.05); }
+.flip-card-front, .flip-card-back { position:absolute; width:120px; height:120px; backface-visibility:hidden; border-radius:12px; }
 .flip-card-front { background-size:cover; }
-.flip-card-front:hover { box-shadow:0 0 18px var(--glow-color); }
 .flip-card-back { background: var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; transform:rotateY(180deg); }
 
 /* Masonry */
 .masonry { column-count:2; column-gap:10px; }
-.masonry img { width:100%; border-radius:12px; margin-bottom:10px; transition: transform 0.3s, box-shadow 0.3s; }
-.masonry img:hover { transform: scale(1.03); box-shadow:0 0 18px var(--glow-color); }
+.masonry img { width:100%; border-radius:12px; margin-bottom:10px; }
 
 /* Style overlay */
 .style-btn { position:absolute; top:10px; right:10px; width:35px; height:35px; border-radius:8px; font-size:20px; display:flex; align-items:center; justify-content:center; padding:0; }
@@ -143,10 +137,7 @@ p { line-height: 1.4; }
 
 <script>
 let currentMemoryStyle = "polaroid";
-const memories = [
-  "memory1.jpeg","memory2.jpeg","memory3.jpeg",
-  "memory4.jpeg","memory5.jpeg","memory6.jpeg"
-];
+const memories = ["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
 
 function unlock(){
   const pw = document.getElementById("pw").value;
