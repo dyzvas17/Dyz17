@@ -9,72 +9,77 @@
             --bg: #111; --card: #1c1c1c; --text: #fff; --accent: #ff4d6d; --glow: #ff4d6d; --bg-img: none;
         }
         body {
-            margin: 0; font-family: Arial, sans-serif; background: var(--bg); color: var(--text);
+            margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text);
             background-image: var(--bg-img); background-size: cover; background-position: center;
             display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
             transition: 0.5s;
         }
+        /* Main Container */
         .app {
             width: 90%; max-width: 420px; height: 90vh; background: var(--card); border-radius: 25px;
-            padding: 20px; display: flex; flex-direction: column; align-items: center; transition: 0.5s; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 20px; display: flex; flex-direction: column; align-items: center; 
+            transition: 0.5s; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative; box-sizing: border-box;
         }
-        button { border: none; cursor: pointer; transition: 0.3s; }
+        button { border: none; cursor: pointer; transition: 0.3s; font-family: inherit; }
         .square-btn {
             width: 140px; height: 140px; margin: 10px; border-radius: 15px; font-size: 18px;
             background: var(--accent); color: #fff; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 12px var(--glow); animation: pulse 2s infinite alternate;
+            box-shadow: 0 0 12px var(--glow); animation: pulse 2s infinite alternate; font-weight: bold;
         }
         .square-btn:hover { transform: scale(1.05); }
         @keyframes pulse { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 20px var(--glow); } }
         
-        .floating-theme {
-            position: absolute; top: 15px; right: 15px; width: 55px; height: 55px; border-radius: 12px;
-            background: var(--accent); display: flex; justify-content: center; align-items: center; font-size: 22px; color: #fff;
-            box-shadow: 0 0 12px var(--glow); cursor: pointer;
-        }
         .big-btn {
             margin-top: 15px; padding: 14px 0; width: 100%; border-radius: 12px; font-size: 18px;
-            background: var(--accent); color: #fff; box-shadow: 0 0 12px var(--glow);
+            background: var(--accent); color: #fff; box-shadow: 0 0 12px var(--glow); font-weight: bold;
         }
-        input { padding: 14px; width: 100%; border-radius: 12px; border: none; margin-top: 15px; font-size: 16px; background: #333; color: #fff; box-sizing: border-box; }
+        input { 
+            padding: 14px; width: 100%; border-radius: 12px; border: none; margin-top: 15px; 
+            font-size: 16px; background: #333; color: #fff; box-sizing: border-box; text-align: center;
+        }
         
-        .memories-container { flex: 1; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; overflow-y: auto; position: relative; width: 100%; }
-        .polaroid img { width: 120px; height: 120px; object-fit: cover; border: 5px solid #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i))); margin: 10px; }
+        /* Memories Styles */
+        .memories-container { flex: 1; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; overflow-y: auto; width: 100%; padding: 10px 0; }
+        .polaroid img { width: 110px; height: 110px; object-fit: cover; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i))); margin: 5px; }
         .circle img { border-radius: 50%; width: 100px; height: 100px; object-fit: cover; }
         .grid img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
         
-        .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; }
+        /* Overlays */
+        .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
         .fullscreen-overlay.show { opacity: 1; pointer-events: all; }
-        .fullscreen-overlay img { max-width: 95%; max-height: 90%; border-radius: 12px; }
-        .fullscreen-overlay button { position: absolute; top: 20px; right: 20px; font-size: 22px; background: var(--accent); color: #fff; border-radius: 8px; padding: 8px 12px; }
+        .fullscreen-overlay img { max-width: 90%; max-height: 80%; border-radius: 12px; }
+        .close-fs { position: absolute; top: 20px; right: 20px; font-size: 30px; color: #fff; background: none; }
 
-        #birthdayCardContainer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; justify-content: center; align-items: center; z-index: 300; background: rgba(0,0,0,0.8); }
-        #birthdayCard { width: 80%; max-width: 400px; height: 50%; background: #fff; border-radius: 25px; box-shadow: 0 0 40px #ff4d6d; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 24px; color: #111; text-align: center; transform: scale(0); transition: transform 0.8s ease; padding: 20px; }
-        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 201; pointer-events: none; }
-        
-        #letterText { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; min-height: 50px; line-height: 1.5; }
-        .mem-style-btn { position: sticky; top: 0; align-self: flex-end; margin-bottom: 10px; background: var(--accent); color: #fff; padding: 10px; border-radius: 8px; z-index: 10; }
+        #birthdayCardContainer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; justify-content: center; align-items: center; z-index: 2000; background: rgba(0,0,0,0.85); }
+        #birthdayCard { width: 85%; max-width: 350px; background: #fff; border-radius: 25px; padding: 30px; text-align: center; color: #111; transform: scale(0); transition: 0.5s; z-index: 2001; }
+        canvas { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 2002; }
+
+        .floating-theme { position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 24px; z-index: 10; }
+        #letterText { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; min-height: 80px; font-style: italic; line-height: 1.5; text-align: center; width: 100%; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
 <div class="app" id="app">
-    <h2 style="text-align: center;">Enter Password</h2>
-    <input type="password" id="pw" placeholder="Only you know...">
-    <button class="big-btn" onclick="unlock()">Unlock</button>
-    <p id="msg" style="text-align: center; color: var(--accent);"></p>
+    <div id="lockScreen" style="width: 100%; text-align: center;">
+        <h2>🔒 Private Haven</h2>
+        <input type="password" id="pw" placeholder="Enter Password">
+        <button class="big-btn" onclick="unlock()">Unlock</button>
+        <p id="msg" style="color: var(--accent); margin-top: 10px;"></p>
+    </div>
 </div>
 
 <div class="fullscreen-overlay" id="fsOverlay">
+    <button class="close-fs" onclick="closeFullScreen()">✕</button>
     <img id="fsImg" src="">
-    <button onclick="closeFullScreen()">✕</button>
 </div>
 
 <div id="birthdayCardContainer">
     <canvas id="particleCanvas"></canvas>
     <div id="birthdayCard">
-        Happy Birthday! ❤️<br><br>
+        <h2 style="margin-top:0">Happy Birthday! ❤️</h2>
+        <p>Wishing you the most amazing day filled with love and joy!</p>
         <button class="big-btn" onclick="closeBirthday()">Close</button>
     </div>
 </div>
@@ -84,26 +89,194 @@
     let memories = ["memory1.jpeg", "memory2.jpeg", "memory3.jpeg", "memory4.jpeg", "memory5.jpeg", "memory6.jpeg"];
     let particles = [], animating = false;
 
-    // --- FIX: Correctly defined unlock function ---
+    // --- Core Logic ---
     function unlock() {
-        const pw = document.getElementById("pw").value;
-        if (pw === "1234") {
+        const input = document.getElementById("pw").value;
+        if (input === "1234") {
             loadHome();
         } else {
-            document.getElementById("msg").innerText = "Wrong password.";
+            document.getElementById("msg").innerText = "Wrong password!";
         }
     }
 
-    function fadeSwitch(newContent) {
+    function fadeSwitch(content) {
         const app = document.getElementById("app");
         app.style.opacity = 0;
         setTimeout(() => {
-            app.innerHTML = newContent;
+            app.innerHTML = content;
             app.style.opacity = 1;
-            // Re-bind upload logic if the memories page is loaded
-            if (document.getElementById('uploadMemoryBtn')) addUploadMemoryFeature();
+            // Re-attach upload listener if we're on the memories page
+            if(document.getElementById('uploadMemoryBtn')) attachUploadLogic();
         }, 300);
     }
+
+    function loadHome() {
+        fadeSwitch(`
+            <div class="floating-theme" onclick="themeMenu()">🎨</div>
+            <h2 style="margin-bottom:20px;">Main Menu</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+                <button class="square-btn" onclick="showBirthday()" style="background:#ff4d6d;">Birthday 🎂</button>
+                <button class="square-btn" onclick="showLetters()" style="background:#ff85a2;">Letters 💌</button>
+                <button class="square-btn" onclick="showMemories()" style="background:#1c8adb;">Memories 📸</button>
+                <button class="square-btn" onclick="showUs()" style="background:#8a2be2;">Us ❤️</button>
+            </div>
+        `);
+    }
+
+    // --- Letters ---
+    function showLetters() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h2>Letters 💌</h2>
+            <div style="display:flex; gap:10px; width:100%;">
+                <button class="big-btn" onclick="typeLetter('shivam')">Shivam</button>
+                <button class="big-btn" onclick="typeLetter('naqii')">Naqii</button>
+            </div>
+            <div id="letterText">Pick a letter to read...</div>
+        `);
+    }
+
+    function typeLetter(who) {
+        const box = document.getElementById("letterText");
+        const text = who === 'shivam' 
+            ? "Hey love ❤️, Shivam here! I hope your day is as beautiful as your smile. Happy Birthday!" 
+            : "Hi love 😘, Naqii here! Sending you a million hugs and all the warmth in the world!";
+        
+        box.innerHTML = "";
+        let i = 0;
+        function typing() {
+            if (i < text.length) {
+                box.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typing, 40);
+            }
+        }
+        typing();
+    }
+
+    // --- Memories ---
+    function showMemories() {
+        let html = `
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <button onclick="changeStyle('polaroid')" style="padding:5px; background:#444; color:#fff; border-radius:5px;">Polaroid</button>
+                <button onclick="changeStyle('circle')" style="padding:5px; background:#444; color:#fff; border-radius:5px;">Circle</button>
+                <button onclick="changeStyle('grid')" style="padding:5px; background:#444; color:#fff; border-radius:5px;">Grid</button>
+                <button id="uploadMemoryBtn" style="padding:5px; background:var(--accent); color:#fff; border-radius:5px;">+</button>
+                <input type="file" id="memUpload" style="display:none" accept="image/*">
+            </div>
+            <div class="memories-container ${currentMemoryStyle}">`;
+        
+        memories.forEach((src, i) => {
+            html += `<img src="${src}" style="--i:${i % 6}" onclick="openFullScreen('${src}')">`;
+        });
+        html += `</div>`;
+        fadeSwitch(html);
+    }
+
+    function changeStyle(s) { currentMemoryStyle = s; showMemories(); }
+
+    function attachUploadLogic() {
+        const btn = document.getElementById("uploadMemoryBtn");
+        const input = document.getElementById("memUpload");
+        btn.onclick = () => input.click();
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    memories.unshift(ev.target.result);
+                    showMemories();
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+    }
+
+    // --- Fullscreen & Birthday ---
+    function openFullScreen(src) {
+        document.getElementById("fsImg").src = src;
+        document.getElementById("fsOverlay").classList.add("show");
+    }
+    function closeFullScreen() { document.getElementById("fsOverlay").classList.remove("show"); }
+
+    function showBirthday() {
+        document.getElementById("birthdayCardContainer").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("birthdayCard").style.transform = "scale(1)";
+            startParticles();
+        }, 100);
+    }
+    function closeBirthday() {
+        document.getElementById("birthdayCard").style.transform = "scale(0)";
+        setTimeout(() => {
+            document.getElementById("birthdayCardContainer").style.display = "none";
+            animating = false;
+        }, 500);
+    }
+
+    // --- Themes ---
+    function themeMenu() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h3>Themes</h3>
+            <button class="big-btn" onclick="setTheme('#111','#ff4d6d','#1c1c1c','#fff')">Dark Rose</button>
+            <button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','#fff','#333')">Soft Pink</button>
+            <button class="big-btn" onclick="setTheme('#0a0a0f','#1c8adb','#11121a','#fff')">Nightwing</button>
+        `);
+    }
+
+    function setTheme(bg, accent, card, text) {
+        document.documentElement.style.setProperty('--bg', bg);
+        document.documentElement.style.setProperty('--accent', accent);
+        document.documentElement.style.setProperty('--glow', accent);
+        document.documentElement.style.setProperty('--card', card);
+        document.documentElement.style.setProperty('--text', text);
+    }
+
+    // --- Particle System ---
+    function startParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 4 + 1,
+                dx: (Math.random() - 0.5) * 2,
+                dy: (Math.random() - 0.5) * 2,
+                c: `hsl(${Math.random() * 360}, 70%, 60%)`
+            });
+        }
+        animating = true;
+        function frame() {
+            if (!animating) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.c; ctx.fill();
+            });
+            requestAnimationFrame(frame);
+        }
+        frame();
+    }
+
+    function showUs() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h2>Us ❤️</h2>
+            <p style="text-align:center">This space is just for us. No matter where we are, our memories live here.</p>
+        `);
+    }
+</script>
+</body>
+</html>    }
 
     function loadHome() {
         fadeSwitch(`
