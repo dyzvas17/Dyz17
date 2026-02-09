@@ -39,7 +39,7 @@ button{border:none; cursor:pointer; transition:0.3s;}
   background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
 }
 .big-btn:hover{transform:scale(1.05);}
-input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16%;}
+input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px;}
 
 /* Memories */
 .memories-container{flex:1; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; position:relative;}
@@ -75,6 +75,12 @@ input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px
   cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
 }
 
+/* Upload memory button */
+#uploadMemoryBtn{
+  position:absolute; top:65px; right:10px; width:45px; height:45px; border-radius:8px; background:var(--accent); color:#fff;
+  font-size:22px; cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
+}
+
 /* Fullscreen */
 .fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh; background:rgba(0,0,0,0.95);
 display:flex; justify-content:center; align-items:center; z-index:200; opacity:0; pointer-events:none; transition:0.3s;}
@@ -105,6 +111,131 @@ function unlock(){
   const pw=document.getElementById("pw").value;
   if(pw==="1234") loadHome();
   else document.getElementById("msg").innerText="Wrong password.";
+}
+
+function fadeSwitch(newContent){
+  const app=document.getElementById("app");
+  app.style.opacity=0;
+  setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1; addUploadMemoryFeature();},300);
+}
+
+/* Home Screen */
+function loadHome(){
+  fadeSwitch(`
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
+      <button class="square-btn" onclick="showBirthday()">Birthday 🎂</button>
+      <button class="square-btn" onclick="showLetters()">Letters 💌</button>
+      <button class="square-btn" onclick="showMemories()">Memories 📸</button>
+      <button class="square-btn" onclick="showUs()">Us ❤️</button>
+    </div>
+  `);
+}
+
+function showBirthday(){ fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Birthday 🎂</h2><p>Birthday celebrations and surprises!</p>`);}
+function showLetters(){ 
+  fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Letters 💌</h2><div id="letter"></div>`); 
+  const text="Dear love, this is our letters section, each word for you ❤️"; let i=0; const letterDiv=document.getElementById("letter");
+  function typeWriter(){ if(i<text.length){letterDiv.innerHTML+=text.charAt(i); i++; setTimeout(typeWriter,50);} }
+  typeWriter();
+}
+function showUs(){ fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Us ❤️</h2><p>All our special memories together in one place!</p>`);}
+
+/* Memories */
+function showMemories(){ renderMemories(currentMemoryStyle); }
+
+function renderMemories(style){
+  let html=`<button class='big-btn' onclick='loadHome()'>← Back</button>
+            <div class="memories-container ${style}">
+            <div class="mem-style-btn" onclick="styleMenu()">⚡</div>
+            <button id='uploadMemoryBtn'>+</button>
+            <input type='file' id='uploadMemoryInput' style='display:none' accept='image/*'>`;
+
+  if(style==="flip"){
+    memories.forEach((src,i)=>{
+      html+=`<div class="flip-container" onmousedown="openFullScreen('${src}')">
+      <div class="flip-card">
+        <div class="flip-card-front" style="background-image:url('${src}')"></div>
+        <div class="flip-card-back">Memory ${i+1}</div>
+      </div></div>`;
+    });
+  } else if(style==="masonry"){
+    html+=`<div class="masonry">`;
+    memories.forEach((src,i)=>{ html+=`<img src="${src}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
+    html+=`</div>`;
+  } else {
+    memories.forEach((src,i)=>{ html+=`<img src="${src}" style="--i:${i}" alt="Memory ${i+1}" onmousedown="openFullScreen('${src}')">`; });
+  }
+  html+=`</div>`;
+  fadeSwitch(html);
+}
+
+/* Memory style menu */
+function styleMenu(){
+  const overlay=document.createElement('div');
+  overlay.style.cssText="position:absolute;top:60px;right:10px;background:rgba(0,0,0,0.8);padding:10px;border-radius:10px;display:flex;flex-direction:column;z-index:100;";
+  ["polaroid","circle","grid","flip","masonry"].forEach(s=>{
+    const b=document.createElement('button'); b.innerText=s.charAt(0).toUpperCase()+s.slice(1);
+    b.onclick=()=>{currentMemoryStyle=s; renderMemories(s);}
+    overlay.appendChild(b);
+  });
+  document.querySelector('.memories-container').appendChild(overlay);
+}
+
+/* Fullscreen */
+function openFullScreen(src){
+  const img=document.getElementById("fsImg");
+  const overlay=document.getElementById("fsOverlay");
+  img.src=src; overlay.classList.add("show"); img.style.transform="scale(0.8)";
+  setTimeout(()=>{img.style.transform="scale(1)";},50);
+}
+function closeFullScreen(){ document.getElementById("fsOverlay").classList.remove("show"); }
+
+/* Theme menu */
+function themeMenu(){
+  fadeSwitch(`<h3>Select Theme</h3>
+    <button class="big-btn" onclick='setDark()'>Dark</button>
+    <button class="big-btn" onclick='setSoft()'>Soft</button>
+    <button class="big-btn" onclick='setClassic()'>Classic</button>
+    <button class="big-btn" onclick='setNightwing()'>Nightwing</button>
+    <button class="big-btn" onclick='setToji()'>Toji</button>
+    <button class="big-btn" onclick='loadHome()'>← Back</button>`);
+}
+
+/* Themes */
+function setDark(){ document.documentElement.style.setProperty('--bg','#111'); document.documentElement.style.setProperty('--card','#1c1c1c'); document.documentElement.style.setProperty('--text','#fff'); document.documentElement.style.setProperty('--accent','#ff4d6d'); document.documentElement.style.setProperty('--glow','#ff4d6d'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setSoft(){ document.documentElement.style.setProperty('--bg','#ffeef2'); document.documentElement.style.setProperty('--card','#fff'); document.documentElement.style.setProperty('--text','#333'); document.documentElement.style.setProperty('--accent','#ff85a2'); document.documentElement.style.setProperty('--glow','#ff85a2'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setClassic(){ document.documentElement.style.setProperty('--bg','#fff'); document.documentElement.style.setProperty('--card','#f5f5f5'); document.documentElement.style.setProperty('--text','#000'); document.documentElement.style.setProperty('--accent','#000'); document.documentElement.style.setProperty('--glow','#000'); document.documentElement.style.setProperty('--bg-img','none'); }
+function setNightwing(){ document.documentElement.style.setProperty('--bg','#0a0a0f'); document.documentElement.style.setProperty('--card','#11121a'); document.documentElement.style.setProperty('--text','#a8d0f0'); document.documentElement.style.setProperty('--accent','#1c8adb'); document.documentElement.style.setProperty('--glow','#1c8adb'); document.documentElement.style.setProperty('--bg-img','url("nightwing-bg.jpeg")'); }
+function setToji(){ document.documentElement.style.setProperty('--bg','#000'); document.documentElement.style.setProperty('--card','#1a1a1a'); document.documentElement.style.setProperty('--text','#dcdfff'); document.documentElement.style.setProperty('--accent','#8a2be2'); document.documentElement.style.setProperty('--glow','#8a2be2'); document.documentElement.style.setProperty('--bg-img','url("toji-bg.jpeg")'); }
+
+/* Upload memory feature */
+function addUploadMemoryFeature(){
+  const uploadBtn = document.getElementById('uploadMemoryBtn');
+  const uploadInput = document.getElementById('uploadMemoryInput');
+  const container = document.querySelector('.memories-container');
+  if(!uploadBtn) return;
+
+  uploadBtn.onclick = () => uploadInput.click();
+  uploadInput.onchange = (e) => {
+    const file = e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event){
+      const newImgSrc = event.target.result;
+      const img = document.createElement('img');
+      img.src = newImgSrc;
+      img.style.setProperty('--i', memories.length);
+      img.onmousedown = () => openFullScreen(newImgSrc);
+      container.appendChild(img);
+      memories.push(newImgSrc);
+    }
+    reader.readAsDataURL(file);
+  }
+}
+</script>
+
+</body>
+</html>  else document.getElementById("msg").innerText="Wrong password.";
 }
 
 function fadeSwitch(newContent){
@@ -417,4 +548,5 @@ function setToji(){ document.documentElement.style.setProperty('--bg','#000'); d
 
 </body>
 </html>
+
 
