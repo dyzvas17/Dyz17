@@ -5,35 +5,26 @@
 <title>Private</title>
 
 <style>
-:root {
-  --bg: #111;
-  --card: #1c1c1c;
-  --text: #ffffff;
-  --accent: #ff4d6d;
-}
-
 body {
   margin: 0;
-  background: var(--bg);
+  background: #111;
   font-family: Arial, sans-serif;
-  color: var(--text);
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  transition: 0.4s;
 }
 
 .app {
   width: 90%;
   max-width: 400px;
   height: 90vh;
-  background: var(--card);
+  background: #1c1c1c;
   border-radius: 20px;
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
-  transition: 0.4s;
 }
 
 button {
@@ -42,7 +33,7 @@ button {
   margin-top: 15px;
   border-radius: 10px;
   border: none;
-  background: var(--accent);
+  background: #ff4d6d;
   color: white;
   font-size: 15px;
 }
@@ -53,17 +44,6 @@ input {
   margin-top: 15px;
   border-radius: 8px;
   border: none;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.small-btn {
-  width: auto;
-  padding: 6px 10px;
-  font-size: 12px;
 }
 </style>
 </head>
@@ -89,18 +69,30 @@ function unlock() {
 }
 
 function loadHome() {
-  document.getElementById("app").innerHTML = `
-    <div class="topbar">
-      <h3>Her World ❤️</h3>
-      <button class="small-btn" onclick="themeMenu()">🎨</button>
-    </div>
-
-    <button onclick="loadBirthday()">🎂 Birthday</button>
-    <button onclick="loadMemories()">📸 Memories</button>
-    <button onclick="loadLetters()">💌 Letters</button>
-
-    <div id="content" style="margin-top:20px;"></div>
-  `;
+  var app = document.getElementById("app");
+  app.innerHTML =
+    "<h3>Her World ❤️</h3>" +
+    "<button onclick='loadBirthday()'>🎂 Birthday</button>" +
+    "<button onclick='loadMemories()'>📸 Memories</button>" +
+    "<button onclick='loadLetters()'>💌 Letters</button>" +
+    "<div id='content' style='margin-top:20px;'></div>";
 }
 
 function loadBirthday() {
+  document.getElementById("content").innerHTML =
+    "<h4>Birthday Celebration</h4><p>This is where your birthday moments will live.</p>";
+}
+
+function loadMemories() {
+  document.getElementById("content").innerHTML =
+    "<h4>Our Memories</h4><p>Gallery-style memories will go here.</p>";
+}
+
+function loadLetters() {
+  document.getElementById("content").innerHTML =
+    "<h4>Letters</h4><p>Your personal letters section.</p>";
+}
+</script>
+
+</body>
+</html>
