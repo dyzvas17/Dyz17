@@ -1,111 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Haven</title>
-<style>
-:root{
-  --bg:#111; --card:#1c1c1c; --text:#fff; --accent:#ff4d6d; --glow:#ff4d6d; --bg-img:none;
-}
-body{
-  margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text);
-  background-image: var(--bg-img); background-size:cover; background-position:center;
-  display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden;
-  transition:0.5s;
-}
-.app{
-  width:90%; max-width:420px; height:90vh; background:var(--card); border-radius:25px;
-  padding:20px; display:flex; flex-direction:column; align-items:center; transition:0.5s; overflow:hidden;
-}
-button{border:none; cursor:pointer; transition:0.3s;}
-.square-btn{
-  width:140px; height:140px; margin:10px; border-radius:15px; font-size:18px;
-  background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center;
-  box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
-}
-.square-btn:hover{transform:scale(1.05);}
-@keyframes pulse{from{box-shadow:0 0 10px var(--glow);} to{box-shadow:0 0 20px var(--glow);}}
-.floating-theme{
-  position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px;
-  background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff;
-  box-shadow:0 0 12px var(--glow); cursor:pointer; animation:pulse 2s infinite alternate;
-}
-.big-btn{
-  margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px;
-  background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;
-}
-.big-btn:hover{transform:scale(1.05);}
-input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px;}
-.memories-container{flex:1; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; position:relative;}
-.memories-container img{border-radius:12px; cursor:pointer; transition:0.3s;}
-.memories-container img:hover{transform:scale(1.05); box-shadow:0 0 18px var(--glow);}
-.polaroid img{width:120px; height:120px; object-fit:cover; border:5px solid #fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i)));}
-.polaroid img:hover{transform:scale(1.05) rotate(calc(-3deg + 6deg * var(--i))); box-shadow:0 0 20px var(--glow);}
-.circle img{border-radius:50%; width:100px; height:100px; object-fit:cover;}
-.grid img{width:100px; height:100px; object-fit:cover; border-radius:8px;}
-.flip-container{perspective:1000px; display:inline-block; margin:5px;}
-.flip-card{width:120px; height:120px; transition:0.6s; transform-style:preserve-3d; cursor:pointer;}
-.flip-card:hover{transform:rotateY(180deg) scale(1.05);}
-.flip-card-front, .flip-card-back{position:absolute; width:120px; height:120px; backface-visibility:hidden; border-radius:12px;}
-.flip-card-front{background-size:cover;}
-.flip-card-back{background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; transform:rotateY(180deg);}
-.masonry{column-count:2; column-gap:10px;}
-.masonry img{width:100%; border-radius:12px; margin-bottom:10px;}
-.mem-style-btn{position:absolute; top:10px; right:10px; width:45px; height:45px; border-radius:8px;
-  background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; font-size:20px;
-  cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;}
-#uploadMemoryBtn{position:absolute; top:65px; right:10px; width:45px; height:45px; border-radius:8px; background:var(--accent); color:#fff;
-  font-size:22px; cursor:pointer; box-shadow:0 0 12px var(--glow); animation:pulse 2s infinite alternate;}
-.fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh; background:rgba(0,0,0,0.95);
-display:flex; justify-content:center; align-items:center; z-index:200; opacity:0; pointer-events:none; transition:0.3s;}
-.fullscreen-overlay.show{opacity:1; pointer-events:all;}
-.fullscreen-overlay img{max-width:95%; max-height:90%; border-radius:12px; transition:transform 0.3s;}
-.fullscreen-overlay button{position:absolute;top:20px; right:20px; font-size:22px; background:var(--accent); color:#fff; border-radius:8px; padding:8px 12px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Haven</title>
+    <style>
+        :root {
+            --bg: #111; --card: #1c1c1c; --text: #fff; --accent: #ff4d6d; --glow: #ff4d6d; --bg-img: none;
+        }
+        body {
+            margin: 0; font-family: Arial, sans-serif; background: var(--bg); color: var(--text);
+            background-image: var(--bg-img); background-size: cover; background-position: center;
+            display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
+            transition: 0.5s;
+        }
+        .app {
+            width: 90%; max-width: 420px; height: 90vh; background: var(--card); border-radius: 25px;
+            padding: 20px; display: flex; flex-direction: column; align-items: center; transition: 0.5s; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        button { border: none; cursor: pointer; transition: 0.3s; }
+        .square-btn {
+            width: 140px; height: 140px; margin: 10px; border-radius: 15px; font-size: 18px;
+            background: var(--accent); color: #fff; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 12px var(--glow); animation: pulse 2s infinite alternate;
+        }
+        .square-btn:hover { transform: scale(1.05); }
+        @keyframes pulse { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 20px var(--glow); } }
+        
+        .floating-theme {
+            position: absolute; top: 15px; right: 15px; width: 55px; height: 55px; border-radius: 12px;
+            background: var(--accent); display: flex; justify-content: center; align-items: center; font-size: 22px; color: #fff;
+            box-shadow: 0 0 12px var(--glow); cursor: pointer;
+        }
+        .big-btn {
+            margin-top: 15px; padding: 14px 0; width: 100%; border-radius: 12px; font-size: 18px;
+            background: var(--accent); color: #fff; box-shadow: 0 0 12px var(--glow);
+        }
+        input { padding: 14px; width: 100%; border-radius: 12px; border: none; margin-top: 15px; font-size: 16px; background: #333; color: #fff; box-sizing: border-box; }
+        
+        .memories-container { flex: 1; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; overflow-y: auto; position: relative; width: 100%; }
+        .polaroid img { width: 120px; height: 120px; object-fit: cover; border: 5px solid #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transform: rotate(calc(-5deg + 10deg * var(--i))); margin: 10px; }
+        .circle img { border-radius: 50%; width: 100px; height: 100px; object-fit: cover; }
+        .grid img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
+        
+        .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .fullscreen-overlay.show { opacity: 1; pointer-events: all; }
+        .fullscreen-overlay img { max-width: 95%; max-height: 90%; border-radius: 12px; }
+        .fullscreen-overlay button { position: absolute; top: 20px; right: 20px; font-size: 22px; background: var(--accent); color: #fff; border-radius: 8px; padding: 8px 12px; }
 
-/* Birthday full screen card + particles */
-#birthdayCardContainer{position:fixed;top:0;left:0;width:100vw;height:100vh;display:none;justify-content:center;align-items:center;z-index:300;}
-#birthdayCard{width:90%;height:90%;background:#fff;border-radius:25px;box-shadow:0 0 40px #ff4d6d;display:flex;justify-content:center;align-items:center;font-size:24px;color:#111;text-align:center;transform:scale(0);transition:transform 0.8s ease;position:relative;}
-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;}
-.letters-options{display:flex;gap:20px; justify-content:center; flex-wrap:wrap; margin-top:30px;}
-.letters-options button{width:140px;height:140px;border-radius:20px;font-size:18px;background:linear-gradient(135deg,#ff85a2,#ff4d6d);color:#fff;box-shadow:0 0 15px #ff4d6d; display:flex; justify-content:center; align-items:center; transition:0.3s;}
-.letters-options button:hover{transform:scale(1.05); box-shadow:0 0 25px #ff4d6d;}
-#letterText{margin-top:20px; font-size:18px; text-align:center;}
-</style>
+        #birthdayCardContainer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; justify-content: center; align-items: center; z-index: 300; background: rgba(0,0,0,0.8); }
+        #birthdayCard { width: 80%; max-width: 400px; height: 50%; background: #fff; border-radius: 25px; box-shadow: 0 0 40px #ff4d6d; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 24px; color: #111; text-align: center; transform: scale(0); transition: transform 0.8s ease; padding: 20px; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 201; pointer-events: none; }
+        
+        #letterText { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; min-height: 50px; line-height: 1.5; }
+        .mem-style-btn { position: sticky; top: 0; align-self: flex-end; margin-bottom: 10px; background: var(--accent); color: #fff; padding: 10px; border-radius: 8px; z-index: 10; }
+    </style>
 </head>
 <body>
 
 <div class="app" id="app">
-  <h2>Enter Password</h2>
-  <input type="password" id="pw" placeholder="Only you know...">
-  <button class="big-btn" onclick="unlock()">Unlock</button>
-  <p id="msg"></p>
+    <h2 style="text-align: center;">Enter Password</h2>
+    <input type="password" id="pw" placeholder="Only you know...">
+    <button class="big-btn" onclick="unlock()">Unlock</button>
+    <p id="msg" style="text-align: center; color: var(--accent);"></p>
 </div>
 
 <div class="fullscreen-overlay" id="fsOverlay">
-  <img id="fsImg" src="">
-  <button onclick="closeFullScreen()">✕</button>
+    <img id="fsImg" src="">
+    <button onclick="closeFullScreen()">✕</button>
 </div>
 
 <div id="birthdayCardContainer">
-  <canvas id="particleCanvas"></canvas>
-  <div id="birthdayCard">Happy Birthday! ❤️<br>Swipe to open your special surprise!</div>
+    <canvas id="particleCanvas"></canvas>
+    <div id="birthdayCard">
+        Happy Birthday! ❤️<br><br>
+        <button class="big-btn" onclick="closeBirthday()">Close</button>
+    </div>
 </div>
 
 <script>
-let currentMemoryStyle="polaroid";
-const memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
+    let currentMemoryStyle = "polaroid";
+    let memories = ["memory1.jpeg", "memory2.jpeg", "memory3.jpeg", "memory4.jpeg", "memory5.jpeg", "memory6.jpeg"];
+    let particles = [], animating = false;
 
-// Unlock
-function unlock(){
-  const pw=document.getElementById("pw").value;
-  if(pw==="1234") loadHome();
-  else document.getElementById("msg").innerText="Wrong password.";
-}
+    // --- FIX: Correctly defined unlock function ---
+    function unlock() {
+        const pw = document.getElementById("pw").value;
+        if (pw === "1234") {
+            loadHome();
+        } else {
+            document.getElementById("msg").innerText = "Wrong password.";
+        }
+    }
 
-// Fade content
-function fadeSwitch(newContent){
-  const app=document.getElementById("app");
-  app.style.opacity=0;
+    function fadeSwitch(newContent) {
+        const app = document.getElementById("app");
+        app.style.opacity = 0;
+        setTimeout(() => {
+            app.innerHTML = newContent;
+            app.style.opacity = 1;
+            // Re-bind upload logic if the memories page is loaded
+            if (document.getElementById('uploadMemoryBtn')) addUploadMemoryFeature();
+        }, 300);
+    }
+
+    function loadHome() {
+        fadeSwitch(`
+            <div class="floating-theme" onclick="themeMenu()">🎨</div>
+            <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px; width:100%;">
+                <button class="square-btn" onclick="showBirthday()" style="background:#ff4d6d;">Birthday 🎂</button>
+                <button class="square-btn" onclick="showLetters()" style="background:#ff85a2;">Letters 💌</button>
+                <button class="square-btn" onclick="showMemories()" style="background:#1c8adb;">Memories 📸</button>
+                <button class="square-btn" onclick="showUs()" style="background:#8a2be2;">Us ❤️</button>
+            </div>
+        `);
+    }
+
+    function showBirthday() {
+        const container = document.getElementById("birthdayCardContainer");
+        const card = document.getElementById("birthdayCard");
+        container.style.display = "flex";
+        setTimeout(() => {
+            card.style.transform = "scale(1)";
+            playParticles();
+        }, 50);
+    }
+
+    function closeBirthday() {
+        const container = document.getElementById("birthdayCardContainer");
+        const card = document.getElementById("birthdayCard");
+        card.style.transform = "scale(0)";
+        setTimeout(() => {
+            container.style.display = "none";
+            stopParticles();
+        }, 500);
+    }
+
+    function showLetters() {
+        fadeSwitch(`
+            <button class='big-btn' onclick='loadHome()'>← Back</button>
+            <h2>Letters 💌</h2>
+            <div style="display:flex; gap:10px; width:100%;">
+                <button class="big-btn" onclick="typeLetter('shivam')">By Shivam</button>
+                <button class="big-btn" onclick="typeLetter('naqii')">By Naqii</button>
+            </div>
+            <div id="letterText">Select a letter...</div>
+        `);
+    }
+
+    function typeLetter(who) {
+        const letterDiv = document.getElementById("letterText");
+        letterDiv.innerHTML = "";
+        let text = (who === "shivam") 
+            ? "Dear Naqii, this is a special letter from me, filled with love ❤️" 
+            : "Dear Shivam, this is a sweet letter from me, full of hugs and kisses 💌";
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                letterDiv.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, 50);
+            }
+        }
+        type();
+    }
+
+    function showMemories() { renderMemories(currentMemoryStyle); }
+
+    function renderMemories(style) {
+        let html = `<button class='big-btn' onclick='loadHome()'>← Back</button>
+                    <div class="mem-style-btn" onclick="styleMenu()">Change Style ⚡</div>
+                    <div class="memories-container ${style}">
+                        <button id='uploadMemoryBtn' class="big-btn" style="width:45px; height:45px; margin:0;">+</button>
+                        <input type='file' id='uploadMemoryInput' style='display:none' accept='image/*'>`;
+        
+        memories.forEach((src, i) => {
+            html += `<img src="${src}" style="--i:${i % 5}" alt="Memory" onclick="openFullScreen('${src}')">`;
+        });
+        html += `</div>`;
+        fadeSwitch(html);
+    }
+
+    function styleMenu() {
+        let styles = ["polaroid", "circle", "grid"];
+        let choice = prompt("Enter style: polaroid, circle, or grid", currentMemoryStyle);
+        if (styles.includes(choice.toLowerCase())) {
+            currentMemoryStyle = choice.toLowerCase();
+            renderMemories(currentMemoryStyle);
+        }
+    }
+
+    function openFullScreen(src) {
+        const img = document.getElementById("fsImg");
+        const overlay = document.getElementById("fsOverlay");
+        img.src = src;
+        overlay.classList.add("show");
+    }
+
+    function closeFullScreen() {
+        document.getElementById("fsOverlay").classList.remove("show");
+    }
+
+    function themeMenu() {
+        fadeSwitch(`
+            <h3>Select Theme</h3>
+            <button class="big-btn" onclick="setTheme('#111', '#ff4d6d')">Dark Pink</button>
+            <button class="big-btn" onclick="setTheme('#ffeef2', '#ff85a2')">Soft Pink</button>
+            <button class="big-btn" onclick="setTheme('#0a0a0f', '#1c8adb')">Nightwing</button>
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+        `);
+    }
+
+    function setTheme(bg, accent) {
+        document.documentElement.style.setProperty('--bg', bg);
+        document.documentElement.style.setProperty('--accent', accent);
+        document.documentElement.style.setProperty('--glow', accent);
+        document.documentElement.style.setProperty('--card', bg === '#111' ? '#1c1c1c' : '#fff');
+        document.documentElement.style.setProperty('--text', bg === '#111' || bg === '#0a0a0f' ? '#fff' : '#333');
+    }
+
+    function addUploadMemoryFeature() {
+        const btn = document.getElementById('uploadMemoryBtn');
+        const input = document.getElementById('uploadMemoryInput');
+        btn.onclick = () => input.click();
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    memories.push(event.target.result);
+                    renderMemories(currentMemoryStyle);
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+    }
+
+    function playParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 3 + 1,
+                dx: (Math.random() - 0.5) * 3,
+                dy: (Math.random() - 0.5) * 3,
+                color: `hsl(${Math.random() * 360}, 70%, 60%)`
+            });
+        }
+        animating = true;
+        function animate() {
+            if (!animating) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color; ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    function stopParticles() { animating = false; }
+    function showUs() { fadeSwitch(`<button class='big-btn' onclick='loadHome()'>← Back</button><h2>Us ❤️</h2><p>All our special memories in one place!</p>`); }
+</script>
+</body>
+</html>  app.style.opacity=0;
   setTimeout(()=>{app.innerHTML=newContent; app.style.opacity=1; addUploadMemoryFeature();},300);
 }
 
