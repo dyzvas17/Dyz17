@@ -93,6 +93,137 @@ p { line-height: 1.4; }
   padding: 8px 14px;
   font-size: 14px;
 }
+
+/* Memories Styles */
+.memories-container {
+  position: relative;
+  flex: 1;
+}
+
+.memories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.memories-grid img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.memories-grid img:hover {
+  transform: scale(1.05);
+}
+
+/* Polaroid style */
+.polaroid img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 5px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  transform: rotate(calc(-5deg + 10deg * var(--i)));
+}
+
+/* Circle style */
+.circle img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/* Grid style */
+.grid img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Flip Card style */
+.flip-container {
+  perspective: 1000px;
+  display: inline-block;
+}
+.flip-card {
+  width: 120px;
+  height: 120px;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  margin: 5px;
+  cursor: pointer;
+}
+.flip-card:hover {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  backface-visibility: hidden;
+  border-radius: 12px;
+}
+.flip-card-front {
+  background-size: cover;
+}
+.flip-card-back {
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotateY(180deg);
+}
+
+/* Masonry style */
+.masonry {
+  column-count: 2;
+  column-gap: 10px;
+}
+.masonry img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* Style overlay button */
+.style-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.style-overlay {
+  position: absolute;
+  top: 0; left:0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.style-overlay button {
+  width: 70%;
+  margin: 10px 0;
+}
 </style>
 </head>
 <body>
@@ -105,6 +236,17 @@ p { line-height: 1.4; }
 </div>
 
 <script>
+let currentMemoryStyle = "polaroid";
+const memories = [
+  "https://via.placeholder.com/150/FFB6C1",
+  "https://via.placeholder.com/150/87CEFA",
+  "https://via.placeholder.com/150/FFD700",
+  "https://via.placeholder.com/150/90EE90",
+  "https://via.placeholder.com/150/FF69B4",
+  "https://via.placeholder.com/150/FFA500"
+];
+
+/* ---- Unlock ---- */
 function unlock() {
   const password = document.getElementById("pw").value;
   if(password === "1234"){
@@ -114,13 +256,14 @@ function unlock() {
   }
 }
 
-/* ---- Sections & Navigation ---- */
+/* ---- Section Switching ---- */
 function fadeSwitch(newContent){
   const app = document.getElementById("app");
   app.style.opacity = 0;
   setTimeout(()=>{ app.innerHTML = newContent; app.style.opacity = 1; }, 300);
 }
 
+/* ---- Home ---- */
 function loadHome(){
   fadeSwitch(`
     <h3>Her World ❤️</h3>
@@ -131,28 +274,87 @@ function loadHome(){
   `);
 }
 
+/* ---- Birthday ---- */
 function showBirthday(){
   fadeSwitch(`
     <button class='back-btn' onclick='loadHome()'>← Back</button>
     <h2>Birthday 🎂</h2>
-    <p>Here will be the birthday celebration, photos, and surprises.</p>
+    <p>Here’s the birthday celebration area. Add photos, messages, gifts here!</p>
   `);
 }
 
+/* ---- Memories ---- */
 function showMemories(){
-  fadeSwitch(`
-    <button class='back-btn' onclick='loadHome()'>← Back</button>
-    <h2>Memories 📸</h2>
-    <p>Gallery-style memories of us will appear here. Scroll, tap, enjoy.</p>
-  `);
+  renderMemories(currentMemoryStyle);
 }
 
+function renderMemories(style){
+  let html = `<button class='back-btn' onclick='loadHome()'>← Back</button>`;
+  html += `<button class='style-btn' onclick='openStyleOverlay()'>🎨</button>`;
+  html += `<div class="memories-container ${style}">`;
+  if(style==="flip"){
+    memories.forEach((src,i)=>{
+      html += `
+      <div class="flip-container">
+        <div class="flip-card">
+          <div class="flip-card-front" style="background-image:url('${src}')"></div>
+          <div class="flip-card-back">Memory ${i+1}</div>
+        </div>
+      </div>
+      `;
+    });
+  } else if(style==="masonry"){
+    html += `<div class="masonry">`;
+    memories.forEach((src,i)=>{
+      html += `<img src="${src}" alt="Memory ${i+1}">`;
+    });
+    html += `</div>`;
+  } else {
+    memories.forEach((src,i)=>{
+      html += `<img src="${src}" style="--i:${i}" alt="Memory ${i+1}">`;
+    });
+  }
+  html += `</div>`;
+  fadeSwitch(html);
+}
+
+/* ---- Memory Styles Overlay ---- */
+function openStyleOverlay(){
+  let overlay = `<div class="style-overlay">
+    <h3>Choose Memory Style</h3>
+    <button onclick="selectMemoryStyle('polaroid')">Polaroid</button>
+    <button onclick="selectMemoryStyle('circle')">Circle</button>
+    <button onclick="selectMemoryStyle('grid')">Grid</button>
+    <button onclick="selectMemoryStyle('flip')">Flip Cards</button>
+    <button onclick="selectMemoryStyle('masonry')">Masonry</button>
+    <button class='back-btn' onclick="renderMemories(currentMemoryStyle)">← Cancel</button>
+  </div>`;
+  document.getElementById("app").innerHTML += overlay;
+}
+
+function selectMemoryStyle(style){
+  currentMemoryStyle = style;
+  renderMemories(style);
+}
+
+/* ---- Letters Typewriter ---- */
 function showLetters(){
   fadeSwitch(`
     <button class='back-btn' onclick='loadHome()'>← Back</button>
     <h2>Letters 💌</h2>
-    <p>Your personal letters and notes will go here.</p>
+    <div class="typewriter" id="letter"></div>
   `);
+  const text = "Dear love,\nThis is our personal letters section. Each word typed here can tell a memory, a feeling, or a secret just for you ❤️";
+  let i=0;
+  const letterDiv = document.getElementById("letter");
+  function typeWriter(){
+    if(i<text.length){
+      letterDiv.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter,50);
+    }
+  }
+  typeWriter();
 }
 
 /* ---- Theme ---- */
@@ -187,6 +389,5 @@ function setClassic(){
   document.documentElement.style.setProperty('--accent', '#000000');
 }
 </script>
-
 </body>
 </html>
