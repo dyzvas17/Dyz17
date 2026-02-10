@@ -1,259 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivam & Naqii | Private Haven</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: radial-gradient(circle at top right, #1e1b4b, #000);
-            --card: rgba(255, 255, 255, 0.08);
-            --accent: #ff4d6d;
-            --text: #ffffff;
-            --glass-border: rgba(255, 255, 255, 0.15);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Two Souls</title>
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            margin: 0; padding: 0; font-family: 'Outfit', sans-serif;
-            background: var(--bg); color: var(--text);
-            height: 100vh; overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-            transition: 0.8s ease;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
-        #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-        .particle { position: absolute; background: white; border-radius: 50%; opacity: 0.3; animation: floatUp linear infinite; }
-        @keyframes floatUp { from { transform: translateY(100vh); opacity: 0; } to { transform: translateY(-10vh); opacity: 0.5; } }
+<style>
+:root{
+--bg:#0e0f15;
+--glass:rgba(255,255,255,0.06);
+--accent:#ff6b81;
+--text:#f5f5f5;
+}
 
-        .app-container {
-            width: 90%; max-width: 400px; height: 92vh;
-            background: var(--card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 35px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            position: relative; overflow: hidden; display: flex; flex-direction: column;
-        }
+*{box-sizing:border-box;}
 
-        .screen {
-            position: absolute; inset: 0; padding: 25px; 
-            display: flex; flex-direction: column; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.5s ease;
-            overflow-y: auto; padding-bottom: 100px;
-        }
-        .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
-        
-        .script-font { font-family: 'Dancing Script', cursive; }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; }
-        
-        .tile-btn {
-            aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
-            background-size: cover; background-position: center; position: relative;
-        }
-        .tile-btn span { z-index: 2; }
-        .tile-icon { font-size: 32px; margin-bottom: 5px; }
-        
-        .relationship-counter {
-            background: var(--accent); width: 100%; padding: 20px; 
-            border-radius: 25px; margin-top: 20px; text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+body{
+margin:0;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
 
-        .letter-card {
-            width: 100%; height: 120px; margin-bottom: 15px; border-radius: 20px;
-            display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.3);
-            cursor: pointer; padding: 15px;
-        }
+/* ambient background */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
 
-        #drawCanvas { background: rgba(255,255,255,0.05); border-radius: 20px; touch-action: none; border: 1px solid rgba(255,255,255,0.2); }
-        
-        .music-player {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 85%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-            border-radius: 50px; padding: 10px 20px; display: flex; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); z-index: 100;
-        }
-        .vinyl { width: 35px; height: 35px; background: #111; border-radius: 50%; animation: spin 3s linear infinite; animation-play-state: paused; }
-        .vinyl.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+/* container */
+.app{
+width:95%;
+max-width:440px;
+height:92vh;
+border-radius:28px;
+background:var(--glass);
+backdrop-filter:blur(25px);
+padding:25px;
+display:flex;
+flex-direction:column;
+position:relative;
+overflow:hidden;
+box-shadow:0 30px 70px rgba(0,0,0,.6);
+}
 
-        .theme-dot { width: 100%; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: none; color: white; cursor: pointer; font-weight: bold; }
-        .back-btn { align-self: flex-start; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
-        input.glass-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; color: white; text-align: center; margin: 20px 0; outline: none; }
-    </style>
+/* titles */
+h1,h2{
+font-family:'Playfair Display',serif;
+font-weight:500;
+margin:0;
+}
+
+.center{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+.button{
+margin-top:15px;
+padding:14px;
+border-radius:18px;
+border:none;
+background:var(--accent);
+color:white;
+font-weight:600;
+width:100%;
+cursor:pointer;
+transition:.3s;
+}
+
+.button:hover{transform:translateY(-3px);}
+
+.small{
+padding:10px;
+font-size:14px;
+border-radius:14px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:30px;
+}
+
+.card{
+background:rgba(255,255,255,.07);
+border-radius:20px;
+height:120px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-weight:600;
+cursor:pointer;
+transition:.4s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.bottom{
+position:absolute;
+bottom:18px;
+left:50%;
+transform:translateX(-50%);
+width:85%;
+}
+
+.scroll{
+overflow-y:auto;
+padding-bottom:80px;
+margin-top:60px;
+}
+
+.entry{
+background:rgba(255,255,255,.05);
+padding:15px;
+border-radius:18px;
+margin-bottom:12px;
+font-size:14px;
+}
+
+textarea{
+width:100%;
+border:none;
+border-radius:15px;
+padding:12px;
+background:rgba(255,255,255,.05);
+color:white;
+resize:none;
+height:80px;
+margin-top:15px;
+}
+
+input{
+width:100%;
+padding:10px;
+border-radius:12px;
+border:none;
+background:rgba(255,255,255,.05);
+color:white;
+}
+
+.gallery{
+column-count:2;
+column-gap:10px;
+}
+
+.gallery img{
+width:100%;
+margin-bottom:10px;
+border-radius:16px;
+}
+
+.hidden{
+display:none;
+}
+
+.counter{
+font-size:14px;
+opacity:.8;
+margin-top:8px;
+}
+</style>
 </head>
 <body>
 
-    <div id="particles"></div>
+<canvas id="bg"></canvas>
 
-    <div class="app-container">
-        
-        <div id="screen-lock" class="screen active" style="justify-content: center;">
-            <h1 class="script-font" style="font-size: 40px;">Private Haven</h1>
-            <input type="password" id="password" class="glass-input" placeholder="Secret Code">
-            <button class="tile-btn" style="width: 60px; height: 60px; border-radius: 50%;" onclick="checkPass()">➔</button>
-        </div>
+<div class="app" id="app">
 
-        <div id="screen-home" class="screen">
-            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                <h2 class="script-font">Hello Love ❤️</h2>
-                <span onclick="nav('screen-themes')" style="cursor:pointer; font-size: 20px;">🎨</span>
-            </div>
-            
-            <div class="relationship-counter">
-                <h3 id="days-count" style="font-size: 32px; margin:0;">0</h3>
-                <p style="margin:0; font-size: 12px; opacity: 0.8;">Days Together</p>
-            </div>
+<div class="center" id="entry">
+<h1>Two Souls</h1>
+<p style="opacity:.7;">Choose your side</p>
+<button class="button" onclick="home('You')">Enter as You</button>
+<button class="button" onclick="home('Her')">Enter as Her</button>
+</div>
 
-            <div class="btn-grid">
-                <div class="tile-btn" onclick="nav('screen-letters')"><span>💌</span><span>Letters</span></div>
-                <div class="tile-btn" onclick="nav('screen-gallery')"><span>📸</span><span>Gallery</span></div>
-                <div class="tile-btn" onclick="nav('screen-timeline')"><span>⏳</span><span>Journey</span></div>
-                <div class="tile-btn" id="doodle-tile" onclick="nav('screen-canvas')">
-                    <span id="d-icon" class="tile-icon">🎨</span>
-                    <span id="d-text">Doodle</span>
-                </div>
-            </div>
-        </div>
+</div>
 
-        <div id="screen-themes" class="screen">
-            <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Choose a Vibe</h2>
-            <br>
-            <button class="theme-dot" style="background: #ff4d6d;" onclick="setTheme('radial-gradient(circle at top right, #1e1b4b, #000)', '#ff4d6d', 'rgba(255,255,255,0.08)', '#fff')">Midnight Pink</button>
-            <button class="theme-dot" style="background: #ff85a2;" onclick="setTheme('#ffeef2', '#ff85a2', 'rgba(255,255,255,0.6)', '#333')">Cotton Candy</button>
-            <button class="theme-dot" style="background: #ef4444;" onclick="setTheme('#050505', '#ef4444', 'rgba(20,20,20,0.8)', '#fff')">Hero Night</button>
-        </div>
+<audio id="music" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
 
-        <div id="screen-letters" class="screen">
-            <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Our Letters</h2>
-            <div class="letter-card" style="background: linear-gradient(to right, #ff9a9e, #fad0c4);" onclick="openImg('naqii_letter.jpg')">
-                <img src="naqii_profile.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid white;">
-                <div style="margin-left:15px; color: white;"><b>By Naqii</b><br><small>Tap to read 🎀</small></div>
-            </div>
-            <div class="letter-card" style="background: linear-gradient(to right, #1e3c72, #2a5298);" onclick="openImg('shivam_letter.jpg')">
-                <img src="shivam_profile.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid white;">
-                <div style="margin-left:15px; color: white;"><b>By Shivam</b><br><small>Tap to read 🕸️</small></div>
-            </div>
-        </div>
+<script>
+/* ambient particles */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-        <div id="screen-gallery" class="screen">
-            <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Gallery</h2>
-            <div class="btn-grid">
-                <img src="memory1.jpg" class="tile-btn" onclick="openImg(this.src)">
-                <img src="memory2.jpg" class="tile-btn" onclick="openImg(this.src)">
-                <img src="memory3.jpg" class="tile-btn" onclick="openImg(this.src)">
-                <img src="memory4.jpg" class="tile-btn" onclick="openImg(this.src)">
-            </div>
-        </div>
+let particles=[];
+for(let i=0;i<60;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2+1,
+dx:(Math.random()-.5)*.3,
+dy:(Math.random()-.5)*.3
+});
+}
 
-        <div id="screen-timeline" class="screen">
-            <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Our Journey</h2>
-            <div style="border-left: 2px solid var(--accent); margin-top: 20px; padding-left: 20px; width: 100%;">
-                <div style="margin-bottom: 20px;"><b>Day 1</b><br>We Met ❤️</div>
-                <div style="margin-bottom: 20px;"><b>Milestone</b><br>Our First Trip ✈️</div>
-                <div><b>Forever</b><br>Still Counting...</div>
-            </div>
-        </div>
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="rgba(255,255,255,.08)";
+particles.forEach(p=>{
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fill();
+p.x+=p.dx;
+p.y+=p.dy;
+});
+requestAnimationFrame(animate);
+}
+animate();
 
-        <div id="screen-canvas" class="screen">
-            <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Doodle</h2>
-            <canvas id="drawCanvas" width="300" height="350"></canvas>
-            <div style="display:flex; gap:10px; margin-top:15px;">
-                <div style="width:30px; height:30px; border-radius:50%; background:#ff4d6d;" onclick="ctx.strokeStyle='#ff4d6d'"></div>
-                <div style="width:30px; height:30px; border-radius:50%; background:#3b82f6;" onclick="ctx.strokeStyle='#3b82f6'"></div>
-                <div style="width:30px; height:30px; border-radius:50%; background:#fff; border:1px solid #ccc;" onclick="ctx.strokeStyle='#fff'"></div>
-                <button onclick="clearDraw()" style="background:none; border:1px solid white; color:white; border-radius:5px;">Clear</button>
-            </div>
-        </div>
+/* navigation */
+function home(side){
+document.getElementById("app").innerHTML=`
+<h2>Welcome, ${side}</h2>
+<div class="counter" id="counter"></div>
+<div class="grid">
+<div class="card" onclick="journal()">Shared Journal</div>
+<div class="card" onclick="gallery()">Memories</div>
+<div class="card" onclick="voice()">Voice Notes</div>
+<div class="card" onclick="secret()">Secret</div>
+</div>
+<button class="button small bottom" onclick="toggleMusic()">Ambient Music</button>
+`;
+startCounter();
+}
 
-        <div id="music-bar" class="music-player" style="display:none;">
-            <div class="vinyl" id="vinyl"></div>
-            <div style="flex:1; margin-left:15px; font-size:12px;"><b>Our Song</b><br><span id="music-status">Paused</span></div>
-            <button onclick="toggleMusic()" style="background:none; border:none; color:white; font-size:20px;">⏯️</button>
-        </div>
+/* day counter */
+function startCounter(){
+const start=new Date("2024-01-01");
+const now=new Date();
+const diff=Math.floor((now-start)/(1000*60*60*24));
+document.getElementById("counter").innerText=`${diff} days together`;
+}
 
-    </div>
+/* journal */
+function journal(){
+let entries=JSON.parse(localStorage.getItem("journal")||"[]");
+let html=`<div class="scroll">`;
+entries.forEach(e=>{
+html+=`<div class="entry">${e}</div>`;
+});
+html+=`
+<textarea id="newEntry" placeholder="Write something..."></textarea>
+<button class="button" onclick="saveEntry()">Save</button>
+</div>
+<button class="button small bottom" onclick="location.reload()">Back</button>
+`;
+document.getElementById("app").innerHTML=html;
+}
 
-    <div id="overlay" style="position:fixed; inset:0; background:black; display:none; z-index:1000; place-items:center;" onclick="this.style.display='none'">
-        <img id="overlay-img" src="" style="max-width:95%; max-height:90%;">
-    </div>
+function saveEntry(){
+let entries=JSON.parse(localStorage.getItem("journal")||"[]");
+entries.push(document.getElementById("newEntry").value);
+localStorage.setItem("journal",JSON.stringify(entries));
+journal();
+}
 
-    <audio id="bg-music" loop><source src="us.mp3" type="audio/mpeg"></audio>
+/* gallery */
+function gallery(){
+document.getElementById("app").innerHTML=`
+<div class="scroll gallery">
+<img src="memory1.jpeg">
+<img src="memory2.jpeg">
+<img src="memory3.jpeg">
+<img src="memory4.jpeg">
+</div>
+<button class="button small bottom" onclick="location.reload()">Back</button>
+`;
+}
 
-    <script>
-        const START_DATE = new Date("2023-12-31"); // Change this!
-        const audio = document.getElementById('bg-music');
-        const canvas = document.getElementById('drawCanvas');
-        const ctx = canvas.getContext('2d');
-        let painting = false;
+/* voice note */
+function voice(){
+document.getElementById("app").innerHTML=`
+<div class="center">
+<h2>Voice Vault</h2>
+<p style="opacity:.6;">Upload soft confessions</p>
+<input type="file" accept="audio/*">
+</div>
+<button class="button small bottom" onclick="location.reload()">Back</button>
+`;
+}
 
-        function nav(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(id !== 'screen-lock') document.getElementById('music-bar').style.display = 'flex';
-        }
+/* secret */
+function secret(){
+document.getElementById("app").innerHTML=`
+<div class="center">
+<h2>Only for Us</h2>
+<p style="opacity:.7;">Long press anywhere...</p>
+</div>
+<button class="button small bottom" onclick="location.reload()">Back</button>
+`;
+document.body.onmousedown=()=>{
+setTimeout(()=>{
+alert("I choose you. Every time.");
+},1200);
+};
+}
 
-        function checkPass() {
-            if(document.getElementById('password').value === "1234") { nav('screen-home'); initParticles(); updateDoodleTile(); }
-        }
+/* music */
+function toggleMusic(){
+let music=document.getElementById("music");
+if(music.paused){music.play();}
+else{music.pause();}
+}
+</script>
 
-        function setTheme(bg, accent, card, text) {
-            document.documentElement.style.setProperty('--bg', bg);
-            document.documentElement.style.setProperty('--accent', accent);
-            document.documentElement.style.setProperty('--card', card);
-            document.documentElement.style.setProperty('--text', text);
-            nav('screen-home');
-        }
-
-        // --- DOODLE LOGIC ---
-        function updateDoodleTile() {
-            const saved = localStorage.getItem('ourDrawing');
-            const tile = document.getElementById('doodle-tile');
-            if(saved) {
-                tile.style.backgroundImage = `url(${saved})`;
-                document.getElementById('d-icon').style.opacity = '0';
-                document.getElementById('d-text').style.background = 'rgba(0,0,0,0.4)';
-            }
-        }
-
-        canvas.onmousedown = (e) => { painting = true; draw(e); };
-        window.onmouseup = () => { painting = false; ctx.beginPath(); localStorage.setItem('ourDrawing', canvas.toDataURL()); updateDoodleTile(); };
-        canvas.onmousemove = draw;
-        canvas.ontouchstart = (e) => { painting = true; draw(e.touches[0]); e.preventDefault(); };
-        canvas.ontouchend = () => { painting = false; ctx.beginPath(); localStorage.setItem('ourDrawing', canvas.toDataURL()); updateDoodleTile(); };
-        canvas.ontouchmove = (e) => { draw(e.touches[0]); e.preventDefault(); };
-
-        function draw(e) {
-            if(!painting) return;
-            const r = canvas.getBoundingClientRect();
-            ctx.lineWidth = 3; ctx.lineCap = 'round';
-            ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
-            ctx.stroke(); ctx.beginPath(); ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
-        }
-
-        function clearDraw() { ctx.clearRect(0,0,300,350); localStorage.removeItem('ourDrawing'); updateDoodleTile(); }
-
-        // --- UTILS ---
-        function openImg(s) { document.getElementById('overlay-img').src = s; document.getElementById('overlay').style.display = 'grid'; }
-        function toggleMusic() { 
-            if(audio.paused) { audio.play(); document.getElementById('vinyl').classList.add('playing'); document.getElementById('music-status').innerText = 'Playing'; }
-            else { audio.pause(); document.getElementById('vinyl').classList.remove('playing'); document.getElementById('music-status').innerText = 'Paused'; }
-        }
-        function initParticles() {
-            for(let i=0; i<20; i++) {
-                let p = document.createElement('div'); p.classList.add('particle');
-                p.style.left = Math.random()*100+'vw'; p.style.width = p.style.height = Math.random()*5+2+'px';
-                p.style.animationDuration = Math.random()*5+5+'s'; document.getElementById('particles').appendChild(p);
-            }
-        }
-        document.getElementById('days-count').innerText = Math.floor((new Date() - START_DATE)/(1000*60*60*24));
-    </script>
 </body>
 </html>
