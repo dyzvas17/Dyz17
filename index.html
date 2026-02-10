@@ -26,7 +26,6 @@
         }
         button { border: none; cursor: pointer; transition: 0.3s; font-family: 'Poppins', sans-serif; }
         
-        /* Main Menu Buttons */
         .square-btn {
             width: 140px; height: 140px; margin: 10px; border-radius: 20px; font-size: 16px;
             background: var(--accent); color: #fff; display: flex; flex-direction: column;
@@ -39,43 +38,37 @@
         }
         @keyframes pulse { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 25px var(--glow); } }
 
-        /* Letter Card Design */
+        /* Letter Cards */
         .letter-card {
             cursor: pointer; position: relative; width: 100%; height: 130px; 
             border-radius: 25px; overflow: hidden; display: flex; align-items: center; 
             border: 2px solid rgba(255,255,255,0.2); transition: 0.4s; margin-bottom: 20px;
         }
-        .letter-card:hover { transform: translateY(-5px); border-color: #fff; }
+        .profile-container { position: relative; width: 85px; height: 85px; margin-left: 15px; display: flex; justify-content: center; align-items: center; }
+        .profile-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #fff; z-index: 2; }
+        .profile-glow { position: absolute; width: 100%; height: 100%; border-radius: 50%; z-index: 1; animation: profile-pulse 2s infinite; }
+        @keyframes profile-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.4; } }
 
-        /* Profile Pic with Pulsing Glow */
-        .profile-container {
-            position: relative; width: 85px; height: 85px; margin-left: 15px;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .profile-container img {
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-            border: 3px solid #fff; z-index: 2;
-        }
-        .profile-glow {
-            position: absolute; width: 100%; height: 100%; border-radius: 50%;
-            z-index: 1; animation: profile-pulse 2s infinite;
-        }
-        @keyframes profile-pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.4; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        /* Memories Styles */
+        .memories-container { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; width: 100%; padding: 15px 0; }
+        .memories-container img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; border: 3px solid #fff; cursor: pointer; transition: 0.3s; }
+        .memories-container img:hover { transform: scale(1.05); }
 
-        .letter-info { margin-left: 20px; color: #fff; }
-        .letter-info h3 { margin: 0; font-size: 24px; }
+        /* Milestone Mini-Button */
+        .milestone-trigger {
+            position: absolute; bottom: 20px; right: 20px; width: 50px; height: 50px;
+            background: gold; border-radius: 12px; display: flex; justify-content: center;
+            align-items: center; font-size: 24px; cursor: pointer;
+            box-shadow: 0 0 15px gold; transition: 0.3s; z-index: 10;
+        }
+        .milestone-trigger:hover { transform: rotate(15deg) scale(1.1); }
 
-        /* Fullscreen Overlay */
+        /* Overlays */
         .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
         .fullscreen-overlay.show { opacity: 1; pointer-events: all; }
         .fullscreen-overlay img { max-width: 90%; max-height: 85%; border-radius: 15px; }
 
         input { padding: 16px; width: 100%; border-radius: 15px; border: none; margin-top: 15px; font-size: 16px; background: rgba(255,255,255,0.1); color: #fff; box-sizing: border-box; text-align: center; }
-        .floating-theme { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; z-index: 10; }
     </style>
 </head>
 <body>
@@ -94,6 +87,8 @@
 </div>
 
 <script>
+    // Update these with your real memory photo filenames
+    const memoryPhotos = ["memory1.jpg", "memory2.jpg", "memory3.jpg", "memory4.jpg"];
     const targetDate = new Date("December 31, 2025 00:00:00").getTime();
 
     function unlock() {
@@ -109,7 +104,6 @@
 
     function loadHome() {
         fadeSwitch(`
-            <div class="floating-theme" onclick="themeMenu()">🎨</div>
             <h2 style="font-weight: 400; margin-top: 40px;">Welcome Back ❤️</h2>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 20px;">
                 <button class="square-btn" onclick="showBirthday()"><span>🎂</span>Birthday</button>
@@ -120,33 +114,46 @@
         `);
     }
 
+    function showMemories() {
+        let photosHtml = memoryPhotos.map(src => `<img src="${src}" onclick="openFullScreen('${src}')">`).join('');
+        fadeSwitch(`
+            <button class="big-btn" onclick="loadHome()">← Back</button>
+            <h2 style="margin: 15px 0;">Our Gallery 📸</h2>
+            <div class="memories-container">
+                ${photosHtml}
+            </div>
+            <div class="milestone-trigger" onclick="showMilestones()">🌟</div>
+        `);
+    }
+
+    function showMilestones() {
+        fadeSwitch(`
+            <button class="big-btn" onclick="showMemories()">← Back to Gallery</button>
+            <h2 style="font-family:'Dancing Script'; font-size:36px; margin-top:20px;">Our Milestones 🏆</h2>
+            <div id="timelineContent" style="width:100%; text-align:center; padding-top:40px;">
+                <p style="opacity:0.7;">This is where our story begins...</p>
+                <p>Waiting for our discussion to build the timeline!</p>
+            </div>
+        `);
+    }
+
     function showLetters() {
         fadeSwitch(`
             <button class="big-btn" onclick="loadHome()">← Back</button>
             <h2 style="font-family:'Dancing Script'; font-size:32px; margin: 20px 0;">Letters 💌</h2>
-            
-            <div class="letter-card" onclick="openFullScreen('naqii_letter.jpg')" 
-                 style="background: linear-gradient(135deg, #ffafbd, #ffc3a0);">
+            <div class="letter-card" onclick="openFullScreen('naqii_letter.jpg')" style="background: linear-gradient(135deg, #ffafbd, #ffc3a0);">
                 <div class="profile-container">
                     <div class="profile-glow" style="background: #ff85a2; box-shadow: 0 0 20px #ff85a2;"></div>
                     <img src="naqii_profile.jpg">
                 </div>
-                <div class="letter-info">
-                    <h3 style="font-family:'Dancing Script';">By Naqii</h3>
-                    <p style="margin:0; font-size:12px; opacity:0.9;">Hello Kitty Style 🎀</p>
-                </div>
+                <div class="letter-info"><h3 style="font-family:'Dancing Script';">By Naqii</h3><p>Hello Kitty Style 🎀</p></div>
             </div>
-
-            <div class="letter-card" onclick="openFullScreen('shivam_letter.jpg')" 
-                 style="background: linear-gradient(135deg, #ed213a, #2376b0);">
+            <div class="letter-card" onclick="openFullScreen('shivam_letter.jpg')" style="background: linear-gradient(135deg, #ed213a, #2376b0);">
                 <div class="profile-container">
                     <div class="profile-glow" style="background: #ed213a; box-shadow: 0 0 20px #ed213a;"></div>
                     <img src="shivam_profile.jpg">
                 </div>
-                <div class="letter-info">
-                    <h3 style="font-weight:600;">By Shivam</h3>
-                    <p style="margin:0; font-size:12px; opacity:0.9;">Spiderman Style 🕷️</p>
-                </div>
+                <div class="letter-info"><h3 style="font-weight:600;">By Shivam</h3><p>Spiderman Style 🕸️</p></div>
             </div>
         `);
     }
@@ -162,7 +169,6 @@
             <button class="big-btn" onclick="loadHome()">← Back</button>
             <h2 style="margin: 20px 0 5px;">Countdown 🎁</h2>
             <div id="timerDisplay" style="display:flex; gap:10px; margin:20px 0;"></div>
-            <p>"Distance is just a test of love."</p>
         `);
         startCountdown();
     }
@@ -176,36 +182,17 @@
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const timer = document.getElementById("timerDisplay");
             if(timer) {
-                timer.innerHTML = `<div style="background:var(--accent); padding:10px; border-radius:10px; flex:1;">${d}d</div>
-                                   <div style="background:var(--accent); padding:10px; border-radius:10px; flex:1;">${h}h</div>
-                                   <div style="background:var(--accent); padding:10px; border-radius:10px; flex:1;">${m}m</div>`;
+                timer.innerHTML = `<div style="background:var(--accent); padding:10px; border-radius:10px; flex:1; text-align:center;">${d}d</div>
+                                   <div style="background:var(--accent); padding:10px; border-radius:10px; flex:1; text-align:center;">${h}h</div>
+                                   <div style="background:var(--accent); padding:10px; border-radius:10px; flex:1; text-align:center;">${m}m</div>`;
             }
         };
         update();
         setInterval(update, 60000);
     }
 
-    function showMemories() {
-        fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Gallery</h2><p>Your photos go here!</p>`);
-    }
-
     function showUs() {
         fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Our Space</h2><p>The secret corner.</p>`);
-    }
-
-    function themeMenu() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h3>Themes</h3>
-            <button class="big-btn" onclick="setTheme('#111','#ff4d6d')">Midnight</button>
-            <button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2')">Soft Pink</button>
-        `);
-    }
-
-    function setTheme(bg, accent) {
-        document.documentElement.style.setProperty('--bg', bg);
-        document.documentElement.style.setProperty('--accent', accent);
-        loadHome();
     }
 </script>
 </body>
