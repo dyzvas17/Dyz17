@@ -9,337 +9,359 @@
 
 <style>
 :root{
- --bg:#111;
- --card:rgba(255,255,255,0.1);
- --text:#fff;
- --accent:#ff4d6d;
- --glow:#ff4d6d;
+--bg:#111;
+--card:rgba(255,255,255,0.1);
+--text:#fff;
+--accent:#ff4d6d;
+--glow:#ff4d6d;
 }
 
 body{
- margin:0;
- font-family:'Poppins',sans-serif;
- background:var(--bg);
- color:var(--text);
- display:flex;
- justify-content:center;
- align-items:center;
- height:100vh;
- overflow:hidden;
- transition:0.6s;
+margin:0;
+font-family:'Poppins',sans-serif;
+background:var(--bg);
+color:var(--text);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+transition:.6s;
 }
 
 .app{
- width:90%;
- max-width:420px;
- height:90vh;
- background:var(--card);
- border-radius:30px;
- padding:25px;
- display:flex;
- flex-direction:column;
- align-items:center;
- overflow:hidden;
- box-shadow:0 8px 32px rgba(0,0,0,0.5);
- backdrop-filter:blur(15px);
- border:1px solid rgba(255,255,255,0.1);
- position:relative;
- box-sizing:border-box;
- transition:0.4s;
+width:90%;
+max-width:420px;
+height:90vh;
+background:var(--card);
+border-radius:30px;
+padding:25px;
+display:flex;
+flex-direction:column;
+align-items:center;
+position:relative;
+box-shadow:0 8px 32px rgba(0,0,0,.5);
+backdrop-filter:blur(15px);
+overflow:hidden;
+transition:.4s;
 }
 
 button{
- border:none;
- cursor:pointer;
- font-family:'Poppins',sans-serif;
- transition:0.3s;
-}
-
-.square-btn{
- width:140px;
- height:140px;
- border-radius:20px;
- background:var(--accent);
- color:white;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- font-weight:600;
- box-shadow:0 0 20px var(--glow);
+border:none;
+cursor:pointer;
+font-family:'Poppins',sans-serif;
 }
 
 .big-btn{
- width:100%;
- padding:14px;
- border-radius:15px;
- background:var(--accent);
- color:white;
- font-weight:600;
- margin-top:10px;
+padding:14px 0;
+width:100%;
+border-radius:15px;
+font-size:16px;
+background:var(--accent);
+color:#fff;
+font-weight:600;
 }
 
-input{
- width:100%;
- padding:15px;
- border-radius:15px;
- border:none;
- margin-top:15px;
- background:rgba(255,255,255,0.1);
- color:white;
- text-align:center;
+.square-btn{
+width:130px;
+height:130px;
+border-radius:20px;
+background:var(--accent);
+color:#fff;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:8px;
+box-shadow:0 0 15px var(--glow);
+font-weight:600;
 }
 
-/* MEMORY LAYOUTS */
+.small-square{
+width:40px;
+height:40px;
+border-radius:10px;
+background:var(--accent);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:18px;
+box-shadow:0 0 10px var(--glow);
+cursor:pointer;
+}
+
+.top-actions{
+position:absolute;
+top:15px;
+right:15px;
+display:flex;
+gap:8px;
+z-index:10;
+}
+
+.bottom-back{
+position:absolute;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+width:85%;
+}
+
 .memories-container{
- flex:1;
- width:100%;
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px;
- overflow-y:auto;
- padding-top:10px;
+flex:1;
+width:100%;
+overflow-y:auto;
+padding-top:60px;
+padding-bottom:70px;
+transition:.4s;
 }
 
-.memories-container img{
- width:100%;
- height:140px;
- object-fit:cover;
- border-radius:15px;
- cursor:pointer;
+.grid-view{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
-.memories-container.polaroid img{
- background:white;
- padding:10px 10px 30px;
- border-radius:5px;
+.grid-view img{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:15px;
+cursor:pointer;
 }
 
-.memories-container.pinterest{
- column-count:2;
- column-gap:10px;
- display:block;
+.pinterest-view{
+column-count:2;
+column-gap:10px;
 }
 
-.memories-container.pinterest img{
- width:100%;
- margin-bottom:10px;
+.pinterest-view img{
+width:100%;
+margin-bottom:10px;
+border-radius:15px;
+cursor:pointer;
 }
 
-/* Flip */
+.flip-view{
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
 .flip-card{
- perspective:1000px;
+width:220px;
+height:300px;
+perspective:1000px;
 }
 
 .flip-inner{
- position:relative;
- width:100%;
- height:140px;
- transition:transform 0.6s;
- transform-style:preserve-3d;
+width:100%;
+height:100%;
+position:relative;
+transform-style:preserve-3d;
+transition:1s;
 }
 
 .flip-card:hover .flip-inner{
- transform:rotateY(180deg);
+transform:rotateY(180deg);
 }
 
-.flip-front, .flip-back{
- position:absolute;
- width:100%;
- height:100%;
- backface-visibility:hidden;
- border-radius:15px;
+.flip-front,.flip-back{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
+border-radius:20px;
+overflow:hidden;
+}
+
+.flip-front img{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 .flip-back{
- transform:rotateY(180deg);
- background:var(--accent);
- display:flex;
- justify-content:center;
- align-items:center;
- font-weight:600;
+background:var(--accent);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:20px;
+transform:rotateY(180deg);
 }
 
-/* Top Right Controls */
-.memory-controls{
- position:absolute;
- top:20px;
- right:20px;
- display:flex;
- gap:10px;
+.floating-theme{
+position:absolute;
+top:15px;
+left:15px;
+cursor:pointer;
+font-size:22px;
 }
 
-.memory-btn{
- width:40px;
- height:40px;
- border-radius:12px;
- background:var(--accent);
- display:flex;
- justify-content:center;
- align-items:center;
- color:white;
- cursor:pointer;
- box-shadow:0 0 10px var(--glow);
+input{
+padding:16px;
+width:100%;
+border-radius:15px;
+border:none;
+margin-top:15px;
+background:rgba(255,255,255,0.1);
+color:#fff;
+text-align:center;
 }
 
-/* Fullscreen */
-.fullscreen{
- position:fixed;
- top:0;
- left:0;
- width:100vw;
- height:100vh;
- background:rgba(0,0,0,0.95);
- display:flex;
- justify-content:center;
- align-items:center;
- opacity:0;
- pointer-events:none;
- transition:0.3s;
+.fullscreen-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+background:rgba(0,0,0,.95);
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+z-index:999;
 }
 
-.fullscreen.show{
- opacity:1;
- pointer-events:all;
+.fullscreen-overlay.show{
+opacity:1;
+pointer-events:all;
 }
 
-.fullscreen img{
- max-width:90%;
- max-height:85%;
- border-radius:15px;
+.fullscreen-overlay img{
+max-width:90%;
+max-height:85%;
+border-radius:15px;
 }
 </style>
 </head>
-
 <body>
 
 <div class="app" id="app">
- <div id="lockScreen" style="width:100%;text-align:center;">
-   <h1 style="letter-spacing:3px;">PRIVATE HAVEN</h1>
-   <input type="password" id="pw" placeholder="Enter Password">
-   <button class="big-btn" onclick="unlock()">Unlock</button>
-   <p id="msg"></p>
- </div>
+<div id="lockScreen" style="width:100%;text-align:center;">
+<h1 style="font-weight:300;">PRIVATE HAVEN</h1>
+<input type="password" id="pw" placeholder="Enter Password">
+<button class="big-btn" onclick="unlock()">Unlock</button>
+<p id="msg" style="color:var(--accent);"></p>
+</div>
 </div>
 
-<div class="fullscreen" id="fs" onclick="closeFS()">
- <img id="fsImg">
+<div class="fullscreen-overlay" id="fsOverlay" onclick="closeFullScreen()">
+<img id="fsImg">
 </div>
 
 <script>
+
 let memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
-let currentLayout="normal";
+let memoryMode="grid";
 
 function unlock(){
- if(document.getElementById("pw").value==="1234") loadHome();
- else document.getElementById("msg").innerText="Wrong Password";
+if(document.getElementById("pw").value==="1234") loadHome();
+else document.getElementById("msg").innerText="Access Denied";
 }
 
-function fade(content){
- const app=document.getElementById("app");
- app.style.opacity=0;
- setTimeout(()=>{
-  app.innerHTML=content;
-  app.style.opacity=1;
- },200);
+function fadeSwitch(content){
+const app=document.getElementById("app");
+app.style.opacity=0;
+setTimeout(()=>{app.innerHTML=content;app.style.opacity=1;},300);
 }
 
 function loadHome(){
- fade(`
-   <h2 style="margin-top:40px;">Welcome Back ❤️</h2>
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;width:100%;">
-     <button class="square-btn" onclick="showBirthday()">🎂 Birthday</button>
-     <button class="square-btn" onclick="showLetters()">💌 Letters</button>
-     <button class="square-btn" onclick="showMemories()">📸 Memories</button>
-     <button class="square-btn">❤️ Us</button>
-   </div>
- `);
+fadeSwitch(`
+<div class="floating-theme" onclick="themeMenu()">🎨</div>
+<h2 style="margin-top:50px;">Welcome Back ❤️</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;width:100%;">
+<button class="square-btn" onclick="showMemories()">📸 Memories</button>
+<button class="square-btn">💌 Letters</button>
+<button class="square-btn">🎂 Birthday</button>
+<button class="square-btn">❤️ Us</button>
+</div>
+`);
 }
 
 function showMemories(){
- let html=`
-   <button class="big-btn" onclick="loadHome()">← Back</button>
-   <h2 style="margin:10px 0;">Gallery 📸</h2>
-
-   <div class="memory-controls">
-     <div class="memory-btn" onclick="toggleLayout()">🖼️</div>
-     <div class="memory-btn" onclick="showMilestones()">⭐</div>
-   </div>
-
-   <div class="memories-container" id="memoryBox">
- `;
-
- memories.forEach(src=>{
-  html+=`
-   <div class="flip-card">
-    <div class="flip-inner">
-     <div class="flip-front">
-       <img src="${src}" onclick="openFS('${src}')">
-     </div>
-     <div class="flip-back">
-       Our Memory 💖
-     </div>
-    </div>
-   </div>
-  `;
- });
-
- html+=`</div>`;
- fade(html);
+renderMemories();
 }
 
-function toggleLayout(){
- const box=document.getElementById("memoryBox");
- if(!box) return;
+function renderMemories(){
+let layoutClass="";
+if(memoryMode==="grid") layoutClass="grid-view";
+if(memoryMode==="pinterest") layoutClass="pinterest-view";
+if(memoryMode==="flip") layoutClass="flip-view";
 
- if(currentLayout==="normal"){
-  box.classList.add("polaroid");
-  currentLayout="polaroid";
- }
- else if(currentLayout==="polaroid"){
-  box.classList.remove("polaroid");
-  box.classList.add("pinterest");
-  currentLayout="pinterest";
- }
- else{
-  box.classList.remove("pinterest");
-  currentLayout="normal";
- }
+let html=`
+<div class="top-actions">
+<div class="small-square" onclick="setMode('grid')">🔳</div>
+<div class="small-square" onclick="setMode('pinterest')">📌</div>
+<div class="small-square" onclick="setMode('flip')">🎞</div>
+<div class="small-square" onclick="showMilestones()">⭐</div>
+</div>
+
+<div class="memories-container ${layoutClass}">
+`;
+
+if(memoryMode==="flip"){
+html+=`
+<div class="flip-card">
+<div class="flip-inner">
+<div class="flip-front">
+<img src="${memories[0]}">
+</div>
+<div class="flip-back">Our Memory ❤️</div>
+</div>
+</div>
+`;
+}else{
+memories.forEach(src=>{
+html+=`<img src="${src}" onclick="openFullScreen('${src}')">`;
+});
+}
+
+html+=`</div>
+<button class="big-btn bottom-back" onclick="loadHome()">← Back</button>
+`;
+
+fadeSwitch(html);
+}
+
+function setMode(mode){
+memoryMode=mode;
+renderMemories();
 }
 
 function showMilestones(){
- fade(`
-   <button class="big-btn" onclick="showMemories()">← Back</button>
-   <h2 style="margin-top:20px;">Our Milestones 🏆</h2>
-   <p style="margin-top:20px;text-align:center;">Add your special dates here ✨</p>
- `);
+alert("Milestones section coming soon ✨");
 }
 
-function showLetters(){
- fade(`
-   <button class="big-btn" onclick="loadHome()">← Back</button>
-   <h2 style="margin-top:20px;">Letters 💌</h2>
-   <p style="margin-top:20px;">Upload your love letters here.</p>
- `);
+function openFullScreen(src){
+document.getElementById("fsImg").src=src;
+document.getElementById("fsOverlay").classList.add("show");
 }
 
-function showBirthday(){
- fade(`
-   <button class="big-btn" onclick="loadHome()">← Back</button>
-   <h2 style="margin-top:20px;">Birthday Surprise 🎁</h2>
-   <p style="margin-top:20px;">Your special animation will go here.</p>
- `);
+function closeFullScreen(){
+document.getElementById("fsOverlay").classList.remove("show");
 }
 
-function openFS(src){
- document.getElementById("fsImg").src=src;
- document.getElementById("fs").classList.add("show");
+function themeMenu(){
+fadeSwitch(`
+<button class="big-btn" onclick="loadHome()">← Back</button>
+<h3 style="margin-top:20px;">Themes</h3>
+<button class="big-btn" onclick="setTheme('#111','#ff4d6d','rgba(255,255,255,0.1)','#fff')">Midnight Pink</button>
+<button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','rgba(255,255,255,0.5)','#333')">Soft Cotton</button>
+`);
 }
 
-function closeFS(){
- document.getElementById("fs").classList.remove("show");
+function setTheme(bg,accent,card,text){
+document.documentElement.style.setProperty('--bg',bg);
+document.documentElement.style.setProperty('--accent',accent);
+document.documentElement.style.setProperty('--glow',accent);
+document.documentElement.style.setProperty('--card',card);
+document.documentElement.style.setProperty('--text',text);
+loadHome();
 }
+
 </script>
-
 </body>
 </html>
