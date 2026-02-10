@@ -9,177 +9,204 @@
 
 <style>
 :root{
---bg:#111;
---card:rgba(255,255,255,0.1);
---text:#fff;
---accent:#ff4d6d;
---glow:#ff4d6d;
+ --bg:#111;
+ --card:rgba(255,255,255,0.1);
+ --text:#fff;
+ --accent:#ff4d6d;
+ --glow:#ff4d6d;
 }
 
 body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background:var(--bg);
-color:var(--text);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-transition:.5s;
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
+ overflow:hidden;
+ transition:0.6s;
 }
 
 .app{
-width:90%;
-max-width:420px;
-height:90vh;
-background:var(--card);
-border-radius:30px;
-padding:25px;
-display:flex;
-flex-direction:column;
-align-items:center;
-box-shadow:0 8px 32px rgba(0,0,0,0.5);
-backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,0.1);
-position:relative;
-overflow:hidden;
-transition:.4s;
+ width:90%;
+ max-width:420px;
+ height:90vh;
+ background:var(--card);
+ border-radius:30px;
+ padding:25px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ overflow:hidden;
+ box-shadow:0 8px 32px rgba(0,0,0,0.5);
+ backdrop-filter:blur(15px);
+ border:1px solid rgba(255,255,255,0.1);
+ position:relative;
+ box-sizing:border-box;
+ transition:0.4s;
 }
 
 button{
-border:none;
-cursor:pointer;
-font-family:'Poppins',sans-serif;
-transition:.3s;
-}
-
-.big-btn{
-margin-top:15px;
-padding:14px 0;
-width:100%;
-border-radius:15px;
-font-size:16px;
-background:var(--accent);
-color:#fff;
-font-weight:600;
+ border:none;
+ cursor:pointer;
+ font-family:'Poppins',sans-serif;
+ transition:0.3s;
 }
 
 .square-btn{
-height:120px;
-border-radius:20px;
-background:var(--accent);
-color:#fff;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:8px;
-font-weight:600;
-box-shadow:0 0 15px var(--glow);
-transition:.3s;
+ width:140px;
+ height:140px;
+ border-radius:20px;
+ background:var(--accent);
+ color:white;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ font-weight:600;
+ box-shadow:0 0 20px var(--glow);
 }
 
-.square-btn:hover{
-transform:scale(1.05);
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-width:100%;
-margin-top:20px;
+.big-btn{
+ width:100%;
+ padding:14px;
+ border-radius:15px;
+ background:var(--accent);
+ color:white;
+ font-weight:600;
+ margin-top:10px;
 }
 
 input{
-padding:16px;
-width:100%;
-border-radius:15px;
-border:none;
-margin-top:15px;
-font-size:16px;
-background:rgba(255,255,255,0.1);
-color:#fff;
-text-align:center;
+ width:100%;
+ padding:15px;
+ border-radius:15px;
+ border:none;
+ margin-top:15px;
+ background:rgba(255,255,255,0.1);
+ color:white;
+ text-align:center;
 }
 
-.floating-theme{
-position:absolute;
-top:20px;
-right:20px;
-font-size:22px;
-cursor:pointer;
+/* MEMORY LAYOUTS */
+.memories-container{
+ flex:1;
+ width:100%;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ overflow-y:auto;
+ padding-top:10px;
 }
 
-.memories{
-flex:1;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-overflow-y:auto;
-width:100%;
-padding-top:15px;
+.memories-container img{
+ width:100%;
+ height:140px;
+ object-fit:cover;
+ border-radius:15px;
+ cursor:pointer;
 }
 
-.memories img{
-width:100%;
-height:140px;
-object-fit:cover;
-border-radius:15px;
-border:3px solid #fff;
-cursor:pointer;
+.memories-container.polaroid img{
+ background:white;
+ padding:10px 10px 30px;
+ border-radius:5px;
 }
 
-.letter-card{
-width:100%;
-border-radius:20px;
-padding:15px;
-display:flex;
-align-items:center;
-gap:15px;
-margin-bottom:15px;
-cursor:pointer;
-box-shadow:0 8px 20px rgba(0,0,0,0.3);
-transition:.3s;
+.memories-container.pinterest{
+ column-count:2;
+ column-gap:10px;
+ display:block;
 }
 
-.letter-card:hover{
-transform:scale(1.03);
+.memories-container.pinterest img{
+ width:100%;
+ margin-bottom:10px;
 }
 
-.profile{
-width:70px;
-height:70px;
-border-radius:50%;
-object-fit:cover;
-border:3px solid #fff;
+/* Flip */
+.flip-card{
+ perspective:1000px;
 }
 
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100vw;
-height:100vh;
-background:rgba(0,0,0,0.95);
-display:flex;
-justify-content:center;
-align-items:center;
-opacity:0;
-pointer-events:none;
-transition:.3s;
+.flip-inner{
+ position:relative;
+ width:100%;
+ height:140px;
+ transition:transform 0.6s;
+ transform-style:preserve-3d;
 }
 
-.overlay.show{
-opacity:1;
-pointer-events:all;
+.flip-card:hover .flip-inner{
+ transform:rotateY(180deg);
 }
 
-.overlay img{
-max-width:90%;
-max-height:85%;
-border-radius:15px;
+.flip-front, .flip-back{
+ position:absolute;
+ width:100%;
+ height:100%;
+ backface-visibility:hidden;
+ border-radius:15px;
+}
+
+.flip-back{
+ transform:rotateY(180deg);
+ background:var(--accent);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-weight:600;
+}
+
+/* Top Right Controls */
+.memory-controls{
+ position:absolute;
+ top:20px;
+ right:20px;
+ display:flex;
+ gap:10px;
+}
+
+.memory-btn{
+ width:40px;
+ height:40px;
+ border-radius:12px;
+ background:var(--accent);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ color:white;
+ cursor:pointer;
+ box-shadow:0 0 10px var(--glow);
+}
+
+/* Fullscreen */
+.fullscreen{
+ position:fixed;
+ top:0;
+ left:0;
+ width:100vw;
+ height:100vh;
+ background:rgba(0,0,0,0.95);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ opacity:0;
+ pointer-events:none;
+ transition:0.3s;
+}
+
+.fullscreen.show{
+ opacity:1;
+ pointer-events:all;
+}
+
+.fullscreen img{
+ max-width:90%;
+ max-height:85%;
+ border-radius:15px;
 }
 </style>
 </head>
@@ -187,147 +214,132 @@ border-radius:15px;
 <body>
 
 <div class="app" id="app">
-<h1 style="letter-spacing:3px;">PRIVATE HAVEN</h1>
-<input type="password" id="pw" placeholder="Enter Password">
-<button class="big-btn" onclick="unlock()">Unlock</button>
-<p id="msg" style="color:var(--accent);"></p>
+ <div id="lockScreen" style="width:100%;text-align:center;">
+   <h1 style="letter-spacing:3px;">PRIVATE HAVEN</h1>
+   <input type="password" id="pw" placeholder="Enter Password">
+   <button class="big-btn" onclick="unlock()">Unlock</button>
+   <p id="msg"></p>
+ </div>
 </div>
 
-<div class="overlay" id="overlay" onclick="closeFS()">
-<img id="fsImg">
+<div class="fullscreen" id="fs" onclick="closeFS()">
+ <img id="fsImg">
 </div>
 
 <script>
-
 let memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
-const targetDate=new Date("December 31, 2025 00:00:00").getTime();
+let currentLayout="normal";
 
 function unlock(){
-if(document.getElementById("pw").value==="1234"){
-loadHome();
-}else{
-document.getElementById("msg").innerText="Access Denied.";
+ if(document.getElementById("pw").value==="1234") loadHome();
+ else document.getElementById("msg").innerText="Wrong Password";
 }
+
+function fade(content){
+ const app=document.getElementById("app");
+ app.style.opacity=0;
+ setTimeout(()=>{
+  app.innerHTML=content;
+  app.style.opacity=1;
+ },200);
 }
 
 function loadHome(){
-document.getElementById("app").innerHTML=`
-<div class="floating-theme" onclick="themeMenu()">🎨</div>
-<h2 style="margin-top:40px;">Welcome Back ❤️</h2>
-<div class="grid">
-<button class="square-btn" onclick="showBirthday()">🎂 Birthday</button>
-<button class="square-btn" onclick="showLetters()">💌 Letters</button>
-<button class="square-btn" onclick="showMemories()">📸 Memories</button>
-<button class="square-btn" onclick="showUs()">❤️ Us</button>
-</div>
-`;
+ fade(`
+   <h2 style="margin-top:40px;">Welcome Back ❤️</h2>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;width:100%;">
+     <button class="square-btn" onclick="showBirthday()">🎂 Birthday</button>
+     <button class="square-btn" onclick="showLetters()">💌 Letters</button>
+     <button class="square-btn" onclick="showMemories()">📸 Memories</button>
+     <button class="square-btn">❤️ Us</button>
+   </div>
+ `);
 }
 
 function showMemories(){
-let html=`<button class="big-btn" onclick="loadHome()">← Back</button>
-<h2>Gallery 📸</h2>
-<div class="memories">`;
+ let html=`
+   <button class="big-btn" onclick="loadHome()">← Back</button>
+   <h2 style="margin:10px 0;">Gallery 📸</h2>
 
-memories.forEach(src=>{
-html+=`<img src="${src}" onclick="openFS('${src}')">`;
-});
+   <div class="memory-controls">
+     <div class="memory-btn" onclick="toggleLayout()">🖼️</div>
+     <div class="memory-btn" onclick="showMilestones()">⭐</div>
+   </div>
 
-html+=`</div>`;
-document.getElementById("app").innerHTML=html;
+   <div class="memories-container" id="memoryBox">
+ `;
+
+ memories.forEach(src=>{
+  html+=`
+   <div class="flip-card">
+    <div class="flip-inner">
+     <div class="flip-front">
+       <img src="${src}" onclick="openFS('${src}')">
+     </div>
+     <div class="flip-back">
+       Our Memory 💖
+     </div>
+    </div>
+   </div>
+  `;
+ });
+
+ html+=`</div>`;
+ fade(html);
+}
+
+function toggleLayout(){
+ const box=document.getElementById("memoryBox");
+ if(!box) return;
+
+ if(currentLayout==="normal"){
+  box.classList.add("polaroid");
+  currentLayout="polaroid";
+ }
+ else if(currentLayout==="polaroid"){
+  box.classList.remove("polaroid");
+  box.classList.add("pinterest");
+  currentLayout="pinterest";
+ }
+ else{
+  box.classList.remove("pinterest");
+  currentLayout="normal";
+ }
+}
+
+function showMilestones(){
+ fade(`
+   <button class="big-btn" onclick="showMemories()">← Back</button>
+   <h2 style="margin-top:20px;">Our Milestones 🏆</h2>
+   <p style="margin-top:20px;text-align:center;">Add your special dates here ✨</p>
+ `);
 }
 
 function showLetters(){
-document.getElementById("app").innerHTML=`
-<button class="big-btn" onclick="loadHome()">← Back</button>
-<h2 style="font-family:'Dancing Script';">Letters 💌</h2>
-
-<div class="letter-card" onclick="openFS('naqii_letter.jpg')" style="background:linear-gradient(135deg,#ffafbd,#ffc3a0);">
-<img src="naqii_profile.jpg" class="profile">
-<div>
-<h3 style="font-family:'Dancing Script';margin:0;">By Naqii</h3>
-<p style="margin:5px 0 0;">Hello Kitty Style 🎀</p>
-</div>
-</div>
-
-<div class="letter-card" onclick="openFS('shivam_letter.jpg')" style="background:linear-gradient(135deg,#ed213a,#2376b0);">
-<img src="shivam_profile.jpg" class="profile">
-<div>
-<h3 style="margin:0;">By Shivam</h3>
-<p style="margin:5px 0 0;">Spiderman Style 🕸️</p>
-</div>
-</div>
-`;
-}
-
-function showUs(){
-document.getElementById("app").innerHTML=`
-<button class="big-btn" onclick="loadHome()">← Back</button>
-<h2>Us ❤️</h2>
-<p style="text-align:center;margin-top:20px;">
-Our tiny little universe inside Private Haven ✨
-</p>
-`;
+ fade(`
+   <button class="big-btn" onclick="loadHome()">← Back</button>
+   <h2 style="margin-top:20px;">Letters 💌</h2>
+   <p style="margin-top:20px;">Upload your love letters here.</p>
+ `);
 }
 
 function showBirthday(){
-document.getElementById("app").innerHTML=`
-<button class="big-btn" onclick="loadHome()">← Back</button>
-<h2>Countdown 🎁</h2>
-<div id="timer" style="display:flex;gap:10px;margin-top:20px;"></div>
-`;
-startCountdown();
-}
-
-function startCountdown(){
-function update(){
-const now=new Date().getTime();
-const diff=targetDate-now;
-
-const d=Math.floor(diff/(1000*60*60*24));
-const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-const m=Math.floor((diff%(1000*60*60))/(1000*60));
-
-const t=document.getElementById("timer");
-if(t){
-t.innerHTML=`
-<div style="background:var(--accent);padding:10px;border-radius:10px;flex:1;text-align:center;">${d}d</div>
-<div style="background:var(--accent);padding:10px;border-radius:10px;flex:1;text-align:center;">${h}h</div>
-<div style="background:var(--accent);padding:10px;border-radius:10px;flex:1;text-align:center;">${m}m</div>
-`;
-}
-}
-update();
-setInterval(update,60000);
-}
-
-function themeMenu(){
-document.getElementById("app").innerHTML=`
-<button class="big-btn" onclick="loadHome()">← Back</button>
-<h3>Themes</h3>
-<button class="big-btn" onclick="setTheme('#111','#ff4d6d','rgba(255,255,255,0.1)','#fff')">Midnight Pink</button>
-<button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','rgba(255,255,255,0.5)','#333')">Soft Cotton</button>
-<button class="big-btn" onclick="setTheme('#0a0a0f','#1c8adb','rgba(15,20,30,0.6)','#fff')">Nightwing</button>
-`;
-}
-
-function setTheme(bg,accent,card,text){
-document.documentElement.style.setProperty('--bg',bg);
-document.documentElement.style.setProperty('--accent',accent);
-document.documentElement.style.setProperty('--glow',accent);
-document.documentElement.style.setProperty('--card',card);
-document.documentElement.style.setProperty('--text',text);
-loadHome();
+ fade(`
+   <button class="big-btn" onclick="loadHome()">← Back</button>
+   <h2 style="margin-top:20px;">Birthday Surprise 🎁</h2>
+   <p style="margin-top:20px;">Your special animation will go here.</p>
+ `);
 }
 
 function openFS(src){
-document.getElementById("fsImg").src=src;
-document.getElementById("overlay").classList.add("show");
+ document.getElementById("fsImg").src=src;
+ document.getElementById("fs").classList.add("show");
 }
 
 function closeFS(){
-document.getElementById("overlay").classList.remove("show");
+ document.getElementById("fs").classList.remove("show");
 }
-
 </script>
+
 </body>
 </html>
