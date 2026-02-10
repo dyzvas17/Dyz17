@@ -1,272 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivam & Naqii | Forever Haven</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #ff4d6d; --text: #ffffff;
-            --glass: rgba(15, 23, 42, 0.75);
-            --border: rgba(255, 255, 255, 0.2);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Outfit', sans-serif; color: var(--text);
-            overflow: hidden; display: flex; justify-content: center; align-items: center;
-            background: #000;
-        }
-
-        /* --- ANIME BACKGROUND --- */
-        .video-bg {
-            position: fixed; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1;
-            filter: brightness(0.6) contrast(1.1);
-            background: url('https://i.pinimg.com/originals/f3/04/70/f30470eb0bcda030636259f93310069e.gif') no-repeat center center/cover;
-        }
-
-        .app-container {
-            width: 90%; max-width: 410px; height: 90vh;
-            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid var(--border); border-radius: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-            position: relative; overflow: hidden;
-        }
-
-        .screen {
-            position: absolute; inset: 0; padding: 30px;
-            display: flex; flex-direction: column; align-items: center;
-            opacity: 0; pointer-events: none; transform: scale(1.1);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow-y: auto; padding-bottom: 110px;
-        }
-        .screen.active { opacity: 1; pointer-events: all; transform: scale(1); }
-
-        .script-font { font-family: 'Dancing Script', cursive; text-shadow: 0 0 15px var(--accent); }
-
-        /* --- MEMORY STYLES --- */
-        .memories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .memory-item {
-            width: 100%; height: 140px; border-radius: 20px; border: 2px solid #fff;
-            object-fit: cover; cursor: pointer; transition: 0.3s;
-            animation: popIn 0.5s ease forwards;
-        }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
-        .add-btn {
-            width: 100%; height: 140px; border-radius: 20px; border: 2px dashed var(--border);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.05); cursor: pointer; color: var(--accent);
-        }
-
-        /* --- UI TILES --- */
-        .tile-btn {
-            background: rgba(255,255,255,0.1); border-radius: 25px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 1px solid var(--border); transition: 0.3s; cursor: pointer;
-            aspect-ratio: 1; background-size: cover; background-position: center;
-        }
-        .tile-btn:active { transform: scale(0.92); }
-
-        .relationship-counter {
-            background: linear-gradient(135deg, var(--accent), #7000ff);
-            width: 100%; padding: 20px; border-radius: 25px; margin: 20px 0;
-            text-align: center; box-shadow: 0 10px 30px rgba(255,77,109,0.4);
-        }
-
-        #drawCanvas { background: rgba(255, 255, 255, 0.05); border-radius: 25px; touch-action: none; border: 2px solid var(--border); }
-
-        .music-bar {
-            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
-            width: 85%; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px);
-            border-radius: 50px; padding: 12px 25px; display: flex; align-items: center;
-            border: 1px solid var(--border); z-index: 100;
-        }
-        .vinyl { width: 40px; height: 40px; background: #222; border-radius: 50%; border: 2px solid var(--accent); animation: spin 4s linear infinite paused; }
-        .vinyl.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* Fullscreen Overlay */
-        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; place-items: center; z-index: 2000; }
-        #overlay img { max-width: 95%; max-height: 85%; border-radius: 15px; border: 2px solid white; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Haven</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111; --card:#1c1c1c; --text:#fff; --accent:#ff4d6d; --glow:#ff4d6d;
+}
+body{
+  margin:0; font-family:'Poppins', sans-serif; background:var(--bg); color:var(--text);
+  display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden;
+  transition:0.5s;
+}
+.app{
+  width:90%; max-width:420px; height:90vh; background:var(--card); border-radius:25px;
+  padding:20px; display:flex; flex-direction:column; align-items:center; transition:0.5s; overflow:hidden;
+}
+button{border:none; cursor:pointer; transition:0.3s;}
+.big-btn{margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px; background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow);}
+.square-btn{width:140px; height:140px; margin:10px; border-radius:15px; font-size:18px; background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; box-shadow:0 0 12px var(--glow);}
+.square-btn:hover,.big-btn:hover{transform:scale(1.05);}
+.floating-theme{position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px; background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff; box-shadow:0 0 12px var(--glow); cursor:pointer;}
+input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px;}
+.memories-container{flex:1; display:grid; grid-template-columns:1fr 1fr; gap:10px; overflow-y:auto; width:100%;}
+.memories-container img{width:100%; height:140px; object-fit:cover; border-radius:12px; cursor:pointer;}
+.fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:0.3s;}
+.fullscreen-overlay.show{opacity:1;pointer-events:all;}
+.fullscreen-overlay img{max-width:95%; max-height:90%; border-radius:12px;}
+</style>
 </head>
 <body>
 
-    <div class="video-bg"></div>
+<div class="app" id="app">
+  <h2>Enter Password</h2>
+  <input type="password" id="pw" placeholder="Only you know...">
+  <button class="big-btn" onclick="unlock()">Unlock</button>
+  <p id="msg"></p>
+</div>
 
-    <div class="app-container">
-        
-        <div id="screen-lock" class="screen active" style="justify-content: center;">
-            <h1 class="script-font" style="font-size: 45px;">Haven</h1>
-            <input type="password" id="pass" style="background:rgba(255,255,255,0.1); border:1.5px solid var(--border); padding:15px; border-radius:15px; color:white; text-align:center; outline:none;" placeholder="Secret Code">
-            <button class="tile-btn" style="width: 70px; height: 70px; border-radius: 50%; margin-top: 30px;" onclick="unlock()">➔</button>
-        </div>
+<div class="fullscreen-overlay" id="fsOverlay" onclick="closeFullScreen()">
+  <img id="fsImg" src="">
+</div>
 
-        <div id="screen-home" class="screen">
-            <h2 class="script-font" style="font-size: 35px; width: 100%;">Hi Love ❤️</h2>
-            
-            <div class="relationship-counter">
-                <h3 id="days" style="font-size: 42px; margin: 0;">0</h3>
-                <p style="margin: 0; font-size: 12px; letter-spacing: 2px;">DAYS TOGETHER</p>
-            </div>
+<script>
+let memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%;">
-                <div class="tile-btn" onclick="nav('screen-letters')"><span>💌</span><br>Letters</div>
-                <div class="tile-btn" onclick="nav('screen-gallery')"><span>📸</span><br>Gallery</div>
-                <div class="tile-btn" onclick="nav('screen-timeline')"><span>⏳</span><br>Journey</div>
-                <div class="tile-btn" id="doodle-tile" onclick="nav('screen-canvas')">
-                    <span id="d-icon">🎨</span><br><span id="d-text">Doodle</span>
-                </div>
-            </div>
-        </div>
+function unlock(){
+  const pw=document.getElementById("pw").value;
+  if(pw==="1234") loadHome();
+  else document.getElementById("msg").innerText="Wrong password.";
+}
 
-        <div id="screen-gallery" class="screen">
-            <button style="align-self: flex-start; background: none; border: none; color: white; font-size: 28px;" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font" style="font-size: 32px;">Memories</h2>
-            <br>
-            <div class="memories-grid" id="memories-container">
-                <label class="add-btn">
-                    <input type="file" accept="image/*" style="display:none" onchange="uploadImage(this)">
-                    <span style="font-size: 30px;">+</span>
-                    <small>Add Memory</small>
-                </label>
-                <img src="memory1.jpg" class="memory-item" onclick="view(this.src)">
-                <img src="memory2.jpg" class="memory-item" onclick="view(this.src)">
-                <img src="memory3.jpg" class="memory-item" onclick="view(this.src)">
-                <img src="memory4.jpg" class="memory-item" onclick="view(this.src)">
-            </div>
-        </div>
+function fadeSwitch(newContent){
+  const app=document.getElementById("app");
+  app.style.opacity=0;
+  setTimeout(()=>{
+    app.innerHTML=newContent;
+    app.style.opacity=1;
+  },300);
+}
 
-        <div id="screen-canvas" class="screen">
-            <button style="align-self: flex-start; background: none; border: none; color: white; font-size: 28px;" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Doodle</h2><br>
-            <canvas id="drawCanvas" width="320" height="350"></canvas>
-            <div style="display: flex; gap: 15px; margin-top: 20px;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #ff4d6d; border: 2px solid white;" onclick="setPen('#ff4d6d')"></div>
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #3b82f6; border: 2px solid white;" onclick="setPen('#3b82f6')"></div>
-                <button onclick="clearC()" style="background: none; border: 1px solid white; color: white; padding: 0 20px; border-radius: 12px;">Clear</button>
-            </div>
-        </div>
-
-        <div id="m-bar" class="music-bar" style="display: none;">
-            <div class="vinyl" id="vinyl"></div>
-            <div style="flex: 1; margin-left: 15px;">
-                <b style="font-size: 14px;">Our Special Song</b><br>
-                <small id="m-status" style="opacity: 0.6;">Tap to Play</small>
-            </div>
-            <button onclick="toggleM()" style="background: none; border: none; color: white; font-size: 24px;">⏯️</button>
-        </div>
-
+function loadHome(){
+  fadeSwitch(`
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
+      <button class="square-btn" onclick="showLetters()">💌 Letters</button>
+      <button class="square-btn" onclick="showMemories()">📸 Memories</button>
+      <button class="square-btn" onclick="showUs()">❤️ Us</button>
     </div>
+  `);
+}
 
-    <div id="overlay" onclick="this.style.display='none'"><img id="o-img"></div>
-    <audio id="music" loop><source src="us.mp3"></audio>
+function showLetters(){
+  fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Letters</h2>
+  <div style="margin-top:20px;">
+    <div onclick="openFullScreen('naqii_letter.jpg')">By Naqii ❤️</div>
+    <div onclick="openFullScreen('shivam_letter.jpg')">By Shivam ❤️</div>
+  </div>`);
+}
 
-    <script>
-        const START = new Date("2023-12-31"); 
-        const audio = document.getElementById('music');
-        const canvas = document.getElementById('drawCanvas');
-        const ctx = canvas.getContext('2d');
-        let painting = false;
+function showMemories(){
+  let html=`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Gallery</h2><div class="memories-container">`;
+  memories.forEach(src=>html+=`<img src="${src}" onclick="openFullScreen('${src}')">`);
+  html+=`</div>`;
+  fadeSwitch(html);
+}
 
-        // --- DATABASE LOGIC (INDEXEDDB) ---
-        let db;
-        const request = indexedDB.open("MemoriesDB", 1);
-        request.onupgradeneeded = e => {
-            db = e.target.result;
-            db.createObjectStore("photos", { autoIncrement: true });
-        };
-        request.onsuccess = e => {
-            db = e.target.result;
-            loadStoredImages();
-        };
+function showUs(){
+  fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Us ❤️</h2><p>All our special memories together.</p>`);
+}
 
-        function nav(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(id !== 'screen-lock') document.getElementById('m-bar').style.display = 'flex';
-        }
+function openFullScreen(src){
+  document.getElementById("fsImg").src=src;
+  document.getElementById("fsOverlay").classList.add("show");
+}
+function closeFullScreen(){
+  document.getElementById("fsOverlay").classList.remove("show");
+}
 
-        function unlock() {
-            if(document.getElementById('pass').value === "1234") { nav('screen-home'); updateDoodle(); }
-        }
+function themeMenu(){
+  fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h3>Themes</h3>
+  <button class="big-btn" onclick="setTheme('#111','#ff4d6d','#1c1c1c','#fff')">Dark Pink</button>
+  <button class="big-btn" onclick="setTheme('#fff','#ff85a2','#f5f5f5','#333')">Soft</button>`);
+}
 
-        // --- UPLOAD LOGIC ---
-        function uploadImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const base64 = e.target.result;
-                    const transaction = db.transaction(["photos"], "readwrite");
-                    transaction.objectStore("photos").add(base64);
-                    transaction.oncomplete = () => {
-                        displayImage(base64);
-                    };
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function loadStoredImages() {
-            const transaction = db.transaction(["photos"], "readonly");
-            transaction.objectStore("photos").openCursor().onsuccess = e => {
-                const cursor = e.target.result;
-                if (cursor) {
-                    displayImage(cursor.value);
-                    cursor.continue();
-                }
-            };
-        }
-
-        function displayImage(src) {
-            const img = document.createElement('img');
-            img.src = src;
-            img.className = 'memory-item';
-            img.onclick = () => view(src);
-            document.getElementById('memories-container').appendChild(img);
-        }
-
-        // --- DRAWING LOGIC ---
-        function getPos(e) {
-            const r = canvas.getBoundingClientRect();
-            return { x: (e.clientX || e.touches[0].clientX) - r.left, y: (e.clientY || e.touches[0].clientY) - r.top };
-        }
-        canvas.onmousedown = (e) => { painting = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-        canvas.onmousemove = (e) => { if(!painting) return; const p = getPos(e); ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineTo(p.x, p.y); ctx.stroke(); };
-        window.onmouseup = () => { painting = false; localStorage.setItem('drawn', canvas.toDataURL()); updateDoodle(); };
-        
-        // Touch support
-        canvas.ontouchstart = (e) => { painting = true; ctx.beginPath(); const p = getPos(e.touches[0]); ctx.moveTo(p.x, p.y); e.preventDefault(); };
-        canvas.ontouchmove = (e) => { if(!painting) return; const p = getPos(e.touches[0]); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); };
-        canvas.ontouchend = () => { painting = false; localStorage.setItem('drawn', canvas.toDataURL()); updateDoodle(); };
-
-        function setPen(c) { ctx.strokeStyle = c; }
-        function clearC() { ctx.clearRect(0,0,320,350); localStorage.removeItem('drawn'); updateDoodle(); }
-
-        function updateDoodle() {
-            const img = localStorage.getItem('drawn');
-            const tile = document.getElementById('doodle-tile');
-            if(img) {
-                tile.style.backgroundImage = `url(${img})`;
-                document.getElementById('d-icon').style.display = 'none';
-                document.getElementById('d-text').style.background = 'rgba(0,0,0,0.5)';
-            }
-        }
-
-        function toggleM() {
-            if(audio.paused) { audio.play(); document.getElementById('vinyl').classList.add('playing'); document.getElementById('m-status').innerText = 'Playing'; }
-            else { audio.pause(); document.getElementById('vinyl').classList.remove('playing'); document.getElementById('m-status').innerText = 'Paused'; }
-        }
-
-        function view(s) { document.getElementById('o-img').src = s; document.getElementById('overlay').style.display = 'grid'; }
-
-        document.getElementById('days').innerText = Math.floor((new Date() - START)/(1000*60*60*24));
-    
+function setTheme(bg,accent,card,text){
+  document.documentElement.style.setProperty('--bg',bg);
+  document.documentElement.style.setProperty('--accent',accent);
+  document.documentElement.style.setProperty('--glow',accent);
+  document.documentElement.style.setProperty('--card',card);
+  document.documentElement.style.setProperty('--text',text);
+  loadHome();
+}
 </script>
 </body>
 </html>
