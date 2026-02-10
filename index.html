@@ -6,121 +6,82 @@
     <title>Shivam & Naqii | Private Haven</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. CORE VARIABLES & RESET --- */
         :root {
-            --bg-dark: #0f172a;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --bg: radial-gradient(circle at top right, #1e1b4b, #000);
+            --card: rgba(255, 255, 255, 0.08);
+            --accent: #ff4d6d;
             --text: #ffffff;
-            --pink: #ff4d6d;    /* Naqii's Color */
-            --blue: #3b82f6;    /* Shivam's Color */
-            --red: #ef4444;     /* Spiderman Red */
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             margin: 0; padding: 0; font-family: 'Outfit', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #000);
-            color: var(--text); height: 100vh; overflow: hidden;
+            background: var(--bg); color: var(--text);
+            height: 100vh; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
+            transition: 0.8s ease;
         }
 
-        /* --- 2. PARTICLE BACKGROUND --- */
-        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: white; border-radius: 50%; opacity: 0.3; animation: floatUp linear infinite; }
-        @keyframes floatUp { from { transform: translateY(100vh) scale(0.5); opacity: 0; } to { transform: translateY(-10vh) scale(1); opacity: 0.5; } }
+        @keyframes floatUp { from { transform: translateY(100vh); opacity: 0; } to { transform: translateY(-10vh); opacity: 0.5; } }
 
-        /* --- 3. THE GLASS APP CONTAINER --- */
         .app-container {
             width: 90%; max-width: 400px; height: 92vh;
-            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: var(--card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 35px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             position: relative; overflow: hidden; display: flex; flex-direction: column;
         }
 
-        /* --- 4. NAVIGATION & SCREENS --- */
         .screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            padding: 25px; display: flex; flex-direction: column; align-items: center;
+            position: absolute; inset: 0; padding: 25px; 
+            display: flex; flex-direction: column; align-items: center;
             opacity: 0; pointer-events: none; transition: 0.5s ease;
-            overflow-y: auto; padding-bottom: 100px; /* Space for music player */
+            overflow-y: auto; padding-bottom: 100px;
         }
         .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
         
-        /* Typography */
-        h1, h2, h3 { margin: 0; text-align: center; }
         .script-font { font-family: 'Dancing Script', cursive; }
-        .sub-text { font-size: 14px; opacity: 0.7; margin-top: 5px; text-align: center; }
-
-        /* --- 5. UI COMPONENTS --- */
-        /* Buttons */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; }
+        
         .tile-btn {
             aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 20px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
+            background-size: cover; background-position: center; position: relative;
         }
-        .tile-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
-        .tile-icon { font-size: 32px; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+        .tile-btn span { z-index: 2; }
+        .tile-icon { font-size: 32px; margin-bottom: 5px; }
         
-        .back-btn { align-self: flex-start; background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-bottom: 10px; }
-        
-        /* Inputs */
-        input.glass-input {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            padding: 15px; border-radius: 12px; color: white; width: 80%;
-            text-align: center; font-size: 18px; margin: 20px 0; outline: none;
-        }
-
-        /* --- 6. SPECIFIC SECTIONS --- */
-        /* Home Stats */
         .relationship-counter {
-            background: linear-gradient(135deg, var(--pink), var(--blue));
-            width: 100%; padding: 20px; border-radius: 25px; margin-top: 20px;
-            text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: var(--accent); width: 100%; padding: 20px; 
+            border-radius: 25px; margin-top: 20px; text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        /* Letters */
         .letter-card {
-            width: 100%; height: 140px; margin-bottom: 15px; border-radius: 20px;
-            position: relative; overflow: hidden; display: flex; align-items: center;
-            border: 1px solid rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s;
+            width: 100%; height: 120px; margin-bottom: 15px; border-radius: 20px;
+            display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.3);
+            cursor: pointer; padding: 15px;
         }
-        .letter-card:active { transform: scale(0.98); }
-        .naqii-theme { background: linear-gradient(135deg, #ff9a9e, #fad0c4); }
-        .shivam-theme { background: linear-gradient(135deg, #1e3c72, #2a5298); }
-        
-        .pfp-wrapper { width: 80px; height: 80px; margin-left: 20px; position: relative; }
-        .pfp { width: 100%; height: 100%; border-radius: 50%; border: 3px solid white; object-fit: cover; }
-        .glow-ring { position: absolute; inset: -5px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.5); animation: spin 10s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Timeline */
-        .timeline { border-left: 2px solid rgba(255,255,255,0.2); margin-left: 20px; padding-left: 20px; margin-top: 20px; width: 100%; }
-        .event { margin-bottom: 30px; position: relative; }
-        .event::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: var(--pink); border-radius: 50%; box-shadow: 0 0 10px var(--pink); }
-        .date { font-size: 12px; opacity: 0.6; }
-
-        /* Canvas */
         #drawCanvas { background: rgba(255,255,255,0.05); border-radius: 20px; touch-action: none; border: 1px solid rgba(255,255,255,0.2); }
-        .tools { display: flex; gap: 10px; margin-top: 15px; }
-        .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; cursor: pointer; }
-
-        /* Music Player (Floating) */
+        
         .music-player {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+            width: 85%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
             border-radius: 50px; padding: 10px 20px; display: flex; align-items: center;
-            justify-content: space-between; border: 1px solid rgba(255,255,255,0.1); z-index: 100;
+            border: 1px solid rgba(255,255,255,0.1); z-index: 100;
         }
-        .vinyl { width: 40px; height: 40px; background: #111; border-radius: 50%; border: 2px solid #333; animation: spin 3s linear infinite; animation-play-state: paused; display: flex; justify-content: center; align-items: center; }
-        .vinyl::after { content: ''; width: 10px; height: 10px; background: var(--pink); border-radius: 50%; }
+        .vinyl { width: 35px; height: 35px; background: #111; border-radius: 50%; animation: spin 3s linear infinite; animation-play-state: paused; }
         .vinyl.playing { animation-play-state: running; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Overlays */
-        .fullscreen-overlay { position: fixed; inset: 0; background: black; z-index: 200; display: none; place-items: center; }
-        .fullscreen-overlay img { max-width: 100%; max-height: 100%; }
-
+        .theme-dot { width: 100%; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: none; color: white; cursor: pointer; font-weight: bold; }
+        .back-btn { align-self: flex-start; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
+        input.glass-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; color: white; text-align: center; margin: 20px 0; outline: none; }
     </style>
 </head>
 <body>
@@ -131,252 +92,168 @@
         
         <div id="screen-lock" class="screen active" style="justify-content: center;">
             <h1 class="script-font" style="font-size: 40px;">Private Haven</h1>
-            <p class="sub-text">Shivam & Naqii</p>
-            <input type="password" id="password" class="glass-input" placeholder="Enter Secret Code">
-            <div class="tile-btn" style="width: 60px; height: 60px; border-radius: 50%; margin-top: 20px;" onclick="checkPass()">
-                ➔
-            </div>
-            <p id="error-msg" style="color: var(--pink); margin-top: 10px; font-size: 14px;"></p>
+            <input type="password" id="password" class="glass-input" placeholder="Secret Code">
+            <button class="tile-btn" style="width: 60px; height: 60px; border-radius: 50%;" onclick="checkPass()">➔</button>
         </div>
 
         <div id="screen-home" class="screen">
-            <h2 class="script-font" style="font-size: 32px; margin-top: 20px;">Welcome Home ❤️</h2>
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <h2 class="script-font">Hello Love ❤️</h2>
+                <span onclick="nav('screen-themes')" style="cursor:pointer; font-size: 20px;">🎨</span>
+            </div>
             
             <div class="relationship-counter">
-                <h3 id="days-count" style="font-size: 36px; font-weight: 700;">0</h3>
-                <p class="sub-text" style="color: white; opacity: 0.9;">Days of Loving You</p>
+                <h3 id="days-count" style="font-size: 32px; margin:0;">0</h3>
+                <p style="margin:0; font-size: 12px; opacity: 0.8;">Days Together</p>
             </div>
 
             <div class="btn-grid">
-                <div class="tile-btn" onclick="nav('screen-letters')">
-                    <span class="tile-icon">💌</span>
-                    <span>Letters</span>
-                </div>
-                <div class="tile-btn" onclick="nav('screen-gallery')">
-                    <span class="tile-icon">📸</span>
-                    <span>Memories</span>
-                </div>
-                <div class="tile-btn" onclick="nav('screen-timeline')">
-                    <span class="tile-icon">⏳</span>
-                    <span>Journey</span>
-                </div>
-                <div class="tile-btn" onclick="nav('screen-canvas')">
-                    <span class="tile-icon">🎨</span>
-                    <span>Doodle</span>
+                <div class="tile-btn" onclick="nav('screen-letters')"><span>💌</span><span>Letters</span></div>
+                <div class="tile-btn" onclick="nav('screen-gallery')"><span>📸</span><span>Gallery</span></div>
+                <div class="tile-btn" onclick="nav('screen-timeline')"><span>⏳</span><span>Journey</span></div>
+                <div class="tile-btn" id="doodle-tile" onclick="nav('screen-canvas')">
+                    <span id="d-icon" class="tile-icon">🎨</span>
+                    <span id="d-text">Doodle</span>
                 </div>
             </div>
+        </div>
+
+        <div id="screen-themes" class="screen">
+            <button class="back-btn" onclick="nav('screen-home')">←</button>
+            <h2 class="script-font">Choose a Vibe</h2>
+            <br>
+            <button class="theme-dot" style="background: #ff4d6d;" onclick="setTheme('radial-gradient(circle at top right, #1e1b4b, #000)', '#ff4d6d', 'rgba(255,255,255,0.08)', '#fff')">Midnight Pink</button>
+            <button class="theme-dot" style="background: #ff85a2;" onclick="setTheme('#ffeef2', '#ff85a2', 'rgba(255,255,255,0.6)', '#333')">Cotton Candy</button>
+            <button class="theme-dot" style="background: #ef4444;" onclick="setTheme('#050505', '#ef4444', 'rgba(20,20,20,0.8)', '#fff')">Hero Night</button>
         </div>
 
         <div id="screen-letters" class="screen">
             <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Heart to Heart</h2>
-            <br>
-
-            <div class="letter-card naqii-theme" onclick="openImage('naqii_letter.jpg')">
-                <div class="pfp-wrapper">
-                    <div class="glow-ring"></div>
-                    <img src="naqii_profile.jpg" class="pfp" alt="Naqii">
-                </div>
-                <div style="margin-left: 15px;">
-                    <h3 class="script-font" style="text-align: left; font-size: 24px;">By Naqii</h3>
-                    <p style="font-size: 12px; margin: 0;">Tap to read my heart 🎀</p>
-                </div>
+            <h2 class="script-font">Our Letters</h2>
+            <div class="letter-card" style="background: linear-gradient(to right, #ff9a9e, #fad0c4);" onclick="openImg('naqii_letter.jpg')">
+                <img src="naqii_profile.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid white;">
+                <div style="margin-left:15px; color: white;"><b>By Naqii</b><br><small>Tap to read 🎀</small></div>
             </div>
-
-            <div class="letter-card shivam-theme" onclick="openImage('shivam_letter.jpg')">
-                <div class="pfp-wrapper">
-                    <div class="glow-ring"></div>
-                    <img src="shivam_profile.jpg" class="pfp" alt="Shivam">
-                </div>
-                <div style="margin-left: 15px;">
-                    <h3 class="script-font" style="text-align: left; font-size: 24px;">By Shivam</h3>
-                    <p style="font-size: 12px; margin: 0;">Tap to read my heart 🕸️</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="screen-timeline" class="screen">
-            <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font" style="font-size: 28px;">Our Journey 🌍</h2>
-            <br>
-            <div class="timeline">
-                <div class="event">
-                    <span class="date">Day 1</span>
-                    <h3>We Met ❤️</h3>
-                    <p>The day everything changed.</p>
-                </div>
-                <div class="event">
-                    <span class="date">Memory 2</span>
-                    <h3>First Date 🌟</h3>
-                    <p>Best night ever.</p>
-                </div>
-                <div class="event">
-                    <span class="date">Today</span>
-                    <h3>Still Loving You</h3>
-                    <p>And forever will.</p>
-                </div>
+            <div class="letter-card" style="background: linear-gradient(to right, #1e3c72, #2a5298);" onclick="openImg('shivam_letter.jpg')">
+                <img src="shivam_profile.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid white;">
+                <div style="margin-left:15px; color: white;"><b>By Shivam</b><br><small>Tap to read 🕸️</small></div>
             </div>
         </div>
 
         <div id="screen-gallery" class="screen">
             <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Memories 📸</h2>
+            <h2 class="script-font">Gallery</h2>
             <div class="btn-grid">
-                <div class="tile-btn" onclick="openImage('memory1.jpg')"><img src="memory1.jpg" style="width:100%; border-radius:10px;"></div>
-                <div class="tile-btn" onclick="openImage('memory2.jpg')"><img src="memory2.jpg" style="width:100%; border-radius:10px;"></div>
-                <div class="tile-btn" onclick="openImage('memory3.jpg')"><img src="memory3.jpg" style="width:100%; border-radius:10px;"></div>
-                <div class="tile-btn" onclick="openImage('memory4.jpg')"><img src="memory4.jpg" style="width:100%; border-radius:10px;"></div>
+                <img src="memory1.jpg" class="tile-btn" onclick="openImg(this.src)">
+                <img src="memory2.jpg" class="tile-btn" onclick="openImg(this.src)">
+                <img src="memory3.jpg" class="tile-btn" onclick="openImg(this.src)">
+                <img src="memory4.jpg" class="tile-btn" onclick="openImg(this.src)">
+            </div>
+        </div>
+
+        <div id="screen-timeline" class="screen">
+            <button class="back-btn" onclick="nav('screen-home')">←</button>
+            <h2 class="script-font">Our Journey</h2>
+            <div style="border-left: 2px solid var(--accent); margin-top: 20px; padding-left: 20px; width: 100%;">
+                <div style="margin-bottom: 20px;"><b>Day 1</b><br>We Met ❤️</div>
+                <div style="margin-bottom: 20px;"><b>Milestone</b><br>Our First Trip ✈️</div>
+                <div><b>Forever</b><br>Still Counting...</div>
             </div>
         </div>
 
         <div id="screen-canvas" class="screen">
             <button class="back-btn" onclick="nav('screen-home')">←</button>
-            <h2 class="script-font">Draw Together 🎨</h2>
-            <br>
-            <canvas id="drawCanvas" width="300" height="300"></canvas>
-            <div class="tools">
-                <div class="color-dot" style="background:var(--pink);" onclick="setPen('#ff4d6d')"></div>
-                <div class="color-dot" style="background:var(--blue);" onclick="setPen('#3b82f6')"></div>
-                <div class="color-dot" style="background:white;" onclick="setPen('#ffffff')"></div>
-                <button onclick="clearCanvas()" style="background:none; border:1px solid white; color:white; padding: 5px 10px; border-radius:10px;">Clear</button>
+            <h2 class="script-font">Doodle</h2>
+            <canvas id="drawCanvas" width="300" height="350"></canvas>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <div style="width:30px; height:30px; border-radius:50%; background:#ff4d6d;" onclick="ctx.strokeStyle='#ff4d6d'"></div>
+                <div style="width:30px; height:30px; border-radius:50%; background:#3b82f6;" onclick="ctx.strokeStyle='#3b82f6'"></div>
+                <div style="width:30px; height:30px; border-radius:50%; background:#fff; border:1px solid #ccc;" onclick="ctx.strokeStyle='#fff'"></div>
+                <button onclick="clearDraw()" style="background:none; border:1px solid white; color:white; border-radius:5px;">Clear</button>
             </div>
         </div>
 
-        <div id="music-bar" style="display:none;" class="music-player">
-            <div class="vinyl" id="vinyl-icon" onclick="toggleMusic()"></div>
-            <div style="flex:1; margin-left:15px;">
-                <p style="margin:0; font-size:14px; font-weight:bold;">Our Song</p>
-                <p style="margin:0; font-size:10px; opacity:0.7;">Playing now...</p>
-            </div>
+        <div id="music-bar" class="music-player" style="display:none;">
+            <div class="vinyl" id="vinyl"></div>
+            <div style="flex:1; margin-left:15px; font-size:12px;"><b>Our Song</b><br><span id="music-status">Paused</span></div>
             <button onclick="toggleMusic()" style="background:none; border:none; color:white; font-size:20px;">⏯️</button>
         </div>
 
     </div>
 
-    <div id="overlay" class="fullscreen-overlay" onclick="this.style.display='none'">
-        <img id="overlay-img" src="">
+    <div id="overlay" style="position:fixed; inset:0; background:black; display:none; z-index:1000; place-items:center;" onclick="this.style.display='none'">
+        <img id="overlay-img" src="" style="max-width:95%; max-height:90%;">
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="us.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bg-music" loop><source src="us.mp3" type="audio/mpeg"></audio>
 
     <script>
-        // --- CONFIGURATION ---
-        const PASSCODE = "1234";
-        const START_DATE = new Date("2023-01-01"); // CHANGE THIS DATE to when you met!
-
-        // --- NAVIGATION ---
-        function nav(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            
-            // Show music bar only after login
-            if(screenId !== 'screen-lock') {
-                document.getElementById('music-bar').style.display = 'flex';
-            }
-        }
-
-        // --- LOCK SCREEN ---
-        function checkPass() {
-            const input = document.getElementById('password').value;
-            if(input === PASSCODE) {
-                nav('screen-home');
-                initParticles(); // Start the magic only after login
-            } else {
-                document.getElementById('error-msg').textContent = "Try again, love!";
-            }
-        }
-
-        // --- DATE COUNTER ---
-        function updateCounter() {
-            const now = new Date();
-            const diff = Math.floor((now - START_DATE) / (1000 * 60 * 60 * 24));
-            document.getElementById('days-count').textContent = diff;
-        }
-        updateCounter();
-
-        // --- IMAGE OVERLAY ---
-        function openImage(src) {
-            document.getElementById('overlay-img').src = src;
-            document.getElementById('overlay').style.display = 'grid';
-        }
-
-        // --- MUSIC ---
+        const START_DATE = new Date("2023-12-31"); // Change this!
         const audio = document.getElementById('bg-music');
-        const vinyl = document.getElementById('vinyl-icon');
-        let isPlaying = false;
-
-        function toggleMusic() {
-            if(isPlaying) {
-                audio.pause();
-                vinyl.classList.remove('playing');
-            } else {
-                audio.play();
-                vinyl.classList.add('playing');
-            }
-            isPlaying = !isPlaying;
-        }
-
-        // --- CANVAS (DRAWING) ---
         const canvas = document.getElementById('drawCanvas');
         const ctx = canvas.getContext('2d');
         let painting = false;
 
-        // Load saved drawing
-        if(localStorage.getItem('ourDrawing')) {
-            const img = new Image();
-            img.onload = () => ctx.drawImage(img,0,0);
-            img.src = localStorage.getItem('ourDrawing');
+        function nav(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id !== 'screen-lock') document.getElementById('music-bar').style.display = 'flex';
         }
 
-        function startPosition(e) { painting = true; draw(e); }
-        function finishedPosition() { 
-            painting = false; 
-            ctx.beginPath(); 
-            localStorage.setItem('ourDrawing', canvas.toDataURL());
-        }
-        function draw(e) {
-            if(!painting) return;
-            const rect = canvas.getBoundingClientRect();
-            let x = (e.clientX || e.touches[0].clientX) - rect.left;
-            let y = (e.clientY || e.touches[0].clientY) - rect.top;
-            
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x, y);
+        function checkPass() {
+            if(document.getElementById('password').value === "1234") { nav('screen-home'); initParticles(); updateDoodleTile(); }
         }
 
-        // Event Listeners for Canvas
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mouseup', finishedPosition);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', startPosition);
-        canvas.addEventListener('touchend', finishedPosition);
-        canvas.addEventListener('touchmove', draw);
-
-        function setPen(color) { ctx.strokeStyle = color; }
-        function clearCanvas() { 
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            localStorage.removeItem('ourDrawing');
+        function setTheme(bg, accent, card, text) {
+            document.documentElement.style.setProperty('--bg', bg);
+            document.documentElement.style.setProperty('--accent', accent);
+            document.documentElement.style.setProperty('--card', card);
+            document.documentElement.style.setProperty('--text', text);
+            nav('screen-home');
         }
 
-        // --- PARTICLE SYSTEM (VISUALS) ---
-        function initParticles() {
-            const container = document.getElementById('particles');
-            for(let i=0; i<30; i++) {
-                let p = document.createElement('div');
-                p.classList.add('particle');
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                p.style.width = p.style.height = (Math.random() * 5 + 2) + 'px';
-                container.appendChild(p);
+        // --- DOODLE LOGIC ---
+        function updateDoodleTile() {
+            const saved = localStorage.getItem('ourDrawing');
+            const tile = document.getElementById('doodle-tile');
+            if(saved) {
+                tile.style.backgroundImage = `url(${saved})`;
+                document.getElementById('d-icon').style.opacity = '0';
+                document.getElementById('d-text').style.background = 'rgba(0,0,0,0.4)';
             }
         }
 
+        canvas.onmousedown = (e) => { painting = true; draw(e); };
+        window.onmouseup = () => { painting = false; ctx.beginPath(); localStorage.setItem('ourDrawing', canvas.toDataURL()); updateDoodleTile(); };
+        canvas.onmousemove = draw;
+        canvas.ontouchstart = (e) => { painting = true; draw(e.touches[0]); e.preventDefault(); };
+        canvas.ontouchend = () => { painting = false; ctx.beginPath(); localStorage.setItem('ourDrawing', canvas.toDataURL()); updateDoodleTile(); };
+        canvas.ontouchmove = (e) => { draw(e.touches[0]); e.preventDefault(); };
+
+        function draw(e) {
+            if(!painting) return;
+            const r = canvas.getBoundingClientRect();
+            ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+            ctx.stroke(); ctx.beginPath(); ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
+        }
+
+        function clearDraw() { ctx.clearRect(0,0,300,350); localStorage.removeItem('ourDrawing'); updateDoodleTile(); }
+
+        // --- UTILS ---
+        function openImg(s) { document.getElementById('overlay-img').src = s; document.getElementById('overlay').style.display = 'grid'; }
+        function toggleMusic() { 
+            if(audio.paused) { audio.play(); document.getElementById('vinyl').classList.add('playing'); document.getElementById('music-status').innerText = 'Playing'; }
+            else { audio.pause(); document.getElementById('vinyl').classList.remove('playing'); document.getElementById('music-status').innerText = 'Paused'; }
+        }
+        function initParticles() {
+            for(let i=0; i<20; i++) {
+                let p = document.createElement('div'); p.classList.add('particle');
+                p.style.left = Math.random()*100+'vw'; p.style.width = p.style.height = Math.random()*5+2+'px';
+                p.style.animationDuration = Math.random()*5+5+'s'; document.getElementById('particles').appendChild(p);
+            }
+        }
+        document.getElementById('days-count').innerText = Math.floor((new Date() - START_DATE)/(1000*60*60*24));
     </script>
 </body>
 </html>
