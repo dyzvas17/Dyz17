@@ -23,7 +23,33 @@
             color: var(--text); height: 100vh; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
         }
+/* --- PINTEREST STYLE MASONRY --- */
+.masonry {
+    column-count: 2;
+    column-gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+}
 
+.masonry img {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 18px;
+    cursor: pointer;
+    break-inside: avoid;
+    transition: transform 0.2s ease;
+}
+
+.masonry img:active {
+    transform: scale(0.97);
+}
+
+/* Bigger screens */
+@media (min-width: 500px) {
+    .masonry {
+        column-count: 3;
+    }
+}
         /* --- 2. PARTICLE BACKGROUND --- */
         #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: white; border-radius: 50%; opacity: 0.3; animation: floatUp linear infinite; }
@@ -221,11 +247,11 @@
         <div id="screen-gallery" class="screen">
             <button class="back-btn" onclick="nav('screen-home')">←</button>
             <h2 class="script-font">Memories 📸</h2>
-            <div class="btn-grid">
-                <div class="tile-btn" onclick="openImage('memory1.jpg')"><img src="memory1.jpg" style="width:100%; border-radius:10px;"></div>
-                <div class="tile-btn" onclick="openImage('memory2.jpg')"><img src="memory2.jpg" style="width:100%; border-radius:10px;"></div>
-                <div class="tile-btn" onclick="openImage('memory3.jpg')"><img src="memory3.jpg" style="width:100%; border-radius:10px;"></div>
-                <div class="tile-btn" onclick="openImage('memory4.jpg')"><img src="memory4.jpg" style="width:100%; border-radius:10px;"></div>
+            <div class="masonry">
+    <img src="memory1.jpg" onclick="openImage(this.src)">
+    <img src="memory2.jpg" onclick="openImage(this.src)">
+    <img src="memory3.jpg" onclick="openImage(this.src)">
+    <img src="memory4.jpg" onclick="openImage(this.src)">
             </div>
         </div>
 
