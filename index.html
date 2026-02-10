@@ -1,260 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Haven</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #111; --card: rgba(255, 255, 255, 0.1); --text: #fff; --accent: #ff4d6d; --glow: #ff4d6d;
-        }
-        body {
-            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text);
-            display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
-            transition: 0.8s ease;
-        }
-        .app {
-            width: 90%; max-width: 420px; height: 90vh; background: var(--card); border-radius: 30px;
-            padding: 25px; display: flex; flex-direction: column; align-items: center; 
-            transition: 0.5s; overflow: hidden; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1); position: relative; box-sizing: border-box;
-        }
-        button { border: none; cursor: pointer; transition: 0.3s; font-family: 'Poppins', sans-serif; }
-        
-        .square-btn {
-            width: 140px; height: 140px; margin: 10px; border-radius: 20px; font-size: 16px;
-            background: var(--accent); color: #fff; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; gap: 10px;
-            box-shadow: 0 0 15px var(--glow); animation: pulse 2s infinite alternate; font-weight: 600;
-        }
-        .big-btn { margin-top: 15px; padding: 14px 0; width: 100%; border-radius: 15px; font-size: 16px; background: var(--accent); color: #fff; font-weight: 600; }
-        @keyframes pulse { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 25px var(--glow); } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Haven</title>
 
-        /* Memories */
-        .memories-container { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; width: 100%; padding: 15px 0; }
-        .memories-container img { width: 100%; height: 140px; object-fit: cover; border-radius: 15px; border: 3px solid #fff; cursor: pointer; transition: 0.3s; }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
-        /* Milestone Square Button */
-        .milestone-trigger {
-            position: absolute; bottom: 20px; right: 20px; width: 45px; height: 45px;
-            background: gold; border-radius: 10px; display: flex; justify-content: center;
-            align-items: center; font-size: 20px; cursor: pointer;
-            box-shadow: 0 0 15px gold; z-index: 10;
-        }
+<style>
+:root{
+--bg:#0f0f14;
+--card:rgba(255,255,255,0.08);
+--accent:#ff4d6d;
+--text:#ffffff;
+--blur:blur(18px);
+}
 
-        /* Profile Pics with Glow */
-        .profile-container { position: relative; width: 85px; height: 85px; margin-left: 15px; display: flex; justify-content: center; align-items: center; }
-        .profile-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #fff; z-index: 2; }
-        .profile-glow { position: absolute; width: 100%; height: 100%; border-radius: 50%; z-index: 1; animation: pglow 2s infinite; }
-        @keyframes pglow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.4; } }
+*{box-sizing:border-box;}
 
-        /* Doodle Canvas Styles */
-        #drawingCanvas { background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 20px; cursor: crosshair; touch-action: none; margin-top: 10px; }
-        .canvas-tools { display: flex; gap: 10px; margin-top: 15px; justify-content: center; width: 100%; }
-        .tool-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:var(--bg);
+color:var(--text);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+transition:.6s;
+}
 
-        /* Fullscreen Overlay */
-        .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
-        .fullscreen-overlay.show { opacity: 1; pointer-events: all; }
-        .fullscreen-overlay img { max-width: 90%; max-height: 85%; border-radius: 15px; }
+.app{
+width:95%;
+max-width:430px;
+height:92vh;
+background:var(--card);
+backdrop-filter:var(--blur);
+border-radius:28px;
+padding:25px;
+position:relative;
+display:flex;
+flex-direction:column;
+align-items:center;
+overflow:hidden;
+box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
 
-        .floating-theme { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; z-index: 100; }
-        input { padding: 16px; width: 100%; border-radius: 15px; border: none; margin-top: 15px; font-size: 16px; background: rgba(255,255,255,0.1); color: #fff; text-align: center; box-sizing: border-box; }
-    </style>
+h1,h2{
+font-weight:500;
+letter-spacing:1px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+width:100%;
+margin-top:30px;
+}
+
+.square{
+height:120px;
+border-radius:22px;
+background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.05));
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-weight:600;
+cursor:pointer;
+transition:.4s;
+box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+
+.square:hover{
+transform:translateY(-6px);
+box-shadow:0 20px 40px rgba(0,0,0,.6);
+}
+
+button{
+border:none;
+cursor:pointer;
+}
+
+.big-btn{
+width:100%;
+padding:14px;
+border-radius:18px;
+background:var(--accent);
+color:white;
+font-weight:600;
+margin-top:15px;
+}
+
+.bottom-back{
+position:absolute;
+bottom:18px;
+left:50%;
+transform:translateX(-50%);
+width:85%;
+}
+
+.floating-theme{
+position:absolute;
+top:18px;
+right:18px;
+width:40px;
+height:40px;
+border-radius:12px;
+background:var(--accent);
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+box-shadow:0 0 15px var(--accent);
+}
+
+.fade{
+animation:fade .5s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.memories{
+flex:1;
+width:100%;
+overflow-y:auto;
+padding-top:60px;
+padding-bottom:80px;
+}
+
+.grid-view{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.grid-view img{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:18px;
+cursor:pointer;
+}
+
+.pinterest{
+column-count:2;
+column-gap:10px;
+}
+
+.pinterest img{
+width:100%;
+margin-bottom:10px;
+border-radius:18px;
+cursor:pointer;
+}
+
+.letter-card{
+width:100%;
+padding:18px;
+border-radius:20px;
+background:linear-gradient(145deg,#1c1c24,#13131a);
+margin-bottom:15px;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(0,0,0,.5);
+}
+
+.timeline{
+padding-top:60px;
+padding-bottom:80px;
+overflow-y:auto;
+width:100%;
+}
+
+.milestone{
+margin-bottom:20px;
+padding:15px;
+border-left:3px solid var(--accent);
+}
+
+.birthday-screen{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center,#1a1a25,#0f0f14);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+animation:fade .6s ease;
+}
+
+.glow-card{
+width:85%;
+padding:30px;
+border-radius:28px;
+background:linear-gradient(145deg,#1a1a24,#111118);
+box-shadow:0 0 40px rgba(255,77,109,.4);
+}
+input{
+width:100%;
+padding:14px;
+border-radius:15px;
+border:none;
+background:rgba(255,255,255,.08);
+color:white;
+text-align:center;
+margin-top:15px;
+}
+</style>
 </head>
 <body>
 
 <div class="app" id="app">
-    <div id="lockScreen" style="width: 100%; text-align: center;">
-        <h1 style="font-weight: 300; letter-spacing: 3px;">PRIVATE HAVEN</h1>
-        <input type="password" id="pw" placeholder="Enter Password">
-        <button class="big-btn" onclick="unlock()">Unlock</button>
-        <p id="msg" style="color: var(--accent); margin-top: 10px;"></p>
-    </div>
+<div id="lock">
+<h1>Private Haven</h1>
+<input type="password" id="pw" placeholder="Enter password">
+<button class="big-btn" onclick="unlock()">Unlock</button>
+<p id="msg"></p>
 </div>
-
-<div class="fullscreen-overlay" id="fsOverlay" onclick="closeFullScreen()">
-    <img id="fsImg" src="">
 </div>
 
 <script>
-    let memories = ["memory1.jpeg", "memory2.jpeg", "memory3.jpeg", "memory4.jpeg", "memory5.jpeg", "memory6.jpeg"];
-    const targetDate = new Date("December 31, 2025 00:00:00").getTime();
-    
-    // Canvas Variables
-    let canvas, ctx, drawing = false;
+let memoryMode="grid";
+let memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg"];
 
-    window.onload = () => {
-        const saved = JSON.parse(localStorage.getItem('userTheme'));
-        if(saved) setTheme(saved.bg, saved.accent, saved.card, saved.text, false);
-    };
+function unlock(){
+if(document.getElementById("pw").value==="1234"){
+loadHome();
+}else{
+document.getElementById("msg").innerText="Wrong password.";
+}
+}
 
-    function unlock() {
-        if (document.getElementById("pw").value === "1234") loadHome();
-        else document.getElementById("msg").innerText = "Access Denied.";
-    }
+function switchScreen(content){
+const app=document.getElementById("app");
+app.innerHTML=content;
+}
 
-    function fadeSwitch(content) {
-        const app = document.getElementById("app");
-        app.style.opacity = 0;
-        setTimeout(() => { app.innerHTML = content; app.style.opacity = 1; }, 300);
-    }
+function loadHome(){
+switchScreen(`
+<div class="floating-theme" onclick="themeMenu()">🎨</div>
+<h2 class="fade">Welcome Back ❤️</h2>
+<div class="grid fade">
+<div class="square" onclick="openMemories()">📸 Memories</div>
+<div class="square" onclick="openLetters()">💌 Letters</div>
+<div class="square" onclick="openBirthday()">🎂 Birthday</div>
+<div class="square" onclick="openTimeline()">❤️ Us</div>
+</div>
+`);
+}
 
-    function loadHome() {
-        fadeSwitch(`
-            <div class="floating-theme" onclick="themeMenu()">🎨</div>
-            <h2 style="font-weight: 400; margin-top: 40px;">Welcome Back ❤️</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 20px;">
-                <button class="square-btn" onclick="showBirthday()"><span>🎂</span>Birthday</button>
-                <button class="square-btn" onclick="showLetters()"><span>💌</span>Letters</button>
-                <button class="square-btn" onclick="showMemories()"><span>📸</span>Memories</button>
-                <button class="square-btn" onclick="showUs()"><span>🎨</span>Doodle</button>
-            </div>
-        `);
-    }
+function openMemories(){
+renderMemories();
+}
 
-    // --- Memories Section ---
-    function showMemories() {
-        let html = `<button class="big-btn" onclick="loadHome()">← Back</button>
-                    <h2 style="margin: 15px 0;">Gallery 📸</h2>
-                    <div class="memories-container">`;
-        memories.forEach(src => { html += `<img src="${src}" onclick="openFullScreen('${src}')">`; });
-        html += `</div><div class="milestone-trigger" onclick="showMilestones()">🌟</div>`;
-        fadeSwitch(html);
-    }
+function renderMemories(){
+let layoutClass = memoryMode==="grid"?"grid-view":"pinterest";
+let html=`<div class="floating-theme" onclick="toggleMemory()">📌</div>
+<div class="memories ${layoutClass}">`;
 
-    function showMilestones() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="showMemories()">← Back</button>
-            <h2 style="font-family:'Dancing Script'; font-size:36px; margin-top:20px;">Our Milestones 🏆</h2>
-            <div id="timelineContent" style="padding-top:30px; text-align:center;">
-                <p>Add dates here later...</p>
-            </div>
-        `);
-    }
+memories.forEach(src=>{
+html+=`<img src="${src}">`;
+});
 
-    // --- Letters Section ---
-    function showLetters() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h2 style="font-family:'Dancing Script'; font-size:32px; margin: 20px 0;">Letters 💌</h2>
-            <div onclick="openFullScreen('naqii_letter.jpg')" class="letter-card" style="background: linear-gradient(135deg, #ffafbd, #ffc3a0);">
-                <div class="profile-container">
-                    <div class="profile-glow" style="background: #ff85a2; box-shadow: 0 0 20px #ff85a2;"></div>
-                    <img src="naqii_profile.jpg">
-                </div>
-                <div class="letter-info"><h3 style="font-family:'Dancing Script';">By Naqii</h3><p>Hello Kitty Style 🎀</p></div>
-            </div>
-            <div onclick="openFullScreen('shivam_letter.jpg')" class="letter-card" style="background: linear-gradient(135deg, #ed213a, #2376b0);">
-                <div class="profile-container">
-                    <div class="profile-glow" style="background: #ed213a; box-shadow: 0 0 20px #ed213a;"></div>
-                    <img src="shivam_profile.jpg">
-                </div>
-                <div class="letter-info"><h3 style="font-weight:600;">By Shivam</h3><p>Spiderman Style 🕸️</p></div>
-            </div>
-        `);
-    }
+html+=`</div>
+<button class="big-btn bottom-back" onclick="loadHome()">Back</button>`;
+switchScreen(html);
+}
 
-    // --- Real-time Doodle Section ---
-    function showUs() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h2 style="margin: 10px 0;">Our Canvas 🎨</h2>
-            <canvas id="drawingCanvas" width="320" height="380"></canvas>
-            <div class="canvas-tools">
-                <div class="tool-btn" style="background: #ff4d6d;" onclick="setBrushColor('#ff4d6d')"></div>
-                <div class="tool-btn" style="background: #1c8adb;" onclick="setBrushColor('#1c8adb')"></div>
-                <div class="tool-btn" style="background: #fff;" onclick="setBrushColor('#fff')"></div>
-                <button onclick="clearCanvas()" style="background:none; color:white; border:1px solid white; border-radius:10px; padding: 5px 10px;">Clear</button>
-            </div>
-        `);
-        setTimeout(initCanvas, 100);
-    }
+function toggleMemory(){
+memoryMode = memoryMode==="grid"?"pinterest":"grid";
+renderMemories();
+}
 
-    function initCanvas() {
-        canvas = document.getElementById('drawingCanvas');
-        ctx = canvas.getContext('2d');
-        ctx.strokeStyle = '#ff4d6d';
-        ctx.lineWidth = 3;
-        ctx.lineCap = 'round';
+function openLetters(){
+switchScreen(`
+<div style="padding-top:60px;width:100%;overflow:auto;">
+<div class="letter-card">💌 Letter by Shivam</div>
+<div class="letter-card">💖 Letter by Naqii</div>
+</div>
+<button class="big-btn bottom-back" onclick="loadHome()">Back</button>
+`);
+}
 
-        const saved = localStorage.getItem('savedDoodle');
-        if (saved) {
-            const img = new Image();
-            img.onload = () => ctx.drawImage(img, 0, 0);
-            img.src = saved;
-        }
+function openTimeline(){
+switchScreen(`
+<div class="timeline">
+<div class="milestone">First Meet ✨</div>
+<div class="milestone">First Fight 😂</div>
+<div class="milestone">First “I Love You” ❤️</div>
+</div>
+<button class="big-btn bottom-back" onclick="loadHome()">Back</button>
+`);
+}
 
-        const getPos = (e) => {
-            const rect = canvas.getBoundingClientRect();
-            return { x: (e.clientX || e.touches[0].clientX) - rect.left, y: (e.clientY || e.touches[0].clientY) - rect.top };
-        };
+function openBirthday(){
+switchScreen(`
+<div class="birthday-screen">
+<div class="glow-card">
+<h2>Happy Birthday ❤️</h2>
+<p>This year belongs to you.</p>
+</div>
+<button class="big-btn bottom-back" onclick="loadHome()">Back</button>
+</div>
+`);
+}
 
-        const start = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-        const move = (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
-        const stop = () => { drawing = false; localStorage.setItem('savedDoodle', canvas.toDataURL()); };
+function themeMenu(){
+switchScreen(`
+<h2 style="margin-top:50px;">Themes</h2>
+<button class="big-btn" onclick="setTheme('#0f0f14','#ff4d6d')">Rose Night</button>
+<button class="big-btn" onclick="setTheme('#111','#7c3aed')">Royal Purple</button>
+<button class="big-btn bottom-back" onclick="loadHome()">Back</button>
+`);
+}
 
-        canvas.onmousedown = start; canvas.onmousemove = move; window.onmouseup = stop;
-        canvas.ontouchstart = (e) => { start(e); e.preventDefault(); };
-        canvas.ontouchmove = (e) => { move(e); e.preventDefault(); };
-        canvas.ontouchend = stop;
-    }
-
-    function setBrushColor(c) { ctx.strokeStyle = c; }
-    function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); localStorage.removeItem('savedDoodle'); }
-
-    // --- Other Functions ---
-    function openFullScreen(src) { document.getElementById("fsImg").src = src; document.getElementById("fsOverlay").classList.add("show"); }
-    function closeFullScreen() { document.getElementById("fsOverlay").classList.remove("show"); }
-
-    function themeMenu() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h3 style="margin-top:20px;">Themes</h3>
-            <button class="big-btn" onclick="setTheme('#111','#ff4d6d','rgba(255,255,255,0.1)','#fff', true)">Midnight Pink</button>
-            <button class="big-btn" onclick="setTheme('#ffeef2','#ff85a2','rgba(255,255,255,0.5)','#333', true)">Soft Cotton</button>
-            <button class="big-btn" onclick="setTheme('#0a0a0f','#1c8adb','rgba(15,20,30,0.6)','#fff', true)">Nightwing</button>
-        `);
-    }
-
-    function setTheme(bg, accent, card, text, save) {
-        document.documentElement.style.setProperty('--bg', bg);
-        document.documentElement.style.setProperty('--accent', accent);
-        document.documentElement.style.setProperty('--glow', accent);
-        document.documentElement.style.setProperty('--card', card);
-        document.documentElement.style.setProperty('--text', text);
-        if(save) localStorage.setItem('userTheme', JSON.stringify({bg, accent, card, text}));
-        loadHome();
-    }
-
-    function showBirthday() {
-        fadeSwitch(`
-            <button class="big-btn" onclick="loadHome()">← Back</button>
-            <h2 style="margin: 20px 0 5px;">Countdown 🎁</h2>
-            <div id="timerDisplay" style="display:flex; gap:10px; margin:20px 0;"></div>
-        `);
-        startCountdown();
-    }
-
-    function startCountdown() {
-        const update = () => {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const timer = document.getElementById("timerDisplay");
-            if(timer) {
-                timer.innerHTML = `<div style="background:var(--accent); padding:10px; border-radius:10px; flex:1; text-align:center;">${d}d</div>
-                                   <div style="background:var(--accent); padding:10px; border-radius:10px; flex:1; text-align:center;">${h}h</div>
-                                   <div style="background:var(--accent); padding:10px; border-radius:10px; flex:1; text-align:center;">${m}m</div>`;
-            }
-        };
-        update();
-        setInterval(update, 60000);
-    }
+function setTheme(bg,accent){
+document.documentElement.style.setProperty('--bg',bg);
+document.documentElement.style.setProperty('--accent',accent);
+loadHome();
+}
 </script>
+
 </body>
 </html>
