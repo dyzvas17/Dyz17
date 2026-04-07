@@ -8,36 +8,49 @@
 <style>
 :root{
   --bg:#111; --card:#1c1c1c; --text:#fff; --accent:#ff4d6d; --glow:#ff4d6d;
+  --text-secondary:#aaa; --border:#333;
 }
+*{box-sizing:border-box;}
 body{
   margin:0; font-family:'Poppins', sans-serif; background:var(--bg); color:var(--text);
-  display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden;
-  transition:0.5s;
+  display:flex; justify-content:center; align-items:center; min-height:100vh;
+  transition:background 0.3s, color 0.3s;
 }
 .app{
   width:90%; max-width:420px; height:90vh; background:var(--card); border-radius:25px;
-  padding:20px; display:flex; flex-direction:column; align-items:center; transition:0.5s; overflow:hidden;
+  padding:20px; display:flex; flex-direction:column; align-items:center; transition:0.3s;
+  overflow-y:auto; box-shadow:0 10px 40px rgba(0,0,0,0.3);
 }
-button{border:none; cursor:pointer; transition:0.3s;}
-.big-btn{margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px; background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow);}
-.square-btn{width:140px; height:140px; margin:10px; border-radius:15px; font-size:18px; background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; box-shadow:0 0 12px var(--glow);}
+button{border:none; cursor:pointer; transition:0.3s; font-family:'Poppins',sans-serif;}
+.big-btn{margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px; background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow); font-weight:600;}
+.square-btn{width:140px; height:140px; margin:10px; border-radius:15px; font-size:18px; background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; box-shadow:0 0 12px var(--glow); font-weight:600;}
 .square-btn:hover,.big-btn:hover{transform:scale(1.05);}
-.floating-theme{position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px; background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff; box-shadow:0 0 12px var(--glow); cursor:pointer;}
-input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px;}
-.memories-container{flex:1; display:grid; grid-template-columns:1fr 1fr; gap:10px; overflow-y:auto; width:100%;}
-.memories-container img{width:100%; height:140px; object-fit:cover; border-radius:12px; cursor:pointer;}
-.fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:0.3s;}
+.floating-theme{position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px; background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff; box-shadow:0 0 12px var(--glow); cursor:pointer; z-index:10;}
+input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px; background:var(--bg); color:var(--text);}
+.memories-container{flex:1; display:grid; grid-template-columns:1fr 1fr; gap:10px; overflow-y:auto; width:100%; margin-top:15px;}
+.memories-container img{width:100%; height:140px; object-fit:cover; border-radius:12px; cursor:pointer; transition:0.2s;}
+.memories-container img:hover{transform:scale(1.02);}
+.fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:0.3s;z-index:1000;}
 .fullscreen-overlay.show{opacity:1;pointer-events:all;}
 .fullscreen-overlay img{max-width:95%; max-height:90%; border-radius:12px;}
+.counter-card{background:var(--bg); padding:20px; border-radius:20px; text-align:center; margin:15px 0; width:100%;}
+.counter-number{font-size:48px; font-weight:bold; color:var(--accent);}
+.note-input{width:100%; padding:12px; border-radius:12px; background:var(--bg); color:var(--text); border:1px solid var(--accent); margin:10px 0; font-family:'Poppins',sans-serif; resize:vertical;}
+.note-item{background:var(--bg); padding:12px; border-radius:12px; margin:8px 0; display:flex; justify-content:space-between; align-items:center;}
+.delete-note{background:#ff4d6d; color:white; padding:5px 12px; border-radius:8px; font-size:12px;}
+.love-meter{width:100%; height:20px; background:var(--bg); border-radius:10px; overflow:hidden; margin:15px 0;}
+.love-fill{height:100%; width:0%; background:var(--accent); transition:width 0.5s; border-radius:10px;}
+.small-btn{padding:8px 15px; background:var(--accent); color:white; border-radius:10px; margin-top:10px;}
+hr{border-color:var(--border); margin:15px 0;}
 </style>
 </head>
 <body>
 
 <div class="app" id="app">
-  <h2>Enter Password</h2>
-  <input type="password" id="pw" placeholder="Only you know...">
+  <h2>🔒 Private Haven</h2>
+  <input type="password" id="pw" placeholder="Enter password...">
   <button class="big-btn" onclick="unlock()">Unlock</button>
-  <p id="msg"></p>
+  <p id="msg" style="color:var(--accent);"></p>
 </div>
 
 <div class="fullscreen-overlay" id="fsOverlay" onclick="closeFullScreen()">
@@ -45,21 +58,151 @@ input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px
 </div>
 
 <script>
-let memories=["memory1.jpeg","memory2.jpeg","memory3.jpeg","memory4.jpeg","memory5.jpeg","memory6.jpeg"];
+// ========== PLACEHOLDER IMAGES (FREE ONLINE IMAGES) ==========
+let memories = [
+  "https://picsum.photos/id/20/400/400",   // coffee & laptop
+  "https://picsum.photos/id/22/400/400",   // bird
+  "https://picsum.photos/id/26/400/400",   // venice
+  "https://picsum.photos/id/27/400/400",   // yosemite
+  "https://picsum.photos/id/28/400/400",   // forest
+  "https://picsum.photos/id/29/400/400"    // city
+];
 
+let letterImages = {
+  naqii: "https://picsum.photos/id/116/800/600",   // sunset couple
+  shivam: "https://picsum.photos/id/96/800/600"    // mountain love
+};
+
+// ========== LOVE COUNTER & NOTES ==========
+let loveCount = 0;
+let notes = [];
+
+// Load saved data from localStorage
+function loadSavedData() {
+  let savedLove = localStorage.getItem("loveCount");
+  if(savedLove) loveCount = parseInt(savedLove);
+  
+  let savedNotes = localStorage.getItem("notes");
+  if(savedNotes) notes = JSON.parse(savedNotes);
+}
+
+function saveLoveCount() {
+  localStorage.setItem("loveCount", loveCount);
+}
+
+function saveNotes() {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+function addLove() {
+  loveCount++;
+  saveLoveCount();
+  showLoveCounter();
+}
+
+function addNote() {
+  let noteText = document.getElementById("newNoteInput")?.value;
+  if(noteText && noteText.trim() !== "") {
+    notes.push({text: noteText.trim(), date: new Date().toLocaleDateString()});
+    saveNotes();
+    showLoveCounter();
+  }
+}
+
+function deleteNote(index) {
+  notes.splice(index, 1);
+  saveNotes();
+  showLoveCounter();
+}
+
+// ========== THEME FIXED ==========
+function setTheme(bg, accent, card, text, textSecondary, border) {
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--accent', accent);
+  document.documentElement.style.setProperty('--glow', accent);
+  document.documentElement.style.setProperty('--card', card);
+  document.documentElement.style.setProperty('--text', text);
+  document.documentElement.style.setProperty('--text-secondary', textSecondary || '#aaa');
+  document.documentElement.style.setProperty('--border', border || '#333');
+  
+  // Also update body text color
+  document.body.style.color = text;
+  
+  // Save theme preference
+  localStorage.setItem("theme", JSON.stringify({bg, accent, card, text, textSecondary, border}));
+  loadHome();
+}
+
+function loadSavedTheme() {
+  let savedTheme = localStorage.getItem("theme");
+  if(savedTheme) {
+    let theme = JSON.parse(savedTheme);
+    document.documentElement.style.setProperty('--bg', theme.bg);
+    document.documentElement.style.setProperty('--accent', theme.accent);
+    document.documentElement.style.setProperty('--glow', theme.accent);
+    document.documentElement.style.setProperty('--card', theme.card);
+    document.documentElement.style.setProperty('--text', theme.text);
+    document.documentElement.style.setProperty('--text-secondary', theme.textSecondary || '#aaa');
+    document.documentElement.style.setProperty('--border', theme.border || '#333');
+    document.body.style.color = theme.text;
+  }
+}
+
+// ========== DISPLAY LOVE COUNTER PAGE ==========
+function showLoveCounter() {
+  let lovePercent = Math.min((loveCount / 1000) * 100, 100);
+  
+  fadeSwitch(`
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
+    
+    <div class="counter-card">
+      <h3>💕 Love Counter 💕</h3>
+      <div class="counter-number">${loveCount}</div>
+      <p>moments of love</p>
+      <button class="small-btn" onclick="addLove();">➕ Add a loving moment</button>
+      <div class="love-meter">
+        <div class="love-fill" style="width:${lovePercent}%;"></div>
+      </div>
+      <p>✨ ${Math.floor(lovePercent)}% to 1000 loves ✨</p>
+    </div>
+    
+    <hr>
+    <h3>📝 Love Notes</h3>
+    <input type="text" id="newNoteInput" placeholder="Write a sweet note..." class="note-input">
+    <button class="small-btn" onclick="addNote();">💌 Save Note</button>
+    
+    <div id="notesList">
+      ${notes.length === 0 ? '<p style="color:var(--text-secondary);">No notes yet. Write your first memory!</p>' : 
+        notes.map((note, idx) => `
+          <div class="note-item">
+            <div><strong>${note.date}</strong><br>${note.text}</div>
+            <button class="delete-note" onclick="deleteNote(${idx})">🗑️</button>
+          </div>
+        `).join('')
+      }
+    </div>
+  `);
+}
+
+// ========== OTHER FUNCTIONS ==========
 function unlock(){
-  const pw=document.getElementById("pw").value;
-  if(pw==="1234") loadHome();
-  else document.getElementById("msg").innerText="Wrong password.";
+  const pw = document.getElementById("pw").value;
+  if(pw === "1234") {
+    loadSavedData();
+    loadSavedTheme();
+    loadHome();
+  }
+  else document.getElementById("msg").innerText = "❌ Wrong password. Try again.";
 }
 
 function fadeSwitch(newContent){
-  const app=document.getElementById("app");
-  app.style.opacity=0;
+  const app = document.getElementById("app");
+  app.style.opacity = "0";
   setTimeout(()=>{
-    app.innerHTML=newContent;
-    app.style.opacity=1;
-  },300);
+    app.innerHTML = newContent;
+    app.style.opacity = "1";
+  }, 250);
 }
 
 function loadHome(){
@@ -68,52 +211,93 @@ function loadHome(){
     <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
       <button class="square-btn" onclick="showLetters()">💌 Letters</button>
       <button class="square-btn" onclick="showMemories()">📸 Memories</button>
-      <button class="square-btn" onclick="showUs()">❤️ Us</button>
+      <button class="square-btn" onclick="showLoveCounter()">💖 Love Counter</button>
+      <button class="square-btn" onclick="showUs()">👫 Us</button>
     </div>
   `);
 }
 
 function showLetters(){
-  fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Letters</h2>
-  <div style="margin-top:20px;">
-    <div onclick="openFullScreen('naqii_letter.jpg')">By Naqii ❤️</div>
-    <div onclick="openFullScreen('shivam_letter.jpg')">By Shivam ❤️</div>
-  </div>`);
+  fadeSwitch(`
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
+    <h2>💌 Letters</h2>
+    <div style="margin-top:20px; width:100%;">
+      <div class="note-item" style="cursor:pointer; justify-content:center;" onclick="openFullScreen('${letterImages.naqii}')">
+        📖 Letter from Naqii ❤️
+      </div>
+      <div class="note-item" style="cursor:pointer; justify-content:center; margin-top:10px;" onclick="openFullScreen('${letterImages.shivam}')">
+        📖 Letter from Shivam ❤️
+      </div>
+    </div>
+    <p style="margin-top:20px; color:var(--text-secondary);">Click on a letter to view full size 💫</p>
+  `);
 }
 
 function showMemories(){
-  let html=`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Gallery</h2><div class="memories-container">`;
-  memories.forEach(src=>html+=`<img src="${src}" onclick="openFullScreen('${src}')">`);
-  html+=`</div>`;
+  let html = `
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
+    <h2>📸 Memories Gallery</h2>
+    <div class="memories-container">
+  `;
+  memories.forEach(src => html += `<img src="${src}" onclick="openFullScreen('${src}')">`);
+  html += `</div><p style="color:var(--text-secondary);">Click any photo to enlarge ✨</p>`;
   fadeSwitch(html);
 }
 
 function showUs(){
-  fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h2>Us ❤️</h2><p>All our special memories together.</p>`);
+  fadeSwitch(`
+    <div class="floating-theme" onclick="themeMenu()">🎨</div>
+    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
+    <h2>👫 You & Me</h2>
+    <div class="counter-card">
+      <p>✨ Every moment with you is magic ✨</p>
+      <p>💑 Together is our favorite place</p>
+      <p>🎵 Our song plays in my heart</p>
+      <p>🌟 You make life beautiful</p>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:15px;">
+      <img src="https://picsum.photos/id/169/200/150" style="border-radius:15px; width:48%;">
+      <img src="https://picsum.photos/id/144/200/150" style="border-radius:15px; width:48%;">
+    </div>
+  `);
 }
 
 function openFullScreen(src){
-  document.getElementById("fsImg").src=src;
+  document.getElementById("fsImg").src = src;
   document.getElementById("fsOverlay").classList.add("show");
 }
+
 function closeFullScreen(){
   document.getElementById("fsOverlay").classList.remove("show");
 }
 
 function themeMenu(){
-  fadeSwitch(`<button class="big-btn" onclick="loadHome()">← Back</button><h3>Themes</h3>
-  <button class="big-btn" onclick="setTheme('#111','#ff4d6d','#1c1c1c','#fff')">Dark Pink</button>
-  <button class="big-btn" onclick="setTheme('#fff','#ff85a2','#f5f5f5','#333')">Soft</button>`);
+  fadeSwitch(`
+    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
+    <h3>🎨 Choose Your Theme</h3>
+    <button class="big-btn" onclick="setTheme('#111','#ff4d6d','#1c1c1c','#fff','#aaa','#333')">🌙 Dark Pink (Default)</button>
+    <button class="big-btn" onclick="setTheme('#fff','#ff85a2','#f5f5f5','#222','#666','#ddd')">🌸 Soft Pink</button>
+    <button class="big-btn" onclick="setTheme('#0a0a2a','#ff6b9d','#1a1a3a','#f0f0ff','#aaa','#2a2a4a')">🌌 Midnight Romance</button>
+    <button class="big-btn" onclick="setTheme('#2d1b2e','#e0aaff','#3c2a3e','#ffffff','#ccc','#4a3a4e')">💜 Purple Dream</button>
+  `);
 }
 
-function setTheme(bg,accent,card,text){
-  document.documentElement.style.setProperty('--bg',bg);
-  document.documentElement.style.setProperty('--accent',accent);
-  document.documentElement.style.setProperty('--glow',accent);
-  document.documentElement.style.setProperty('--card',card);
-  document.documentElement.style.setProperty('--text',text);
-  loadHome();
-}
+// Make functions global
+window.unlock = unlock;
+window.loadHome = loadHome;
+window.showLetters = showLetters;
+window.showMemories = showMemories;
+window.showUs = showUs;
+window.showLoveCounter = showLoveCounter;
+window.openFullScreen = openFullScreen;
+window.closeFullScreen = closeFullScreen;
+window.themeMenu = themeMenu;
+window.setTheme = setTheme;
+window.addLove = addLove;
+window.addNote = addNote;
+window.deleteNote = deleteNote;
 </script>
 </body>
 </html>
