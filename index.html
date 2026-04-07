@@ -719,6 +719,10 @@ function initLock() {
 
   // Event binding
   document.addEventListener("DOMContentLoaded", () => {
+  initLock();  // set up pin pad
+  // Do NOT load main content yet — lock screen is shown by default
+  // The unlockApp() will call loadData etc.
+});
     loadData();
     updateLoveAndStreak();
     renderAllDynamic();
