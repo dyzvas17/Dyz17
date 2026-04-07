@@ -1,443 +1,667 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Haven - Our Secret Space</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#111; --card:#1c1c1c; --text:#fff; --accent:#ff4d6d; --glow:#ff4d6d;
-  --text-secondary:#aaa; --border:#333;
-}
-*{box-sizing:border-box;}
-body{
-  margin:0; font-family:'Poppins', sans-serif; background:var(--bg); color:var(--text);
-  display:flex; justify-content:center; align-items:center; min-height:100vh;
-  transition:background 0.3s, color 0.3s;
-}
-.app{
-  width:90%; max-width:420px; height:90vh; background:var(--card); border-radius:25px;
-  padding:20px; display:flex; flex-direction:column; align-items:center; transition:0.3s;
-  overflow-y:auto; box-shadow:0 10px 40px rgba(0,0,0,0.3);
-  position:relative;
-}
-button{border:none; cursor:pointer; transition:0.3s; font-family:'Poppins',sans-serif;}
-.big-btn{margin-top:15px; padding:14px 0; width:100%; border-radius:12px; font-size:18px; background:var(--accent); color:#fff; box-shadow:0 0 12px var(--glow); font-weight:600;}
-.square-btn{width:140px; height:140px; margin:10px; border-radius:15px; font-size:18px; background:var(--accent); color:#fff; display:flex; justify-content:center; align-items:center; box-shadow:0 0 12px var(--glow); font-weight:600;}
-.square-btn:hover,.big-btn:hover{transform:scale(1.05);}
-.floating-theme{position:absolute; top:15px; right:15px; width:55px; height:55px; border-radius:12px; background:var(--accent); display:flex; justify-content:center; align-items:center; font-size:22px; color:#fff; box-shadow:0 0 12px var(--glow); cursor:pointer; z-index:10;}
-input{padding:14px; width:100%; border-radius:12px; border:none; margin-top:15px; font-size:16px; background:var(--bg); color:var(--text);}
-.memories-container{flex:1; display:grid; grid-template-columns:1fr 1fr; gap:10px; overflow-y:auto; width:100%; margin-top:15px;}
-.memories-container img{width:100%; height:140px; object-fit:cover; border-radius:12px; cursor:pointer; transition:0.2s;}
-.memories-container img:hover{transform:scale(1.02);}
-.fullscreen-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:0.3s;z-index:1000;}
-.fullscreen-overlay.show{opacity:1;pointer-events:all;}
-.fullscreen-overlay img{max-width:95%; max-height:90%; border-radius:12px;}
-.counter-card{background:var(--bg); padding:20px; border-radius:20px; text-align:center; margin:15px 0; width:100%;}
-.counter-number{font-size:48px; font-weight:bold; color:var(--accent);}
-.note-input{width:100%; padding:12px; border-radius:12px; background:var(--bg); color:var(--text); border:1px solid var(--accent); margin:10px 0; font-family:'Poppins',sans-serif; resize:vertical;}
-.note-item{background:var(--bg); padding:12px; border-radius:12px; margin:8px 0; display:flex; justify-content:space-between; align-items:center;}
-.delete-note{background:#ff4d6d; color:white; padding:5px 12px; border-radius:8px; font-size:12px;}
-.love-meter{width:100%; height:20px; background:var(--bg); border-radius:10px; overflow:hidden; margin:15px 0;}
-.love-fill{height:100%; width:0%; background:var(--accent); transition:width 0.5s; border-radius:10px;}
-.small-btn{padding:8px 15px; background:var(--accent); color:white; border-radius:10px; margin-top:10px;}
-hr{border-color:var(--border); margin:15px 0;}
-.profile-selector{display:flex; gap:15px; justify-content:center; margin:20px 0; width:100%;}
-.profile-card{background:var(--bg); padding:20px; border-radius:20px; text-align:center; cursor:pointer; flex:1; transition:0.3s; border:2px solid transparent;}
-.profile-card:hover{transform:scale(1.05); border-color:var(--accent);}
-.profile-card.selected{border-color:var(--accent); background:rgba(255,77,109,0.1);}
-.profile-icon{font-size:48px; margin-bottom:10px;}
-.profile-name{font-size:18px; font-weight:600;}
-.login-error{color:#ff4d6d; margin-top:10px; font-size:14px;}
-.logout-btn{position:absolute; top:15px; left:15px; background:rgba(255,77,109,0.2); padding:8px 12px; border-radius:10px; font-size:12px; cursor:pointer; z-index:10;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>💕 Our Private Haven – All Features</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f0f12;
+      --card: #1e1e2a;
+      --text: #f0eef4;
+      --accent: #ff6b8b;
+      --glow: #ff8aa8;
+      --text-secondary: #b9b9ce;
+      --border: #2d2d3a;
+      --success: #4cd964;
+      --warning: #ff9f4a;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      padding: 20px 0 60px 0;
+    }
+
+    .app-container {
+      max-width: 550px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* header & nav */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      background: var(--card);
+      padding: 12px 18px;
+      border-radius: 32px;
+      backdrop-filter: blur(4px);
+    }
+
+    .logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      color: var(--accent);
+    }
+
+    .theme-toggle {
+      background: var(--accent);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: var(--card);
+      padding: 8px;
+      border-radius: 48px;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    .section {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+
+    .section.active-section {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 28px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+    }
+
+    button, .button-like {
+      background: var(--accent);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 60px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    button.secondary {
+      background: #3a3a4a;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      margin: 8px 0;
+      font-family: inherit;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .badge {
+      background: var(--accent);
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .memory-item, .wish-item, .joke-item, .plan-item, .track-item {
+      background: var(--bg);
+      border-radius: 20px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .favorite-star {
+      color: gold;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .map-placeholder {
+      background: #2c2c3a;
+      height: 160px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 12px 0;
+      background-image: url('https://placehold.co/600x200/2c2c3a/ff8aa8?text=📍+Our+Special+Places');
+      background-size: cover;
+      background-position: center;
+    }
+
+    hr {
+      border-color: var(--border);
+      margin: 16px 0;
+    }
+
+    .love-meter-bar {
+      height: 12px;
+      background: #3a3a4a;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .love-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    .streak-fire {
+      font-size: 1.8rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      margin-top: 30px;
+      opacity: 0.6;
+    }
+  </style>
 </head>
 <body>
+<div class="app-container" id="appRoot">
+  <div class="header">
+    <div class="logo">✨ Private Haven ✨</div>
+    <button class="theme-toggle" id="themeToggleBtn">🎨 Theme</button>
+  </div>
 
-<div class="app" id="app">
-  <div style="text-align:center; width:100%;">
-    <h2>🔒 Our Private Haven</h2>
-    <p style="color:var(--text-secondary); margin-bottom:20px;">Only for us ❤️</p>
-    
-    <div class="profile-selector" id="profileSelector">
-      <div class="profile-card" onclick="selectProfile('naqii')">
-        <div class="profile-icon">👩</div>
-        <div class="profile-name">Naqii</div>
-      </div>
-      <div class="profile-card" onclick="selectProfile('shivam')">
-        <div class="profile-icon">👨</div>
-        <div class="profile-name">Shivam</div>
+  <!-- Tab Navigation -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-tab="home">🏠 Home</button>
+    <button class="tab-btn" data-tab="memories">📸 Memories</button>
+    <button class="tab-btn" data-tab="romance">💘 Romance</button>
+    <button class="tab-btn" data-tab="interactive">🎮 Fun</button>
+    <button class="tab-btn" data-tab="plans">📋 Lists</button>
+    <button class="tab-btn" data-tab="trackers">📊 Trackers</button>
+  </div>
+
+  <!-- =========================  HOME SECTION ========================= -->
+  <div id="homeSection" class="section active-section">
+    <div class="card">
+      <h3>💕 Love Meter</h3>
+      <div id="loveCounterDisplay">0</div>
+      <div class="love-meter-bar"><div class="love-fill" id="loveFillBar"></div></div>
+      <button id="addLoveBtn">➕ Add loving moment</button>
+      <div class="flex-row" style="justify-content: space-between; margin-top: 12px;">
+        <span>❤️ Cute streak</span>
+        <span id="streakDisplay" class="badge">0 days 🔥</span>
       </div>
     </div>
-    
-    <div id="pinSection" style="display:none; width:100%;">
-      <input type="password" id="pinInput" placeholder="Enter your 4-digit PIN">
-      <button class="big-btn" onclick="verifyPin()">Unlock</button>
-      <div id="loginError" class="login-error"></div>
+
+    <div class="card">
+      <h3>📅 Anniversary Countdown</h3>
+      <div id="countdownText">Loading...</div>
+      <input type="date" id="anniversaryDate" value="2025-06-01">
+      <button id="setAnniversaryBtn">Set our day</button>
+    </div>
+
+    <div class="card">
+      <h3>🎲 Memory of the Day</h3>
+      <div id="memoryOfDayText">✨ Click refresh ✨</div>
+      <button id="refreshMemoryDay">🔄 New memory</button>
+    </div>
+
+    <div class="card">
+      <h3>🎁 Surprise Button</h3>
+      <button id="surpriseBtn">✨ Surprise Me ✨</button>
+      <div id="surpriseMessage" style="margin-top: 12px; font-style: italic;"></div>
     </div>
   </div>
-</div>
 
-<div class="fullscreen-overlay" id="fsOverlay" onclick="closeFullScreen()">
-  <img id="fsImg" src="">
+  <!-- =========================  MEMORIES SECTION ========================= -->
+  <div id="memoriesSection" class="section">
+    <div class="card">
+      <h3>📸 Timeline + Captions & Favorites</h3>
+      <div id="timelineList"></div>
+      <div class="flex-row">
+        <input type="text" id="newMemoryUrl" placeholder="Image URL (or use placeholder)">
+        <input type="text" id="newMemoryCaption" placeholder="Caption / memory">
+      </div>
+      <button id="addMemoryBtn">➕ Add Memory</button>
+      <button id="resetDefaultMemories" class="secondary">↺ Reset examples</button>
+    </div>
+    <div class="card">
+      <h3>🗺️ Our Places Map</h3>
+      <div class="map-placeholder" id="staticMap">📍 Paris, Rome, Tokyo memories</div>
+      <input type="text" id="newPlaceInput" placeholder="Add a place we visited">
+      <button id="addPlaceBtn">Add place</button>
+      <div id="placesList"></div>
+    </div>
+  </div>
+
+  <!-- =========================  ROMANCE SECTION ========================= -->
+  <div id="romanceSection" class="section">
+    <div class="card">
+      <h3>💌 Reasons I Love You</h3>
+      <div id="reasonsList"></div>
+      <input type="text" id="newReason" placeholder="e.g., your smile">
+      <button id="addReasonBtn">Add reason</button>
+      <button id="randomReasonBtn">✨ Show random reason</button>
+    </div>
+    <div class="card">
+      <h3>🎧 Our Playlist</h3>
+      <iframe style="border-radius:16px; width:100%; height:152px;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+      <p class="text-secondary">You can replace with your own Spotify playlist ID 💿</p>
+    </div>
+    <div class="card">
+      <h3>💬 Love Letter Generator</h3>
+      <button id="generateLetterBtn">💌 Generate sweet letter</button>
+      <div id="generatedLetter" style="background:var(--bg); padding:14px; border-radius:24px; margin-top:12px;"></div>
+    </div>
+    <div class="card">
+      <h3>🎲 Virtual Date Ideas</h3>
+      <button id="randomDateBtn">🎟️ Pick a date idea</button>
+      <div id="dateIdeaDisplay" class="badge" style="margin-top:12px; font-size:1rem;"></div>
+    </div>
+  </div>
+
+  <!-- =========================  INTERACTIVE / FUN ========================= -->
+  <div id="interactiveSection" class="section">
+    <div class="card">
+      <h3>🎭 Couple Quiz</h3>
+      <div id="quizQuestion">Click start to test how well you know each other</div>
+      <input type="text" id="quizAnswer" placeholder="Your answer">
+      <button id="checkQuizBtn">Check answer</button>
+      <button id="nextQuizBtn">Next question</button>
+      <p id="quizFeedback"></p>
+    </div>
+    <div class="card">
+      <h3>🥠 Fortune Cookie</h3>
+      <button id="fortuneBtn">Open fortune cookie</button>
+      <div id="fortuneText"></div>
+    </div>
+    <div class="card">
+      <h3>🤔 Would You Rather? (Couple)</h3>
+      <button id="wyrBtn">New question</button>
+      <div id="wyrDisplay" style="font-weight:bold; margin-top:12px;"></div>
+    </div>
+    <div class="card">
+      <h3>🐾 Virtual Pet</h3>
+      <div id="petEmoji">🐣</div>
+      <div>❤️ Love points feed pet: <span id="petLevel">baby</span></div>
+      <button id="feedPetBtn">🍎 Feed (10 love points)</button>
+    </div>
+  </div>
+
+  <!-- =========================  LISTS & PLANS ========================= -->
+  <div id="plansSection" class="section">
+    <div class="card">
+      <h3>✅ Shared To-Do List</h3>
+      <div id="todoList"></div>
+      <div class="flex-row"><input type="text" id="newTodo" placeholder="e.g., Watch a movie"><button id="addTodoBtn">Add</button></div>
+    </div>
+    <div class="card">
+      <h3>🎁 Wishlist / Gift Ideas</h3>
+      <div id="wishlistDiv"></div>
+      <input type="text" id="newWish" placeholder="Gift idea"><button id="addWishBtn">Add</button>
+    </div>
+    <div class="card">
+      <h3>😂 Inside Jokes</h3>
+      <div id="jokesDiv"></div>
+      <input type="text" id="newJoke" placeholder="Our joke"><button id="addJokeBtn">Add</button>
+    </div>
+    <div class="card">
+      <h3>🌍 Future Plans / Dream Trips</h3>
+      <div id="futurePlansDiv"></div>
+      <input type="text" id="newPlan" placeholder="Dream together..."><button id="addPlanBtn">Add</button>
+    </div>
+  </div>
+
+  <!-- =========================  TRACKERS SECTION ========================= -->
+  <div id="trackersSection" class="section">
+    <div class="card">
+      <h3>📊 Mood Tracker (Today)</h3>
+      <div class="flex-row">
+        <button id="moodHappy">😊 Happy</button>
+        <button id="moodLove">🥰 Loved</button>
+        <button id="moodMissing">😢 Missing you</button>
+      </div>
+      <div id="moodHistory">No moods recorded yet.</div>
+    </div>
+    <div class="card">
+      <h3>🎬 Movies Watched Together</h3>
+      <div id="moviesList"></div>
+      <input type="text" id="newMovie" placeholder="Movie title + rating"><button id="addMovieBtn">Add</button>
+    </div>
+    <div class="card">
+      <h3>🎵 Song Tracker (our songs)</h3>
+      <div id="songsList"></div>
+      <input type="text" id="newSong" placeholder="Song - Artist"><button id="addSongBtn">Add</button>
+    </div>
+    <div class="card">
+      <h3>💍 Firsts Tracker</h3>
+      <div id="firstsList"></div>
+      <select id="firstTypeSelect">
+        <option>First kiss</option><option>First date</option><option>First trip</option><option>First I love you</option>
+      </select>
+      <input type="date" id="firstDateInput">
+      <button id="addFirstBtn">Record first</button>
+    </div>
+  </div>
+  <footer>💖 Only us — every memory saved on this device 💖</footer>
 </div>
 
 <script>
-// ========== SECURE CREDENTIALS (HASHED - not visible as plain text) ==========
-// In real app, these would be properly hashed. For demo, using obfuscated method.
-// The actual passwords are NOT visible in source as plain text.
-// Naqii's PIN = 2580, Shivam's PIN = 3690
-const users = {
-  naqii: {
-    name: "Naqii",
-    pinHash: btoa("2580"),  // Base64 encoded "2580"
-    icon: "👩"
-  },
-  shivam: {
-    name: "Shivam", 
-    pinHash: btoa("3690"),  // Base64 encoded "3690"
-    icon: "👨"
-  }
-};
+  // ---------- DATA & STORAGE ----------
+  let appData = {
+    loveCount: 0,
+    notes: [], // legacy
+    memories: [],   // {url, caption, favorite, date}
+    places: [],
+    reasons: [],
+    todoItems: [],
+    wishlist: [],
+    jokes: [],
+    futurePlans: [],
+    movies: [],
+    songs: [],
+    firsts: [], // {type, date}
+    moodEntries: [],
+    streakLastDate: null,
+    anniversaryDate: "2025-06-01",
+    petFeed: 0
+  };
 
-let currentUser = null;
-let selectedProfile = null;
-
-// ========== PLACEHOLDER IMAGES ==========
-let memories = [
-  "https://picsum.photos/id/20/400/400",
-  "https://picsum.photos/id/22/400/400",
-  "https://picsum.photos/id/26/400/400",
-  "https://picsum.photos/id/27/400/400",
-  "https://picsum.photos/id/28/400/400",
-  "https://picsum.photos/id/29/400/400"
-];
-
-let letterImages = {
-  naqii: "https://picsum.photos/id/116/800/600",
-  shivam: "https://picsum.photos/id/96/800/600"
-};
-
-// ========== USER-SPECIFIC DATA ==========
-let userData = {
-  naqii: { loveCount: 0, notes: [] },
-  shivam: { loveCount: 0, notes: [] }
-};
-
-function loadUserData() {
-  let savedData = localStorage.getItem("privateHaven_userData");
-  if(savedData) {
-    let parsed = JSON.parse(savedData);
-    if(parsed.naqii) userData.naqii = parsed.naqii;
-    if(parsed.shivam) userData.shivam = parsed.shivam;
-  }
-}
-
-function saveUserData() {
-  localStorage.setItem("privateHaven_userData", JSON.stringify(userData));
-}
-
-function selectProfile(profile) {
-  selectedProfile = profile;
-  
-  // Update UI to show selected profile
-  document.querySelectorAll('.profile-card').forEach(card => {
-    card.classList.remove('selected');
-  });
-  event.target.closest('.profile-card').classList.add('selected');
-  
-  // Show PIN input
-  document.getElementById('pinSection').style.display = 'block';
-  document.getElementById('pinInput').value = '';
-  document.getElementById('loginError').innerHTML = '';
-  document.getElementById('pinInput').focus();
-}
-
-function verifyPin() {
-  if(!selectedProfile) {
-    document.getElementById('loginError').innerHTML = 'Please select a profile first';
-    return;
-  }
-  
-  let enteredPin = document.getElementById('pinInput').value;
-  let expectedHash = users[selectedProfile].pinHash;
-  
-  // Verify PIN
-  if(btoa(enteredPin) === expectedHash) {
-    currentUser = selectedProfile;
-    loadSavedTheme();
-    loadUserData();
-    loadHome();
-  } else {
-    document.getElementById('loginError').innerHTML = '❌ Wrong PIN. Try again.';
-    document.getElementById('pinInput').value = '';
-    document.getElementById('pinInput').focus();
-    
-    // Security: Clear after 3 failed attempts
-    let attempts = parseInt(sessionStorage.getItem('failedAttempts') || '0') + 1;
-    sessionStorage.setItem('failedAttempts', attempts);
-    if(attempts >= 3) {
-      document.getElementById('loginError').innerHTML = 'Too many attempts. Refresh page to try again.';
-      document.getElementById('pinInput').disabled = true;
+  // Load from localStorage
+  function loadData() {
+    const saved = localStorage.getItem("PrivateHavenFull");
+    if(saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        Object.assign(appData, parsed);
+      } catch(e) {}
     }
+    // Default memories if empty
+    if(appData.memories.length === 0) {
+      appData.memories = [
+        {url: "https://picsum.photos/id/20/400/300", caption: "Coffee date ☕", favorite: false, date: new Date().toLocaleDateString()},
+        {url: "https://picsum.photos/id/96/400/300", caption: "Mountain sunset", favorite: true, date: new Date().toLocaleDateString()},
+        {url: "https://picsum.photos/id/169/400/300", caption: "Beach walk", favorite: false, date: new Date().toLocaleDateString()}
+      ];
+    }
+    if(appData.reasons.length === 0) appData.reasons = ["Your kindness", "Your laugh", "How you care"];
+    if(appData.todoItems.length === 0) appData.todoItems = ["Plan a picnic", "Watch sunset together"];
+    if(appData.wishlist.length === 0) appData.wishlist = ["Matching rings", "Weekend getaway"];
+    if(appData.jokes.length === 0) appData.jokes = ["We finish each other's... sandwiches 🥪"];
+    if(appData.futurePlans.length === 0) appData.futurePlans = ["Japan trip", "Adopt a pet"];
+    if(appData.places.length === 0) appData.places = ["Eiffel Tower (dream)", "Local cafe 💕"];
+    if(appData.firsts.length === 0) appData.firsts = [{type:"First date", date:"2024-01-15"},{type:"First kiss", date:"2024-02-10"}];
+    if(!appData.streakLastDate) appData.streakLastDate = null;
+    saveData();
   }
-}
+  function saveData() {
+    localStorage.setItem("PrivateHavenFull", JSON.stringify(appData));
+  }
 
-function logout() {
-  currentUser = null;
-  selectedProfile = null;
-  sessionStorage.removeItem('failedAttempts');
-  showLoginScreen();
-}
+  // Love & Streak logic
+  function updateLoveAndStreak() {
+    document.getElementById("loveCounterDisplay").innerText = appData.loveCount;
+    const percent = Math.min(100, (appData.loveCount / 500) * 100);
+    document.getElementById("loveFillBar").style.width = percent + "%";
+    // streak
+    let streak = 0;
+    if(appData.streakLastDate) {
+      const last = new Date(appData.streakLastDate);
+      const today = new Date();
+      const diffDays = Math.floor((today - last) / (1000*60*60*24));
+      if(diffDays === 1) streak = (parseInt(localStorage.getItem("tempStreak")||"0"))+1;
+      else if(diffDays === 0) streak = parseInt(localStorage.getItem("tempStreak")||"0");
+      else streak = 0;
+      localStorage.setItem("tempStreak", streak);
+      document.getElementById("streakDisplay").innerText = streak + " days 🔥";
+    } else {
+      document.getElementById("streakDisplay").innerText = "0 days 🔥";
+    }
+    // update pet level
+    let level = "🐣 baby";
+    if(appData.loveCount >= 200) level = "🦊 fox";
+    if(appData.loveCount >= 500) level = "🦄 magical";
+    document.getElementById("petLevel").innerText = level;
+    document.getElementById("petEmoji").innerHTML = appData.loveCount>=500 ? "🦄" : (appData.loveCount>=200?"🦊":"🐣");
+  }
 
-function showLoginScreen() {
-  const app = document.getElementById('app');
-  app.style.opacity = '0';
-  setTimeout(() => {
-    app.innerHTML = `
-      <div style="text-align:center; width:100%;">
-        <h2>🔒 Our Private Haven</h2>
-        <p style="color:var(--text-secondary); margin-bottom:20px;">Only for us ❤️</p>
-        
-        <div class="profile-selector" id="profileSelector">
-          <div class="profile-card" onclick="selectProfile('naqii')">
-            <div class="profile-icon">👩</div>
-            <div class="profile-name">Naqii</div>
-          </div>
-          <div class="profile-card" onclick="selectProfile('shivam')">
-            <div class="profile-icon">👨</div>
-            <div class="profile-name">Shivam</div>
-          </div>
+  function addLove() {
+    appData.loveCount++;
+    const todayStr = new Date().toDateString();
+    if(appData.streakLastDate !== todayStr) {
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+      if(appData.streakLastDate === yesterday.toDateString()) {
+        let streak = parseInt(localStorage.getItem("tempStreak")||"0")+1;
+        localStorage.setItem("tempStreak", streak);
+      } else localStorage.setItem("tempStreak","1");
+      appData.streakLastDate = todayStr;
+    }
+    saveData();
+    updateLoveAndStreak();
+    renderAllDynamic();
+  }
+
+  // Helper renders
+  function renderTimeline() {
+    const container = document.getElementById("timelineList");
+    if(!container) return;
+    container.innerHTML = "";
+    appData.memories.forEach((mem, idx) => {
+      const div = document.createElement("div");
+      div.className = "memory-item";
+      div.innerHTML = `
+        <div style="display:flex; gap:12px; align-items:center;">
+          <img src="${mem.url}" style="width:60px; height:60px; object-fit:cover; border-radius:16px;" onerror="this.src='https://picsum.photos/id/1/60/60'">
+          <div style="flex:1"><strong>${mem.caption || "Memory"}</strong><br><small>${mem.date || ""}</small></div>
+          <span class="favorite-star" data-idx="${idx}">${mem.favorite ? "⭐" : "☆"}</span>
+          <button class="secondary" data-del="${idx}" style="padding:4px 10px;">🗑️</button>
         </div>
-        
-        <div id="pinSection" style="display:none; width:100%;">
-          <input type="password" id="pinInput" placeholder="Enter your 4-digit PIN" maxlength="4">
-          <button class="big-btn" onclick="verifyPin()">Unlock</button>
-          <div id="loginError" class="login-error"></div>
-        </div>
-      </div>
-    `;
-    app.style.opacity = '1';
-    
-    // Re-attach global functions
-    window.selectProfile = selectProfile;
-    window.verifyPin = verifyPin;
-  }, 250);
-}
-
-// ========== LOVE COUNTER & NOTES (User-specific) ==========
-function addLove() {
-  if(!currentUser) return;
-  userData[currentUser].loveCount++;
-  saveUserData();
-  showLoveCounter();
-}
-
-function addNote() {
-  if(!currentUser) return;
-  let noteText = document.getElementById("newNoteInput")?.value;
-  if(noteText && noteText.trim() !== "") {
-    userData[currentUser].notes.push({text: noteText.trim(), date: new Date().toLocaleDateString()});
-    saveUserData();
-    showLoveCounter();
+      `;
+      container.appendChild(div);
+    });
+    document.querySelectorAll(".favorite-star").forEach(el => {
+      el.addEventListener("click", (e) => {
+        const idx = parseInt(el.getAttribute("data-idx"));
+        appData.memories[idx].favorite = !appData.memories[idx].favorite;
+        saveData();
+        renderTimeline();
+      });
+    });
+    document.querySelectorAll("[data-del]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const idx = parseInt(btn.getAttribute("data-del"));
+        appData.memories.splice(idx,1);
+        saveData();
+        renderTimeline();
+        updateMemoryOfDay();
+      });
+    });
   }
-}
 
-function deleteNote(index) {
-  if(!currentUser) return;
-  userData[currentUser].notes.splice(index, 1);
-  saveUserData();
-  showLoveCounter();
-}
-
-// ========== THEME FUNCTIONS ==========
-function setTheme(bg, accent, card, text, textSecondary, border) {
-  document.documentElement.style.setProperty('--bg', bg);
-  document.documentElement.style.setProperty('--accent', accent);
-  document.documentElement.style.setProperty('--glow', accent);
-  document.documentElement.style.setProperty('--card', card);
-  document.documentElement.style.setProperty('--text', text);
-  document.documentElement.style.setProperty('--text-secondary', textSecondary || '#aaa');
-  document.documentElement.style.setProperty('--border', border || '#333');
-  document.body.style.color = text;
-  localStorage.setItem("privateHaven_theme", JSON.stringify({bg, accent, card, text, textSecondary, border}));
-  loadHome();
-}
-
-function loadSavedTheme() {
-  let savedTheme = localStorage.getItem("privateHaven_theme");
-  if(savedTheme) {
-    let theme = JSON.parse(savedTheme);
-    document.documentElement.style.setProperty('--bg', theme.bg);
-    document.documentElement.style.setProperty('--accent', theme.accent);
-    document.documentElement.style.setProperty('--glow', theme.accent);
-    document.documentElement.style.setProperty('--card', theme.card);
-    document.documentElement.style.setProperty('--text', theme.text);
-    document.documentElement.style.setProperty('--text-secondary', theme.textSecondary || '#aaa');
-    document.documentElement.style.setProperty('--border', theme.border || '#333');
-    document.body.style.color = theme.text;
+  function renderPlaces() {
+    const container = document.getElementById("placesList");
+    if(container) container.innerHTML = appData.places.map(p => `<div class="badge" style="margin:4px">📍 ${p}</div>`).join("");
   }
-}
+  function renderReasons() {
+    const container = document.getElementById("reasonsList");
+    if(container) container.innerHTML = appData.reasons.map((r,i)=>`<div class="memory-item">💖 ${r} <button data-delR="${i}" class="secondary" style="float:right;">x</button></div>`).join("");
+    document.querySelectorAll("[data-delR]").forEach(btn=>{
+      btn.addEventListener("click",(e)=>{
+        const idx = parseInt(btn.getAttribute("data-delR"));
+        appData.reasons.splice(idx,1);
+        saveData(); renderReasons();
+      });
+    });
+  }
+  function renderTodos() { const d=document.getElementById("todoList"); if(d) d.innerHTML = appData.todoItems.map((t,i)=>`<div>✅ ${t} <button data-td="${i}" class="secondary">✔️ done</button></div>`).join(""); document.querySelectorAll("[data-td]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-td")); appData.todoItems.splice(i,1); saveData(); renderTodos();});});}
+  function renderWishlist() { const d=document.getElementById("wishlistDiv"); if(d) d.innerHTML = appData.wishlist.map((w,i)=>`<div>🎁 ${w} <button data-wish="${i}" class="secondary">remove</button></div>`).join(""); document.querySelectorAll("[data-wish]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-wish")); appData.wishlist.splice(i,1); saveData(); renderWishlist();});});}
+  function renderJokes() { const d=document.getElementById("jokesDiv"); if(d) d.innerHTML = appData.jokes.map((j,i)=>`<div>😂 ${j} <button data-jk="${i}" class="secondary">🗑️</button></div>`).join(""); document.querySelectorAll("[data-jk]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-jk")); appData.jokes.splice(i,1); saveData(); renderJokes();});});}
+  function renderPlans() { const d=document.getElementById("futurePlansDiv"); if(d) d.innerHTML = appData.futurePlans.map((p,i)=>`<div>✈️ ${p} <button data-pl="${i}" class="secondary">remove</button></div>`).join(""); document.querySelectorAll("[data-pl]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-pl")); appData.futurePlans.splice(i,1); saveData(); renderPlans();});});}
+  function renderMovies() { const d=document.getElementById("moviesList"); if(d) d.innerHTML = appData.movies.map((m,i)=>`<div>🎬 ${m} <button data-mv="${i}" class="secondary">x</button></div>`).join(""); document.querySelectorAll("[data-mv]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-mv")); appData.movies.splice(i,1); saveData(); renderMovies();});});}
+  function renderSongs() { const d=document.getElementById("songsList"); if(d) d.innerHTML = appData.songs.map((s,i)=>`<div>🎵 ${s} <button data-sg="${i}" class="secondary">x</button></div>`).join(""); document.querySelectorAll("[data-sg]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-sg")); appData.songs.splice(i,1); saveData(); renderSongs();});});}
+  function renderFirsts() { const d=document.getElementById("firstsList"); if(d) d.innerHTML = appData.firsts.map((f,i)=>`<div>💍 ${f.type}: ${f.date} <button data-fr="${i}" class="secondary">remove</button></div>`).join(""); document.querySelectorAll("[data-fr]").forEach(btn=>{btn.addEventListener("click",(e)=>{const i=parseInt(btn.getAttribute("data-fr")); appData.firsts.splice(i,1); saveData(); renderFirsts();});});}
+  function renderMoodHistory() { const d=document.getElementById("moodHistory"); if(d) d.innerHTML = appData.moodEntries.slice(-5).reverse().map(m=>`${m.date}: ${m.mood}`).join("<br>") || "No moods yet";}
 
-// ========== DISPLAY FUNCTIONS ==========
-function fadeSwitch(newContent){
-  const app = document.getElementById("app");
-  app.style.opacity = "0";
-  setTimeout(()=>{
-    app.innerHTML = newContent;
-    app.style.opacity = "1";
-  }, 250);
-}
+  function updateMemoryOfDay() {
+    if(appData.memories.length) {
+      const rand = appData.memories[Math.floor(Math.random() * appData.memories.length)];
+      document.getElementById("memoryOfDayText").innerHTML = `<img src="${rand.url}" style="width:80px; height:80px; object-fit:cover; border-radius:20px;"><br>${rand.caption || "Sweet memory"}`;
+    } else document.getElementById("memoryOfDayText").innerText = "Add memories first!";
+  }
 
-function loadHome(){
-  if(!currentUser) return;
-  fadeSwitch(`
-    <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-    <div class="floating-theme" onclick="themeMenu()">🎨</div>
-    <div style="display:flex; flex-direction:column; align-items:center; margin-top:60px;">
-      <div style="text-align:center; margin-bottom:10px;">
-        <span style="font-size:24px;">${users[currentUser].icon}</span>
-        <p style="margin:5px 0 0 0; font-size:14px; color:var(--accent);">Welcome, ${users[currentUser].name} ❤️</p>
-      </div>
-      <button class="square-btn" onclick="showLetters()">💌 Letters</button>
-      <button class="square-btn" onclick="showMemories()">📸 Memories</button>
-      <button class="square-btn" onclick="showLoveCounter()">💖 Love Counter</button>
-      <button class="square-btn" onclick="showUs()">👫 Us</button>
-    </div>
-  `);
-}
+  function updateCountdown() {
+    const target = new Date(appData.anniversaryDate);
+    const today = new Date();
+    const diff = Math.ceil((target - today) / (1000*60*60*24));
+    document.getElementById("countdownText").innerHTML = diff >=0 ? `${diff} days until our special day ❤️` : "That day has passed, but love remains ✨";
+  }
 
-function showLoveCounter() {
-  if(!currentUser) return;
-  let loveCount = userData[currentUser].loveCount;
-  let notes = userData[currentUser].notes;
-  let lovePercent = Math.min((loveCount / 1000) * 100, 100);
-  
-  fadeSwitch(`
-    <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-    <div class="floating-theme" onclick="themeMenu()">🎨</div>
-    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
+  function renderAllDynamic() {
+    renderTimeline(); renderPlaces(); renderReasons(); renderTodos(); renderWishlist(); renderJokes(); renderPlans(); renderMovies(); renderSongs(); renderFirsts(); renderMoodHistory(); updateMemoryOfDay(); updateCountdown();
+  }
+
+  // Event binding
+  document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+    updateLoveAndStreak();
+    renderAllDynamic();
+
+    document.getElementById("addLoveBtn").onclick = () => addLove();
+    document.getElementById("setAnniversaryBtn").onclick = () => {
+      const val = document.getElementById("anniversaryDate").value;
+      if(val) appData.anniversaryDate = val; saveData(); updateCountdown();
+    };
+    document.getElementById("refreshMemoryDay").onclick = () => updateMemoryOfDay();
+    document.getElementById("surpriseBtn").onclick = () => {
+      const surprises = ["💋 You are my sunshine", "🌹 I fall for you every day", "🎁 Surprise! Let's plan a date", "💕 I love you more than pizza", "✨ You make everything better"];
+      document.getElementById("surpriseMessage").innerHTML = surprises[Math.floor(Math.random()*surprises.length)];
+    };
+    document.getElementById("addMemoryBtn").onclick = () => {
+      let url = document.getElementById("newMemoryUrl").value || "https://picsum.photos/id/100/400/300";
+      let cap = document.getElementById("newMemoryCaption").value || "Beautiful moment";
+      appData.memories.unshift({url, caption: cap, favorite: false, date: new Date().toLocaleDateString()});
+      saveData(); renderTimeline();
+    };
+    document.getElementById("resetDefaultMemories").onclick = () => { appData.memories = []; saveData(); loadData(); renderTimeline(); };
+    document.getElementById("addPlaceBtn").onclick = () => { let p = document.getElementById("newPlaceInput").value; if(p) { appData.places.push(p); saveData(); renderPlaces(); } };
+    document.getElementById("addReasonBtn").onclick = () => { let r = document.getElementById("newReason").value; if(r) { appData.reasons.push(r); saveData(); renderReasons(); } };
+    document.getElementById("randomReasonBtn").onclick = () => { if(appData.reasons.length) alert("💖 " + appData.reasons[Math.floor(Math.random()*appData.reasons.length)]); };
+    document.getElementById("generateLetterBtn").onclick = () => { const letters = ["My love, every day with you is magic. I can't wait to grow old with you. 💌","You are my greatest adventure. I love you more than words can say.","You make my world brighter. Forever yours."]; document.getElementById("generatedLetter").innerHTML = letters[Math.floor(Math.random()*letters.length)]; };
+    document.getElementById("randomDateBtn").onclick = () => { const dates = ["Picnic under stars", "Cook together", "Dance in living room", "Road trip", "Museum date"]; document.getElementById("dateIdeaDisplay").innerHTML = dates[Math.floor(Math.random()*dates.length)]; };
+    // Quiz simple
+    const quizBank = [{q:"What's my favorite color?", a:["pink","red"]},{q:"My dream travel destination?", a:["japan","paris"]}];
+    let qIdx = 0;
+    document.getElementById("nextQuizBtn").onclick = () => { qIdx = (qIdx+1)%quizBank.length; document.getElementById("quizQuestion").innerText = quizBank[qIdx].q; document.getElementById("quizFeedback").innerText = ""; };
+    document.getElementById("checkQuizBtn").onclick = () => { let ans = document.getElementById("quizAnswer").value.toLowerCase(); if(quizBank[qIdx].a.includes(ans)) document.getElementById("quizFeedback").innerHTML = "✅ Perfect! You know me 💕"; else document.getElementById("quizFeedback").innerHTML = "❌ Not quite, but I love you anyway 😘"; };
+    document.getElementById("fortuneBtn").onclick = () => { const fortunes = ["You will receive a sweet kiss today", "A surprise date awaits", "Love is in the air", "Happiness is coming your way"]; document.getElementById("fortuneText").innerHTML = "🥠 " + fortunes[Math.floor(Math.random()*fortunes.length)]; };
+    document.getElementById("wyrBtn").onclick = () => { const wyr = ["Would you rather have unlimited hugs or unlimited kisses?", "Travel the world together or stay home cuddling?"]; document.getElementById("wyrDisplay").innerHTML = wyr[Math.floor(Math.random()*wyr.length)]; };
+    document.getElementById("feedPetBtn").onclick = () => { if(appData.loveCount >= 10) { appData.loveCount -= 10; saveData(); updateLoveAndStreak(); alert("🐾 Pet loves the treat!"); } else alert("Not enough love points. Add loving moments first!"); };
+    document.getElementById("addTodoBtn").onclick = () => { let t = document.getElementById("newTodo").value; if(t){ appData.todoItems.push(t); saveData(); renderTodos(); } };
+    document.getElementById("addWishBtn").onclick = () => { let w = document.getElementById("newWish").value; if(w){ appData.wishlist.push(w); saveData(); renderWishlist(); } };
+    document.getElementById("addJokeBtn").onclick = () => { let j = document.getElementById("newJoke").value; if(j){ appData.jokes.push(j); saveData(); renderJokes(); } };
+    document.getElementById("addPlanBtn").onclick = () => { let p = document.getElementById("newPlan").value; if(p){ appData.futurePlans.push(p); saveData(); renderPlans(); } };
+    document.getElementById("addMovieBtn").onclick = () => { let m = document.getElementById("newMovie").value; if(m){ appData.movies.push(m); saveData(); renderMovies(); } };
+    document.getElementById("addSongBtn").onclick = () => { let s = document.getElementById("newSong").value; if(s){ appData.songs.push(s); saveData(); renderSongs(); } };
+    document.getElementById("addFirstBtn").onclick = () => { let type = document.getElementById("firstTypeSelect").value; let date = document.getElementById("firstDateInput").value; if(date) { appData.firsts.push({type, date}); saveData(); renderFirsts(); } };
+    document.getElementById("moodHappy").onclick = () => { appData.moodEntries.push({date: new Date().toLocaleDateString(), mood:"😊 Happy"}); saveData(); renderMoodHistory(); };
+    document.getElementById("moodLove").onclick = () => { appData.moodEntries.push({date: new Date().toLocaleDateString(), mood:"🥰 Loved"}); saveData(); renderMoodHistory(); };
+    document.getElementById("moodMissing").onclick = () => { appData.moodEntries.push({date: new Date().toLocaleDateString(), mood:"😢 Missing you"}); saveData(); renderMoodHistory(); };
     
-    <div class="counter-card">
-      <h3>💕 ${users[currentUser].name}'s Love Counter 💕</h3>
-      <div class="counter-number">${loveCount}</div>
-      <p>moments of love</p>
-      <button class="small-btn" onclick="addLove();">➕ Add a loving moment</button>
-      <div class="love-meter">
-        <div class="love-fill" style="width:${lovePercent}%;"></div>
-      </div>
-      <p>✨ ${Math.floor(lovePercent)}% to 1000 loves ✨</p>
-    </div>
+    // Theme toggle (3 themes)
+    let themeIdx = 0;
+    document.getElementById("themeToggleBtn").onclick = () => {
+      const themes = [["#0f0f12","#1e1e2a","#ff6b8b"],["#fff0f5","#ffe4ed","#d4586a"],["#1a1a2e","#16213e","#e94560"]];
+      themeIdx = (themeIdx+1)%themes.length;
+      document.documentElement.style.setProperty('--bg', themes[themeIdx][0]);
+      document.documentElement.style.setProperty('--card', themes[themeIdx][1]);
+      document.documentElement.style.setProperty('--accent', themes[themeIdx][2]);
+      document.documentElement.style.setProperty('--glow', themes[themeIdx][2]);
+    };
     
-    <hr>
-    <h3>📝 Love Notes</h3>
-    <input type="text" id="newNoteInput" placeholder="Write a sweet note..." class="note-input">
-    <button class="small-btn" onclick="addNote();">💌 Save Note</button>
-    
-    <div id="notesList">
-      ${notes.length === 0 ? '<p style="color:var(--text-secondary);">No notes yet. Write your first memory!</p>' : 
-        notes.map((note, idx) => `
-          <div class="note-item">
-            <div><strong>${note.date}</strong><br>${note.text}</div>
-            <button class="delete-note" onclick="deleteNote(${idx})">🗑️</button>
-          </div>
-        `).join('')
-      }
-    </div>
-  `);
-}
-
-function showLetters(){
-  fadeSwitch(`
-    <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-    <div class="floating-theme" onclick="themeMenu()">🎨</div>
-    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
-    <h2>💌 Letters</h2>
-    <div style="margin-top:20px; width:100%;">
-      <div class="note-item" style="cursor:pointer; justify-content:center;" onclick="openFullScreen('${letterImages.naqii}')">
-        📖 Letter from Naqii ❤️
-      </div>
-      <div class="note-item" style="cursor:pointer; justify-content:center; margin-top:10px;" onclick="openFullScreen('${letterImages.shivam}')">
-        📖 Letter from Shivam ❤️
-      </div>
-    </div>
-    <p style="margin-top:20px; color:var(--text-secondary);">Click on a letter to view full size 💫</p>
-  `);
-}
-
-function showMemories(){
-  let html = `
-    <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-    <div class="floating-theme" onclick="themeMenu()">🎨</div>
-    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
-    <h2>📸 Memories Gallery</h2>
-    <div class="memories-container">
-  `;
-  memories.forEach(src => html += `<img src="${src}" onclick="openFullScreen('${src}')">`);
-  html += `</div><p style="color:var(--text-secondary);">Click any photo to enlarge ✨</p>`;
-  fadeSwitch(html);
-}
-
-function showUs(){
-  fadeSwitch(`
-    <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-    <div class="floating-theme" onclick="themeMenu()">🎨</div>
-    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
-    <h2>👫 You & Me</h2>
-    <div class="counter-card">
-      <p>✨ Every moment with you is magic ✨</p>
-      <p>💑 Together is our favorite place</p>
-      <p>🎵 Our song plays in my heart</p>
-      <p>🌟 You make life beautiful</p>
-    </div>
-    <div style="display:flex; gap:10px; margin-top:15px;">
-      <img src="https://picsum.photos/id/169/200/150" style="border-radius:15px; width:48%;">
-      <img src="https://picsum.photos/id/144/200/150" style="border-radius:15px; width:48%;">
-    </div>
-  `);
-}
-
-function openFullScreen(src){
-  document.getElementById("fsImg").src = src;
-  document.getElementById("fsOverlay").classList.add("show");
-}
-
-function closeFullScreen(){
-  document.getElementById("fsOverlay").classList.remove("show");
-}
-
-function themeMenu(){
-  fadeSwitch(`
-    <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-    <button class="big-btn" onclick="loadHome()" style="margin-top:0;">← Back</button>
-    <h3>🎨 Choose Your Theme</h3>
-    <button class="big-btn" onclick="setTheme('#111','#ff4d6d','#1c1c1c','#fff','#aaa','#333')">🌙 Dark Pink (Default)</button>
-    <button class="big-btn" onclick="setTheme('#fff','#ff85a2','#f5f5f5','#222','#666','#ddd')">🌸 Soft Pink</button>
-    <button class="big-btn" onclick="setTheme('#0a0a2a','#ff6b9d','#1a1a3a','#f0f0ff','#aaa','#2a2a4a')">🌌 Midnight Romance</button>
-    <button class="big-btn" onclick="setTheme('#2d1b2e','#e0aaff','#3c2a3e','#ffffff','#ccc','#4a3a4e')">💜 Purple Dream</button>
-  `);
-}
-
-// Make all functions global
-window.selectProfile = selectProfile;
-window.verifyPin = verifyPin;
-window.logout = logout;
-window.loadHome = loadHome;
-window.showLetters = showLetters;
-window.showMemories = showMemories;
-window.showUs = showUs;
-window.showLoveCounter = showLoveCounter;
-window.openFullScreen = openFullScreen;
-window.closeFullScreen = closeFullScreen;
-window.themeMenu = themeMenu;
-window.setTheme = setTheme;
-window.addLove = addLove;
-window.addNote = addNote;
-window.deleteNote = deleteNote;
-
-// Initialize
-loadUserData();
+    // Tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active-section"));
+        document.getElementById(btn.getAttribute("data-tab")+"Section").classList.add("active-section");
+      });
+    });
+    updateCountdown();
+  });
 </script>
 </body>
 </html>
