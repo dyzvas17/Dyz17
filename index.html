@@ -16,7 +16,6 @@
     body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(124,58,237,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(129,140,248,.05) 0%,transparent 60%);pointer-events:none;z-index:0}
     #sc{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5}
 
-    /* LOGIN */
     .lo{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:#06070e}
     .lb{position:relative;z-index:1;width:90%;max-width:345px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:2.1rem 1.7rem;box-shadow:0 0 80px rgba(129,140,248,.07),0 40px 80px rgba(0,0,0,.85)}
     .lg{text-align:center;font-size:2.2rem;margin-bottom:5px;animation:pulse 3.5s ease-in-out infinite}
@@ -46,44 +45,29 @@
     .dd.used{background:var(--danger)}
     .lf{text-align:center;font-size:10px;color:var(--muted);margin-top:1.2rem;opacity:.4}
 
-    /* APP */
     #app{display:none;position:relative;z-index:1;max-width:580px;margin:0 auto;padding:14px}
-
-    /* HEADER */
     .hdr{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:11px 18px;margin-bottom:12px}
     .logo{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8,#f9c846);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .hbs{display:flex;gap:7px}
     .hb{background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;cursor:pointer;transition:.2s}
     .hb:hover{border-color:var(--accent2);color:var(--text)}
-
-    /* SYNC BAR */
     .sb{text-align:center;font-size:11px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px}
     .sd{width:6px;height:6px;border-radius:50%;background:var(--success);animation:blink 2.2s ease-in-out infinite;flex-shrink:0}
     .sd.off{background:var(--muted);animation:none}
     .sd.er{background:var(--danger);animation:none}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-
-    /* NAV */
     .nav{display:flex;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:18px}
     .tab{flex:1;background:transparent;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:8px 10px;border-radius:10px;cursor:pointer;transition:.2s}
     .tab:hover{color:var(--text)}
     .tab.active{background:rgba(109,40,217,.18);color:var(--accent);border:1px solid rgba(129,140,248,.25)}
-
-    /* SECTIONS */
     .sec{display:none;animation:fu .2s ease}
     .sec.active{display:block}
     @keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-
-    /* CARD */
     .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
     .ct{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;margin-bottom:13px;display:flex;align-items:center;gap:7px}
-
-    /* INPUTS */
     input[type=text],input[type=date],textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:9px 12px;margin-top:7px;outline:none;transition:border-color .2s}
     input:focus,textarea:focus,select:focus{border-color:var(--accent2)}
     input::placeholder,textarea::placeholder{color:var(--muted);opacity:.4}
-
-    /* BUTTONS */
     .btn{background:linear-gradient(135deg,#6d28d9,#4338ca);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:9px 17px;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s;display:inline-block}
     .btn:hover{opacity:.88}
     .btn:active{transform:scale(.97)}
@@ -92,8 +76,6 @@
     .bs{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;color:var(--danger);font-size:11px;padding:3px 9px;cursor:pointer;font-family:'Inter',sans-serif}
     .row{display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}
     .row input{flex:1;min-width:120px}
-
-    /* HOME */
     .sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
     .sp{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
     .sn{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--accent)}
@@ -102,8 +84,6 @@
     .lf2{height:100%;background:linear-gradient(90deg,#6d28d9,#c084fc,#f9c846);border-radius:30px;transition:width .4s ease}
     .cdb{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin:10px 0}
     .sx{background:var(--surface);border-radius:11px;padding:13px;margin-top:9px;font-size:14px;min-height:42px;color:var(--accent);font-style:italic;text-align:center}
-
-    /* UPLOAD */
     .uz{border:2px dashed var(--border);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:.2s;position:relative}
     .uz:hover{border-color:var(--accent2);background:rgba(129,140,248,.04)}
     .uz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;margin:0;padding:0;border:none}
@@ -122,19 +102,78 @@
     .pd{background:rgba(248,113,113,.85);border:none;border-radius:5px;color:#fff;font-size:10px;padding:2px 7px;cursor:pointer;font-family:'Inter',sans-serif;align-self:flex-start}
     .pe{text-align:center;font-size:13px;color:var(--muted);padding:22px 0;grid-column:1/-1}
     .pl{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:16px 0}
-
-    /* MEMORIES */
     .mr{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 12px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
     .ms{cursor:pointer;font-size:.95rem;flex-shrink:0}
     .mt{flex:1;font-size:13px}
     .md{font-size:10px;color:var(--muted);margin-top:2px}
-
-    /* ROMANCE */
     .ri{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:6px;display:flex;align-items:center;gap:8px;font-size:13px}
     .ri span{flex:1}
     .lb2{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;margin-top:9px;font-size:13px;line-height:1.75;font-style:italic;min-height:54px}
-
     footer{text-align:center;font-size:11px;color:var(--muted);margin-top:28px;opacity:.35}
+
+    /* ── AI ASSISTANT ── */
+    #ai-fab{
+      position:fixed;bottom:24px;right:20px;z-index:9999;
+      width:52px;height:52px;border-radius:50%;
+      background:linear-gradient(135deg,#6d28d9,#c084fc);
+      border:none;cursor:pointer;font-size:22px;
+      box-shadow:0 4px 24px rgba(192,132,252,.35);
+      transition:transform .2s,box-shadow .2s;
+      display:none;align-items:center;justify-content:center;
+    }
+    #ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(192,132,252,.5);}
+    #ai-panel{
+      position:fixed;bottom:86px;right:20px;z-index:9998;
+      width:320px;max-height:500px;
+      background:#0c0e1a;border:1px solid #2a2060;border-radius:20px;
+      box-shadow:0 12px 60px rgba(0,0,0,.7),0 0 0 1px rgba(192,132,252,.08);
+      display:flex;flex-direction:column;overflow:hidden;
+      opacity:0;pointer-events:none;transform:translateY(12px);
+      transition:opacity .25s,transform .25s;
+    }
+    #ai-panel.open{opacity:1;pointer-events:all;transform:translateY(0);}
+    .ai-head{
+      padding:13px 15px;display:flex;align-items:center;gap:10px;
+      background:linear-gradient(135deg,rgba(109,40,217,.25),rgba(192,132,252,.1));
+      border-bottom:1px solid #1c2040;flex-shrink:0;
+    }
+    .ai-ava{
+      width:34px;height:34px;border-radius:50%;flex-shrink:0;
+      background:linear-gradient(135deg,#6d28d9,#c084fc);
+      display:flex;align-items:center;justify-content:center;font-size:16px;
+    }
+    .ai-name{font-size:13px;font-weight:600;color:#e8e6f0;}
+    .ai-sub{font-size:10px;color:#6b6b8a;margin-top:1px;}
+    .ai-close{margin-left:auto;background:none;border:none;cursor:pointer;color:#6b6b8a;font-size:18px;line-height:1;padding:2px 4px;}
+    .ai-close:hover{color:#e8e6f0;}
+    #ai-msgs{
+      flex:1;overflow-y:auto;padding:12px;
+      display:flex;flex-direction:column;gap:9px;
+      scrollbar-width:thin;scrollbar-color:#1c2040 transparent;
+    }
+    .ai-msg{max-width:88%;font-size:12.5px;line-height:1.55;padding:8px 12px;border-radius:14px;word-break:break-word;}
+    .ai-msg.bot{background:#181b30;color:#c4bfe8;border-bottom-left-radius:4px;align-self:flex-start;border:1px solid #1c2040;}
+    .ai-msg.usr{background:linear-gradient(135deg,#6d28d9,#4338ca);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+    .ai-msg.thinking{background:#181b30;color:#6b6b8a;font-style:italic;border:1px solid #1c2040;align-self:flex-start;}
+    .ai-chips{display:flex;flex-wrap:wrap;gap:5px;padding:6px 12px 2px;flex-shrink:0;}
+    .ai-chip{font-size:11px;padding:4px 10px;border-radius:16px;background:#101320;color:#818cf8;border:1px solid #2a2060;cursor:pointer;transition:.15s;white-space:nowrap;}
+    .ai-chip:hover{background:#1c2040;color:#c084fc;border-color:#c084fc;}
+    .ai-inp-row{display:flex;gap:7px;padding:10px 12px;border-top:1px solid #1c2040;background:#0c0e1a;flex-shrink:0;}
+    #ai-input{
+      flex:1;background:#101320;border:1px solid #1c2040;border-radius:18px;
+      color:#e8e6f0;font-family:'Inter',sans-serif;font-size:12.5px;
+      padding:8px 13px;outline:none;transition:border-color .2s;
+      resize:none;min-height:36px;max-height:80px;
+    }
+    #ai-input:focus{border-color:#818cf8;}
+    #ai-send{
+      width:34px;height:34px;border-radius:50%;flex-shrink:0;
+      background:linear-gradient(135deg,#6d28d9,#4338ca);
+      border:none;cursor:pointer;color:#fff;font-size:14px;
+      transition:opacity .2s;align-self:flex-end;
+    }
+    #ai-send:hover{opacity:.85;}
+    #ai-send:disabled{opacity:.35;cursor:not-allowed;}
   </style>
 </head>
 <body>
@@ -179,12 +218,10 @@
       <button class="hb" id="logoutBtn">Sign out</button>
     </div>
   </div>
-
   <div class="sb">
     <div class="sd" id="syncDot"></div>
     <span id="syncLabel">Connecting…</span>
   </div>
-
   <div class="nav">
     <button class="tab active" data-tab="home">🏠 Home</button>
     <button class="tab" data-tab="memories">📸 Memories</button>
@@ -286,8 +323,34 @@
   <footer>🌙 Us, Always · photos & memories saved across devices</footer>
 </div>
 
+<!-- AI ASSISTANT -->
+<button id="ai-fab" title="Chat with Haven AI">🤖</button>
+<div id="ai-panel">
+  <div class="ai-head">
+    <div class="ai-ava">🌙</div>
+    <div>
+      <div class="ai-name">Haven AI</div>
+      <div class="ai-sub">Your personal assistant</div>
+    </div>
+    <button class="ai-close" id="ai-close-btn">✕</button>
+  </div>
+  <div id="ai-msgs"></div>
+  <div class="ai-chips" id="ai-chips">
+    <span class="ai-chip">Change theme 🎨</span>
+    <span class="ai-chip">Add a memory 📝</span>
+    <span class="ai-chip">Write love letter 💌</span>
+    <span class="ai-chip">Date idea 🎟</span>
+    <span class="ai-chip">Add a place 📍</span>
+    <span class="ai-chip">Surprise me ✨</span>
+  </div>
+  <div class="ai-inp-row">
+    <textarea id="ai-input" placeholder="Ask me anything…" rows="1"></textarea>
+    <button id="ai-send">➤</button>
+  </div>
+</div>
+
 <script>
-// STARS
+// ── STARS ──
 (function(){
   const c=document.getElementById('sc'),ctx=c.getContext('2d');let S=[];
   function resize(){c.width=innerWidth;c.height=innerHeight;}
@@ -297,11 +360,11 @@
   resize();init();draw();addEventListener('resize',()=>{resize();init();});
 })();
 
-// LOGIN
+// ── LOGIN ──
 const U='kokey',P='muffin1122',SESS='us_sess',ATT='us_att',RMEM=7*24*60*60*1000;
 let fails=parseInt(sessionStorage.getItem(ATT)||'0');
 function sessOk(){const e=localStorage.getItem(SESS);return e&&Date.now()<parseInt(e);}
-function enterApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';boot();}
+function enterApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('ai-fab').style.display='flex';boot();}
 function refreshDots(){for(let i=0;i<3;i++)document.getElementById('d'+i).classList.toggle('used',i<fails);}
 function doLogin(){
   const user=document.getElementById('lUser').value.trim();
@@ -328,18 +391,18 @@ document.getElementById('eyeBtn').addEventListener('click',()=>{const p=document
 refreshDots();
 if(sessOk())enterApp();
 
-// CLOUD API
+// ── CLOUD ──
 const API='/api/data';let cloudOk=false;
 async function cGet(key){try{const r=await fetch(`${API}?key=${encodeURIComponent(key)}`);if(!r.ok)throw 0;const j=await r.json();cloudOk=true;return j.value??null;}catch{cloudOk=false;return null;}}
 async function cSet(key,val){try{await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key,value:val})});cloudOk=true;return true;}catch{cloudOk=false;return false;}}
 async function cDel(key){try{await fetch(`${API}?key=${encodeURIComponent(key)}`,{method:'DELETE'});return true;}catch{return false;}}
 
-// LOCAL DATA
+// ── LOCAL DATA ──
 let D={loveCount:0,streakLast:null,anniDate:'2025-06-01',memories:[],places:[],reasons:[]};
 function loadLocal(){try{const s=localStorage.getItem('us_d');if(s)Object.assign(D,JSON.parse(s));}catch{}}
 function saveLocal(){try{localStorage.setItem('us_d',JSON.stringify(D));}catch{}}
 
-// PHOTOS
+// ── PHOTOS ──
 const MAX_DIM=900;let photos=[];
 function resizeImg(file){
   return new Promise(resolve=>{
@@ -392,7 +455,7 @@ function renderPhotos(){
   grid.querySelectorAll('.pd').forEach(btn=>{btn.addEventListener('click',()=>{if(confirm('Delete this photo?'))deletePhoto(btn.dataset.id);});});
 }
 
-// RENDER HELPERS
+// ── RENDER HELPERS ──
 function renderMemories(){
   const c=document.getElementById('memoriesList');if(!c)return;c.innerHTML='';
   D.memories.forEach((m,i)=>{
@@ -453,7 +516,225 @@ async function syncData(){
   updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
 }
 
-// BOOT
+// ── THEME ENGINE ──
+const THEMES={
+  default:{bg:'#06070e',surface:'#0c0e1a',card:'#101320',border:'#1c2040',accent:'#c084fc',accent2:'#818cf8'},
+  'rose':{bg:'#0e0608',surface:'#1a0c0e',card:'#200f12',border:'#401c22',accent:'#f472b6',accent2:'#fb7185'},
+  'ocean':{bg:'#060a0e',surface:'#0c121a',card:'#101820',border:'#1c3040',accent:'#38bdf8',accent2:'#818cf8'},
+  'forest':{bg:'#060e08',surface:'#0c1a0e',card:'#102013',border:'#1c4024',accent:'#6ee7b7',accent2:'#34d399'},
+  'gold':{bg:'#0e0c06',surface:'#1a180c',card:'#201e10',border:'#403a1c',accent:'#f9c846',accent2:'#fbbf24'},
+  'galaxy':{bg:'#04040e',surface:'#08091a',card:'#0c0d20',border:'#181c50',accent:'#a78bfa',accent2:'#c084fc'},
+  'midnight':{bg:'#000000',surface:'#080810',card:'#0c0c18',border:'#18183a',accent:'#818cf8',accent2:'#6366f1'},
+  'cherry':{bg:'#0e0404',surface:'#1a0808',card:'#200c0c',border:'#401818',accent:'#fb7185',accent2:'#f43f5e'},
+};
+function applyTheme(name){
+  const t=THEMES[name.toLowerCase()]||THEMES.default;
+  const r=document.documentElement.style;
+  r.setProperty('--bg',t.bg);r.setProperty('--surface',t.surface);
+  r.setProperty('--card',t.card);r.setProperty('--border',t.border);
+  r.setProperty('--accent',t.accent);r.setProperty('--accent2',t.accent2);
+  localStorage.setItem('us_theme',name.toLowerCase());
+}
+// load saved theme
+const savedTheme=localStorage.getItem('us_theme');if(savedTheme)applyTheme(savedTheme);
+
+// ── AI ASSISTANT ──
+const GEMINI_KEY='AIzaSyB5KLoKN06qFlk-9D1kFTlO3yxYf046g2w';
+const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+
+// AI memory stored in localStorage
+function getAiMemory(){try{return JSON.parse(localStorage.getItem('us_ai_mem')||'{}');}catch{return{};}}
+function setAiMemory(obj){localStorage.setItem('us_ai_mem',JSON.stringify(obj));}
+
+let aiHistory=[];
+
+// Site control functions the AI can call
+const SITE_ACTIONS={
+  changeTheme(name){
+    const valid=Object.keys(THEMES);
+    const match=valid.find(t=>t.includes(name.toLowerCase()))||'default';
+    applyTheme(match);
+    return `Theme changed to "${match}" ✨`;
+  },
+  addMemory(text){
+    if(!text)return'Please provide memory text.';
+    D.memories.unshift({text,fav:false,date:new Date().toLocaleDateString()});
+    saveLocal();cSet('us:data',D);renderMemories();
+    return`Memory added: "${text}" 📝`;
+  },
+  addPlace(place){
+    if(!place)return'Please provide a place name.';
+    D.places.push(place);saveLocal();cSet('us:data',D);renderPlaces();
+    return`Place added: "${place}" 📍`;
+  },
+  addReason(reason){
+    if(!reason)return'Please provide a reason.';
+    D.reasons.push(reason);saveLocal();cSet('us:data',D);renderReasons();
+    return`Added reason: "${reason}" 💜`;
+  },
+  addLovePoint(){
+    D.loveCount++;saveLocal();cSet('us:data',D);updateLove();
+    return`Love meter updated! Now at ${D.loveCount} points 💜`;
+  },
+  setAnniversary(dateStr){
+    D.anniDate=dateStr;saveLocal();cSet('us:data',D);updateCountdown();
+    return`Anniversary set to ${dateStr} 🗓`;
+  },
+  showTab(tab){
+    const tabs={home:'home',memories:'memories',photos:'memories',romance:'romance'};
+    const t=tabs[tab.toLowerCase()]||'home';
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`[data-tab="${t}"]`).classList.add('active');
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+    document.getElementById(t+'Section').classList.add('active');
+    return`Navigated to ${t} tab 🏠`;
+  },
+  getSiteStatus(){
+    return`Site status: ${D.memories.length} memories, ${D.places.length} places, ${D.reasons.length} reasons, ${D.loveCount} love points, anniversary: ${D.anniDate}, current theme: ${localStorage.getItem('us_theme')||'default'}`;
+  },
+  rememberFact(key,value){
+    const mem=getAiMemory();mem[key]=value;setAiMemory(mem);
+    return`Got it, I'll remember that ${key} is "${value}" 🧠`;
+  },
+  recallFacts(){
+    const mem=getAiMemory();
+    const entries=Object.entries(mem);
+    if(!entries.length)return"I don't have any memories saved yet — tell me something!";
+    return'What I remember: '+entries.map(([k,v])=>`${k}: ${v}`).join(', ');
+  }
+};
+
+function executeSiteAction(action,params){
+  try{
+    if(SITE_ACTIONS[action])return SITE_ACTIONS[action](...(params||[]));
+    return'Unknown action.';
+  }catch(e){return'Action failed: '+e.message;}
+}
+
+function buildSystemPrompt(){
+  const mem=getAiMemory();
+  const memStr=Object.entries(mem).map(([k,v])=>`${k}: ${v}`).join(', ')||'none yet';
+  return `You are Haven AI, a warm and loving personal assistant built into "Us, Always" — a private couples website.
+
+SITE FEATURES:
+- Home tab: Love Meter (love points + streak), Anniversary Countdown, Memory of the Day, Surprise button
+- Memories tab: Photo uploads, Written Memories, Our Places
+- Romance tab: Reasons I Love You, Spotify Playlist, Love Letter generator, Date Idea generator
+
+AVAILABLE THEMES: default (purple/indigo), rose (pink), ocean (blue), forest (green), gold (amber), galaxy (deep purple), midnight (black/indigo), cherry (red/pink)
+
+WHAT YOU CAN DO — when user asks, respond with JSON action blocks like this:
+{"action":"changeTheme","params":["ocean"]}
+{"action":"addMemory","params":["our first trip to Goa"]}
+{"action":"addPlace","params":["Marine Drive, Mumbai"]}
+{"action":"addReason","params":["your beautiful smile"]}
+{"action":"addLovePoint","params":[]}
+{"action":"setAnniversary","params":["2024-02-14"]}
+{"action":"showTab","params":["romance"]}
+{"action":"getSiteStatus","params":[]}
+{"action":"rememberFact","params":["her name","Priya"]}
+{"action":"recallFacts","params":[]}
+
+RULES:
+- Be warm, romantic, and playful — like a friend who knows you both deeply
+- When performing an action, include the JSON block AND a friendly message
+- You can remember personal details using rememberFact — names, anniversary, pet names, favourite things
+- You can perform multiple actions by including multiple JSON blocks
+- Always respond in a loving, personal tone
+- Keep responses concise but heartfelt
+- If asked what you can do, give a friendly summary
+
+THINGS I REMEMBER ABOUT THEM: ${memStr}`;
+}
+
+async function askGemini(userMsg){
+  aiHistory.push({role:'user',parts:[{text:userMsg}]});
+  const body={
+    system_instruction:{parts:[{text:buildSystemPrompt()}]},
+    contents:aiHistory.slice(-12),
+    generationConfig:{temperature:0.85,maxOutputTokens:600}
+  };
+  const res=await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok)throw new Error('Gemini API error '+res.status);
+  const data=await res.json();
+  const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Sorry, I couldn\'t respond right now.';
+  aiHistory.push({role:'model',parts:[{text:reply}]});
+  return reply;
+}
+
+function parseAndExecute(reply){
+  const actionRegex=/\{"action"\s*:\s*"([^"]+)"\s*,\s*"params"\s*:\s*(\[[^\]]*\])\}/g;
+  let match,results=[],cleanReply=reply;
+  while((match=actionRegex.exec(reply))!==null){
+    try{
+      const action=match[1];
+      const params=JSON.parse(match[2]);
+      const result=executeSiteAction(action,params);
+      results.push(result);
+      cleanReply=cleanReply.replace(match[0],'').trim();
+    }catch(e){}
+  }
+  return{text:cleanReply,results};
+}
+
+// ── AI UI ──
+const panel=document.getElementById('ai-panel');
+const fab=document.getElementById('ai-fab');
+const msgs=document.getElementById('ai-msgs');
+const input=document.getElementById('ai-input');
+const sendBtn=document.getElementById('ai-send');
+
+fab.addEventListener('click',()=>{
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')&&msgs.children.length===0){
+    addMsg('bot',"Hey! 💜 I'm Haven AI — I know your whole site. I can change themes, add memories, write love letters, set your anniversary, and remember things about you both. What can I do for you?");
+  }
+  if(panel.classList.contains('open'))setTimeout(()=>input.focus(),300);
+});
+document.getElementById('ai-close-btn').addEventListener('click',()=>panel.classList.remove('open'));
+
+function addMsg(role,text){
+  const d=document.createElement('div');
+  d.className=`ai-msg ${role}`;
+  d.textContent=text;
+  msgs.appendChild(d);
+  msgs.scrollTop=msgs.scrollHeight;
+  return d;
+}
+
+document.querySelectorAll('.ai-chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    input.value=chip.textContent.replace(/[🎨📝💌🎟📍✨]/g,'').trim();
+    sendAiMsg();
+  });
+});
+
+async function sendAiMsg(){
+  const text=input.value.trim();
+  if(!text)return;
+  input.value='';input.style.height='auto';
+  sendBtn.disabled=true;
+  addMsg('usr',text);
+  const thinking=addMsg('thinking','Thinking…');
+  try{
+    const reply=await askGemini(text);
+    msgs.removeChild(thinking);
+    const{text:cleanText,results}=parseAndExecute(reply);
+    if(cleanText)addMsg('bot',cleanText);
+    results.forEach(r=>addMsg('bot','✅ '+r));
+  }catch(e){
+    msgs.removeChild(thinking);
+    addMsg('bot','Oops, something went wrong. Check your connection and try again 💜');
+  }
+  sendBtn.disabled=false;
+  input.focus();
+}
+
+sendBtn.addEventListener('click',sendAiMsg);
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAiMsg();}});
+input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,80)+'px';});
+
+// ── BOOT ──
 function boot(){
   loadLocal();
   if(!D.reasons.length)D.reasons=['Your smile','Your kindness','How you make me feel safe'];
@@ -505,11 +786,12 @@ function boot(){
   document.getElementById('dateIdeaBtn').addEventListener('click',()=>{document.getElementById('dateOut').textContent=di[Math.floor(Math.random()*di.length)];});
 
   document.getElementById('syncBtn').addEventListener('click',()=>{syncData();loadPhotos();});
-
   document.getElementById('logoutBtn').addEventListener('click',()=>{
     if(!confirm('Sign out?'))return;
     localStorage.removeItem(SESS);
     document.getElementById('app').style.display='none';
+    document.getElementById('ai-fab').style.display='none';
+    panel.classList.remove('open');
     document.getElementById('lUser').value='';document.getElementById('lPass').value='';
     document.getElementById('loginErr').style.display='none';document.getElementById('loginOk').style.display='none';
     document.getElementById('loginBtn').disabled=false;
@@ -518,8 +800,7 @@ function boot(){
   });
 
   updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
-  syncData();
-  loadPhotos();
+  syncData();loadPhotos();
 }
 </script>
 </body>
