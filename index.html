@@ -214,13 +214,13 @@
   <div class="hdr">
     <div class="logo">🌙 Us, Always</div>
     <div class="hbs">
-      <button class="hb" id="syncBtn">☁ Sync</button>
+      <button class="hb" id="syncBtn">💾 Save</button>
       <button class="hb" id="logoutBtn">Sign out</button>
     </div>
   </div>
   <div class="sb">
     <div class="sd" id="syncDot"></div>
-    <span id="syncLabel">Connecting…</span>
+    <span id="syncLabel">Saved locally 💜</span>
   </div>
   <div class="nav">
     <button class="tab active" data-tab="home">🏠 Home</button>
@@ -391,11 +391,10 @@ document.getElementById('eyeBtn').addEventListener('click',()=>{const p=document
 refreshDots();
 if(sessOk())enterApp();
 
-// ── CLOUD ──
-const API='/api/data';let cloudOk=false;
-async function cGet(key){try{const r=await fetch(`${API}?key=${encodeURIComponent(key)}`);if(!r.ok)throw 0;const j=await r.json();cloudOk=true;return j.value??null;}catch{cloudOk=false;return null;}}
-async function cSet(key,val){try{await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key,value:val})});cloudOk=true;return true;}catch{cloudOk=false;return false;}}
-async function cDel(key){try{await fetch(`${API}?key=${encodeURIComponent(key)}`,{method:'DELETE'});return true;}catch{return false;}}
+// ── STORAGE (localStorage only) ──
+function cGet(key){try{const v=localStorage.getItem('us_kv_'+key);return Promise.resolve(v?JSON.parse(v):null);}catch{return Promise.resolve(null);}}
+function cSet(key,val){try{localStorage.setItem('us_kv_'+key,JSON.stringify(val));}catch{}return Promise.resolve(true);}
+function cDel(key){localStorage.removeItem('us_kv_'+key);return Promise.resolve(true);}
 
 // ── LOCAL DATA ──
 let D={loveCount:0,streakLast:null,anniDate:'2025-06-01',memories:[],places:[],reasons:[]};
@@ -496,23 +495,13 @@ function updateMotd(){
     el.innerHTML=`<div style="font-size:14px;color:var(--accent);font-style:italic;">"${m.text}"</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">${m.date||''}</div>`;
   }else{el.innerHTML=`<span style="color:var(--muted)">Add memories or photos to see one here</span>`;}
 }
-function setSyncStatus(s){
+function setSyncStatus(){
   const dot=document.getElementById('syncDot'),lbl=document.getElementById('syncLabel');
-  dot.className='sd'+(s==='ok'?'':s==='err'?' er':' off');
-  lbl.textContent={ok:'Synced ✓ — photos stay across all devices',err:'Offline — saved locally on this device',syncing:'Syncing…'}[s]||'…';
+  dot.className='sd';
+  lbl.textContent='Saved on this device 💜';
 }
 async function syncData(){
-  setSyncStatus('syncing');
-  const cloud=await cGet('us:data');
-  if(!cloudOk){setSyncStatus('err');return;}
-  if(cloud){
-    D.loveCount=Math.max(D.loveCount,cloud.loveCount||0);
-    D.anniDate=cloud.anniDate||D.anniDate;
-    const mSet=new Set(D.memories.map(m=>m.text));(cloud.memories||[]).forEach(m=>{if(!mSet.has(m.text))D.memories.push(m);});
-    const pSet=new Set(D.places);(cloud.places||[]).forEach(p=>{if(!pSet.has(p))D.places.push(p);});
-    const rSet=new Set(D.reasons);(cloud.reasons||[]).forEach(r=>{if(!rSet.has(r))D.reasons.push(r);});
-  }
-  await cSet('us:data',D);saveLocal();setSyncStatus('ok');
+  saveLocal();setSyncStatus();
   updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
 }
 
@@ -590,7 +579,7 @@ const SITE_ACTIONS={
     return`Navigated to ${t} tab 🏠`;
   },
   getSiteStatus(){
-    return`Site status: ${D.memories.length} memories, ${D.places.length} places, ${D.reasons.length} reasons, ${D.loveCount} love points, anniversary: ${D.anniDate}, current theme: ${localStorage.getItem('us_theme')||'default'}`;
+    return`Site status: ${D.memories.length} memories, ${D.places.length} places, ${D.reasons.length} reasons, ${D.loveCount} love points, anniversary: ${D.anniDate}, current theme: ${localStorage.getItem('us_theme')||'default'}. All data saved locally on device.`;
   },
   rememberFact(key,value){
     const mem=getAiMemory();mem[key]=value;setAiMemory(mem);
