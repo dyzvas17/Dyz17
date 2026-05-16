@@ -1,795 +1,601 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>🌙 Us, Always</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --bg:#06070e;--surface:#0c0e1a;--card:#101320;--border:#1c2040;
-      --accent:#c084fc;--accent2:#818cf8;--gold:#f9c846;
-      --text:#e8e6f0;--muted:#6b6b8a;--danger:#f87171;--success:#6ee7b7;
-    }
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;overflow-x:hidden}
-    /* FIX: pointer-events:none added so this doesn't block clicks */
-    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(124,58,237,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(129,140,248,.05) 0%,transparent 60%);pointer-events:none;z-index:0}
-    /* FIX: canvas z-index lowered to -1 so it never interferes */
-    #sc{position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.5}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DYZ17</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+    --border: #2a2a3e;
+    --danger: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(6,182,212,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    .lo{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:#06070e}
-    .lb{position:relative;z-index:1;width:90%;max-width:345px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:2.1rem 1.7rem;box-shadow:0 0 80px rgba(129,140,248,.07),0 40px 80px rgba(0,0,0,.85)}
-    .lg{text-align:center;font-size:2.2rem;margin-bottom:5px;animation:pulse 3.5s ease-in-out infinite}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-    .lt{font-family:'Cormorant Garamond',serif;text-align:center;font-size:1.85rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2px}
-    .ls{text-align:center;font-size:10px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem}
-    .fl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block}
-    .fw{position:relative;margin-bottom:.95rem}
-    .li{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:11px 40px 11px 13px;outline:none;transition:border-color .2s}
-    .li::placeholder{color:var(--muted);opacity:.4}
-    .li:focus{border-color:var(--accent2)}
-    .li.err{border-color:var(--danger);animation:shake .3s ease}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-    .eb{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;padding:4px;line-height:1}
-    .rr{display:flex;align-items:center;gap:8px;margin-bottom:1.3rem}
-    .rr input{accent-color:var(--accent);cursor:pointer}
-    .rr label{font-size:12px;color:var(--muted);cursor:pointer}
-    .lb-btn{width:100%;background:linear-gradient(135deg,#6d28d9,#4338ca);border:none;border-radius:11px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px;cursor:pointer;transition:opacity .2s,transform .15s}
-    .lb-btn:hover{opacity:.88}
-    .lb-btn:active{transform:scale(.98)}
-    .lb-btn:disabled{opacity:.4;cursor:not-allowed}
-    .lm{display:none;text-align:center;font-size:12px;margin-top:11px;padding:9px;border-radius:9px}
-    .lm.err{color:var(--danger);background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15)}
-    .lm.ok{color:var(--success);background:rgba(110,231,183,.07);border:1px solid rgba(110,231,183,.15)}
-    .dr{display:flex;justify-content:center;gap:7px;margin-top:13px}
-    .dd{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s}
-    .dd.used{background:var(--danger)}
-    .lf{text-align:center;font-size:10px;color:var(--muted);margin-top:1.2rem;opacity:.4}
+  /* AUTH */
+  #auth-screen {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+  }
+  .auth-box {
+    width: 100%; max-width: 420px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+  }
+  .auth-box::before {
+    content: '';
+    position: absolute; top: -1px; left: 20px; right: 20px; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+  }
+  .auth-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .auth-sub { color: var(--muted); font-size: 0.8rem; margin-bottom: 32px; }
+  .auth-tabs { display: flex; gap: 4px; margin-bottom: 28px; background: var(--surface2); border-radius: 8px; padding: 4px; }
+  .auth-tab {
+    flex: 1; padding: 8px; text-align: center; cursor: pointer;
+    border-radius: 6px; font-size: 0.8rem; font-family: 'DM Mono', monospace;
+    color: var(--muted); transition: all 0.2s; border: none; background: none;
+  }
+  .auth-tab.active { background: var(--accent); color: white; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.05em; }
+  .field input {
+    width: 100%; padding: 10px 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    outline: none; transition: border-color 0.2s;
+  }
+  .field input:focus { border-color: var(--accent); }
+  .btn {
+    width: 100%; padding: 12px;
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    border: none; border-radius: 8px; color: white;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: all 0.2s; margin-top: 8px;
+  }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .auth-msg { font-size: 0.78rem; margin-top: 12px; text-align: center; min-height: 18px; }
+  .auth-msg.error { color: var(--danger); }
+  .auth-msg.success { color: var(--accent2); }
 
-    /* FIX: app uses position:relative with z-index:1 to sit above canvas */
-    #app{display:none;position:relative;z-index:1;max-width:580px;margin:0 auto;padding:14px}
-    .hdr{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:11px 18px;margin-bottom:12px}
-    .logo{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8,#f9c846);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hbs{display:flex;gap:7px}
-    .hb{background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;cursor:pointer;transition:.2s}
-    .hb:hover{border-color:var(--accent2);color:var(--text)}
-    .sb{text-align:center;font-size:11px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px}
-    .sd{width:6px;height:6px;border-radius:50%;background:var(--success);animation:blink 2.2s ease-in-out infinite;flex-shrink:0}
-    .sd.off{background:var(--muted);animation:none}
-    .sd.er{background:var(--danger);animation:none}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-    .nav{display:flex;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:18px}
-    .tab{flex:1;background:transparent;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:8px 10px;border-radius:10px;cursor:pointer;transition:.2s}
-    .tab:hover{color:var(--text)}
-    .tab.active{background:rgba(109,40,217,.18);color:var(--accent);border:1px solid rgba(129,140,248,.25)}
-    .sec{display:none;animation:fu .2s ease}
-    .sec.active{display:block}
-    @keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
-    .ct{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;margin-bottom:13px;display:flex;align-items:center;gap:7px}
-    input[type=text],input[type=date],textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:9px 12px;margin-top:7px;outline:none;transition:border-color .2s}
-    input:focus,textarea:focus,select:focus{border-color:var(--accent2)}
-    input::placeholder,textarea::placeholder{color:var(--muted);opacity:.4}
-    .btn{background:linear-gradient(135deg,#6d28d9,#4338ca);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:9px 17px;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s;display:inline-block}
-    .btn:hover{opacity:.88}
-    .btn:active{transform:scale(.97)}
-    .bg{background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:7px 13px;cursor:pointer;margin-top:7px;transition:.2s;display:inline-block}
-    .bg:hover{border-color:var(--accent2);color:var(--text)}
-    .bs{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;color:var(--danger);font-size:11px;padding:3px 9px;cursor:pointer;font-family:'Inter',sans-serif}
-    .row{display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}
-    .row input{flex:1;min-width:120px}
-    .sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-    .sp{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
-    .sn{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--accent)}
-    .sl{font-size:11px;color:var(--muted);margin-top:2px}
-    .lbw{background:var(--surface);border-radius:30px;height:7px;margin:10px 0;overflow:hidden}
-    .lf2{height:100%;background:linear-gradient(90deg,#6d28d9,#c084fc,#f9c846);border-radius:30px;transition:width .4s ease}
-    .cdb{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin:10px 0}
-    .sx{background:var(--surface);border-radius:11px;padding:13px;margin-top:9px;font-size:14px;min-height:42px;color:var(--accent);font-style:italic;text-align:center}
-    .uz{border:2px dashed var(--border);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
-    .uz:hover{border-color:var(--accent2);background:rgba(129,140,248,.04)}
-    /* FIX: file input correctly layered inside upload zone */
-    .uz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;margin:0;padding:0;border:none;z-index:2}
-    .ui{font-size:2rem;margin-bottom:7px;position:relative;z-index:1;pointer-events:none}
-    .uh{font-size:13px;color:var(--muted);position:relative;z-index:1;pointer-events:none}
-    .uh strong{color:var(--accent)}
-    .upp{display:none;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--muted);padding:8px 0}
-    .sp2{width:15px;height:15px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-top:14px}
-    .pi{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--surface);border:1px solid var(--border)}
-    .pi img{width:100%;height:100%;object-fit:cover;display:block}
-    .pov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.87) 0%,transparent 55%);opacity:0;transition:opacity .2s;display:flex;flex-direction:column;justify-content:flex-end;padding:7px}
-    .pi:hover .pov{opacity:1}
-    .pc{font-size:10px;color:#fff;margin-bottom:4px;line-height:1.3}
-    .pd{background:rgba(248,113,113,.85);border:none;border-radius:5px;color:#fff;font-size:10px;padding:2px 7px;cursor:pointer;font-family:'Inter',sans-serif;align-self:flex-start}
-    .pe{text-align:center;font-size:13px;color:var(--muted);padding:22px 0;grid-column:1/-1}
-    .pl{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:16px 0}
-    .mr{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 12px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
-    .ms{cursor:pointer;font-size:.95rem;flex-shrink:0}
-    .mt{flex:1;font-size:13px}
-    .md{font-size:10px;color:var(--muted);margin-top:2px}
-    .ri{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:6px;display:flex;align-items:center;gap:8px;font-size:13px}
-    .ri span{flex:1}
-    .lb2{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;margin-top:9px;font-size:13px;line-height:1.75;font-style:italic;min-height:54px}
-    footer{text-align:center;font-size:11px;color:var(--muted);margin-top:28px;opacity:.35}
+  /* APP */
+  #app { display: none; min-height: 100vh; position: relative; z-index: 1; }
 
-    /* ── AI ASSISTANT ── */
-    #ai-fab{
-      position:fixed;bottom:24px;right:20px;z-index:9999;
-      width:52px;height:52px;border-radius:50%;
-      background:linear-gradient(135deg,#6d28d9,#c084fc);
-      border:none;cursor:pointer;font-size:22px;
-      box-shadow:0 4px 24px rgba(192,132,252,.35);
-      transition:transform .2s,box-shadow .2s;
-      display:none;align-items:center;justify-content:center;
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px; border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.8); backdrop-filter: blur(20px);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    padding: 7px 18px; border-radius: 8px; cursor: pointer;
+    font-size: 0.78rem; font-family: 'DM Mono', monospace;
+    color: var(--muted); border: none; background: none; transition: all 0.2s;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--surface2); }
+  .nav-tab.active { background: var(--accent); color: white; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .user-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px; font-size: 0.78rem; color: var(--muted);
+  }
+  .user-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; }
+  .btn-sm {
+    padding: 7px 16px; border-radius: 8px; cursor: pointer;
+    font-size: 0.78rem; font-family: 'DM Mono', monospace;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); transition: all 0.2s;
+  }
+  .btn-sm:hover { color: var(--danger); border-color: var(--danger); }
+
+  /* PANELS */
+  .panel { display: none; padding: 40px 32px; max-width: 1100px; margin: 0 auto; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .panel-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; margin-bottom: 8px; }
+  .panel-sub { color: var(--muted); font-size: 0.8rem; margin-bottom: 32px; }
+
+  /* HOME */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; position: relative; overflow: hidden;
+  }
+  .stat-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .stat-card:nth-child(1)::after { background: var(--accent); }
+  .stat-card:nth-child(2)::after { background: var(--accent2); }
+  .stat-card:nth-child(3)::after { background: var(--accent3); }
+  .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 8px; }
+  .stat-value { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; }
+  .welcome-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    background-image: radial-gradient(ellipse at 100% 0%, rgba(124,58,237,0.1) 0%, transparent 60%);
+  }
+  .welcome-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .welcome-text { color: var(--muted); font-size: 0.8rem; line-height: 1.7; }
+
+  /* IMAGES */
+  .upload-zone {
+    border: 2px dashed var(--border); border-radius: 12px;
+    padding: 48px; text-align: center; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 32px; position: relative;
+  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: rgba(124,58,237,0.05); }
+  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .upload-label { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .upload-hint { color: var(--muted); font-size: 0.75rem; }
+  .upload-progress { display: none; background: var(--surface2); border-radius: 8px; overflow: hidden; height: 4px; margin-top: 16px; }
+  .upload-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.3s; }
+  .images-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  .img-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; position: relative;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .img-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .img-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .img-card-info { padding: 10px 12px; }
+  .img-card-name { font-size: 0.72rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .img-del {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(0,0,0,0.7); border: none; color: var(--danger);
+    width: 28px; height: 28px; border-radius: 6px; cursor: pointer;
+    font-size: 0.75rem; opacity: 0; transition: opacity 0.2s;
+  }
+  .img-card:hover .img-del { opacity: 1; }
+  #img-msg { font-size: 0.78rem; color: var(--muted); margin-bottom: 16px; min-height: 18px; }
+
+  /* DRAWING */
+  .drawing-controls { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .color-row { display: flex; gap: 6px; align-items: center; }
+  .color-swatch {
+    width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent; transition: all 0.15s;
+  }
+  .color-swatch.active { border-color: white; transform: scale(1.2); }
+  .size-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 6px; padding: 5px 12px;
+    cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    transition: all 0.15s;
+  }
+  .size-btn.active { border-color: var(--accent); color: var(--accent); }
+  .canvas-wrap {
+    position: relative; border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border); background: #fff;
+  }
+  #draw-canvas { display: block; cursor: crosshair; touch-action: none; width: 100%; }
+  .live-indicator {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; color: var(--accent2); margin-left: auto;
+  }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+  .draw-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .draw-btn {
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    font-size: 0.78rem; font-family: 'DM Mono', monospace;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    transition: all 0.2s;
+  }
+  .draw-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .draw-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 20px;
+    font-size: 0.8rem; color: var(--text);
+    transform: translateY(80px); opacity: 0; transition: all 0.3s;
+    max-width: 280px;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.ok { border-color: var(--accent2); }
+  #toast.err { border-color: var(--danger); }
+
+  @media (max-width: 640px) {
+    nav { padding: 12px 16px; }
+    .nav-tabs { display: none; }
+    .panel { padding: 24px 16px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .mobile-tabs {
+      display: flex; border-bottom: 1px solid var(--border);
+      position: sticky; top: 57px; background: var(--bg); z-index: 40;
     }
-    #ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(192,132,252,.5);}
-    #ai-panel{
-      position:fixed;bottom:86px;right:20px;z-index:9998;
-      width:320px;max-height:500px;
-      background:#0c0e1a;border:1px solid #2a2060;border-radius:20px;
-      box-shadow:0 12px 60px rgba(0,0,0,.7),0 0 0 1px rgba(192,132,252,.08);
-      display:flex;flex-direction:column;overflow:hidden;
-      opacity:0;pointer-events:none;transform:translateY(12px);
-      transition:opacity .25s,transform .25s;
+    .mobile-tab {
+      flex: 1; padding: 12px 8px; text-align: center; font-size: 0.72rem;
+      font-family: 'DM Mono', monospace; color: var(--muted);
+      border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent;
     }
-    #ai-panel.open{opacity:1;pointer-events:all;transform:translateY(0);}
-    .ai-head{
-      padding:13px 15px;display:flex;align-items:center;gap:10px;
-      background:linear-gradient(135deg,rgba(109,40,217,.25),rgba(192,132,252,.1));
-      border-bottom:1px solid #1c2040;flex-shrink:0;
-    }
-    .ai-ava{
-      width:34px;height:34px;border-radius:50%;flex-shrink:0;
-      background:linear-gradient(135deg,#6d28d9,#c084fc);
-      display:flex;align-items:center;justify-content:center;font-size:16px;
-    }
-    .ai-name{font-size:13px;font-weight:600;color:#e8e6f0;}
-    .ai-sub{font-size:10px;color:#6b6b8a;margin-top:1px;}
-    .ai-close{margin-left:auto;background:none;border:none;cursor:pointer;color:#6b6b8a;font-size:18px;line-height:1;padding:2px 4px;}
-    .ai-close:hover{color:#e8e6f0;}
-    #ai-msgs{
-      flex:1;overflow-y:auto;padding:12px;
-      display:flex;flex-direction:column;gap:9px;
-      scrollbar-width:thin;scrollbar-color:#1c2040 transparent;
-    }
-    .ai-msg{max-width:88%;font-size:12.5px;line-height:1.55;padding:8px 12px;border-radius:14px;word-break:break-word;}
-    .ai-msg.bot{background:#181b30;color:#c4bfe8;border-bottom-left-radius:4px;align-self:flex-start;border:1px solid #1c2040;}
-    .ai-msg.usr{background:linear-gradient(135deg,#6d28d9,#4338ca);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
-    .ai-msg.thinking{background:#181b30;color:#6b6b8a;font-style:italic;border:1px solid #1c2040;align-self:flex-start;}
-    .ai-chips{display:flex;flex-wrap:wrap;gap:5px;padding:6px 12px 2px;flex-shrink:0;}
-    .ai-chip{font-size:11px;padding:4px 10px;border-radius:16px;background:#101320;color:#818cf8;border:1px solid #2a2060;cursor:pointer;transition:.15s;white-space:nowrap;}
-    .ai-chip:hover{background:#1c2040;color:#c084fc;border-color:#c084fc;}
-    .ai-inp-row{display:flex;gap:7px;padding:10px 12px;border-top:1px solid #1c2040;background:#0c0e1a;flex-shrink:0;}
-    #ai-input{
-      flex:1;background:#101320;border:1px solid #1c2040;border-radius:18px;
-      color:#e8e6f0;font-family:'Inter',sans-serif;font-size:12.5px;
-      padding:8px 13px;outline:none;transition:border-color .2s;
-      resize:none;min-height:36px;max-height:80px;
-    }
-    #ai-input:focus{border-color:#818cf8;}
-    #ai-send{
-      width:34px;height:34px;border-radius:50%;flex-shrink:0;
-      background:linear-gradient(135deg,#6d28d9,#4338ca);
-      border:none;cursor:pointer;color:#fff;font-size:14px;
-      transition:opacity .2s;align-self:flex-end;
-    }
-    #ai-send:hover{opacity:.85;}
-    #ai-send:disabled{opacity:.35;cursor:not-allowed;}
-  </style>
+    .mobile-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  }
+  @media (min-width: 641px) { .mobile-tabs { display: none; } }
+</style>
 </head>
 <body>
 
-<canvas id="sc"></canvas>
-
-<!-- LOGIN -->
-<div id="loginScreen" class="lo">
-  <div class="lb">
-    <div class="lg">🌙</div>
-    <div class="lt">Us, Always</div>
-    <div class="ls">private · protected · ours</div>
-    <label class="fl" for="lUser">Username</label>
-    <div class="fw"><input class="li" type="text" id="lUser" placeholder="username" autocomplete="off" spellcheck="false"></div>
-    <label class="fl" for="lPass">Password</label>
-    <div class="fw">
-      <input class="li" type="password" id="lPass" placeholder="password" autocomplete="off">
-      <button class="eb" id="eyeBtn" tabindex="-1">👁</button>
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">DYZ17</div>
+    <div class="auth-sub">// your personal backend</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuth('login')">LOGIN</button>
+      <button class="auth-tab" onclick="switchAuth('signup')">SIGN UP</button>
     </div>
-    <div class="rr">
-      <input type="checkbox" id="rememberMe" checked>
-      <label for="rememberMe">Stay logged in for 7 days</label>
+    <div class="field">
+      <label>EMAIL</label>
+      <input type="email" id="auth-email" placeholder="you@example.com">
     </div>
-    <button class="lb-btn" id="loginBtn">Enter Our Space</button>
-    <div class="lm err" id="loginErr"></div>
-    <div class="lm ok" id="loginOk">Welcome back 🌙</div>
-    <div class="dr">
-      <div class="dd" id="d0"></div>
-      <div class="dd" id="d1"></div>
-      <div class="dd" id="d2"></div>
+    <div class="field">
+      <label>PASSWORD</label>
+      <input type="password" id="auth-password" placeholder="••••••••">
     </div>
-    <div class="lf">only the two of us 🔒</div>
+    <div class="field" id="username-field" style="display:none">
+      <label>USERNAME</label>
+      <input type="text" id="auth-username" placeholder="dyz17">
+    </div>
+    <button class="btn" onclick="handleAuth()">ENTER →</button>
+    <div class="auth-msg" id="auth-msg"></div>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app">
-  <div class="hdr">
-    <div class="logo">🌙 Us, Always</div>
-    <div class="hbs">
-      <button class="hb" id="syncBtn">💾 Save</button>
-      <button class="hb" id="logoutBtn">Sign out</button>
+  <nav>
+    <div class="nav-logo">DYZ17</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPanel('home')">HOME</button>
+      <button class="nav-tab" onclick="showPanel('images')">IMAGES</button>
+      <button class="nav-tab" onclick="showPanel('draw')">DRAW</button>
     </div>
-  </div>
-  <div class="sb">
-    <div class="sd" id="syncDot"></div>
-    <span id="syncLabel">Saved locally 💜</span>
-  </div>
-  <div class="nav">
-    <button class="tab active" data-tab="home">🏠 Home</button>
-    <button class="tab" data-tab="memories">📸 Memories</button>
-    <button class="tab" data-tab="romance">💜 Romance</button>
+    <div class="nav-right">
+      <div class="user-chip"><div class="user-dot"></div><span id="nav-user">—</span></div>
+      <button class="btn-sm" onclick="logout()">LOGOUT</button>
+    </div>
+  </nav>
+
+  <div class="mobile-tabs">
+    <button class="mobile-tab active" onclick="showPanel('home')">HOME</button>
+    <button class="mobile-tab" onclick="showPanel('images')">IMAGES</button>
+    <button class="mobile-tab" onclick="showPanel('draw')">DRAW</button>
   </div>
 
   <!-- HOME -->
-  <div id="homeSection" class="sec active">
-    <div class="card">
-      <div class="ct">💜 Love Meter</div>
-      <div class="sg">
-        <div class="sp"><div class="sn" id="loveNum">0</div><div class="sl">love points</div></div>
-        <div class="sp"><div class="sn" id="streakNum">0</div><div class="sl">day streak 🔥</div></div>
+  <div class="panel active" id="panel-home">
+    <div class="panel-title">Dashboard</div>
+    <div class="panel-sub">// welcome back</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">IMAGES STORED</div>
+        <div class="stat-value" id="stat-images">—</div>
       </div>
-      <div class="lbw"><div class="lf2" id="loveFill"></div></div>
-      <button class="btn" id="addLoveBtn">+ Add a loving moment</button>
-    </div>
-    <div class="card">
-      <div class="ct">🗓 Anniversary Countdown</div>
-      <div class="cdb" id="cdText">…</div>
-      <input type="date" id="anniDate">
-      <button class="btn" id="setAnniBtn">Save our date</button>
-    </div>
-    <div class="card">
-      <div class="ct">✨ Memory of the Day</div>
-      <div id="motdBox" style="text-align:center;padding:12px;color:var(--muted);font-size:13px;">Add memories to see one here</div>
-      <button class="bg" id="refreshMotd">↺ Refresh</button>
-    </div>
-    <div class="card">
-      <div class="ct">🎁 Surprise</div>
-      <button class="btn" id="surpriseBtn">Surprise me ✨</button>
-      <div class="sx" id="surpriseOut"></div>
-    </div>
-  </div>
-
-  <!-- MEMORIES -->
-  <div id="memoriesSection" class="sec">
-    <div class="card">
-      <div class="ct">📸 Our Photos</div>
-      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Photos are compressed and saved locally — they appear on this device. ☁️</p>
-      <div class="uz" id="uploadZone">
-        <input type="file" id="photoInput" accept="image/*" multiple>
-        <div class="ui">📷</div>
-        <div class="uh"><strong>Tap to upload photos</strong><br>Supports multiple at once</div>
+      <div class="stat-card">
+        <div class="stat-label">DRAW STROKES</div>
+        <div class="stat-value" id="stat-strokes">—</div>
       </div>
-      <div class="upp" id="upProg">
-        <div class="sp2"></div>
-        <span id="upProgText">Uploading…</span>
-      </div>
-      <div id="photoLoadRow" class="pl"><div class="sp2"></div> Loading your photos…</div>
-      <div class="pg" id="photoGrid"></div>
-    </div>
-    <div class="card">
-      <div class="ct">📝 Written Memories</div>
-      <div id="memoriesList"></div>
-      <div class="row">
-        <input type="text" id="memText" placeholder="Describe a memory…">
-        <button class="btn" id="addMemBtn">Add</button>
+      <div class="stat-card">
+        <div class="stat-label">STATUS</div>
+        <div class="stat-value" style="color:#22c55e;font-size:1rem;padding-top:8px">● LIVE</div>
       </div>
     </div>
-    <div class="card">
-      <div class="ct">📍 Our Places</div>
-      <div id="placesList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px;"></div>
-      <div class="row">
-        <input type="text" id="placeInput" placeholder="A place we've been…">
-        <button class="btn" id="addPlaceBtn">Add</button>
+    <div class="welcome-card">
+      <div class="welcome-title">Your backend is ready.</div>
+      <div class="welcome-text">
+        Everything is powered by Supabase — auth, image storage, and real-time drawing sync.<br><br>
+        → <strong>IMAGES</strong> tab: upload &amp; store photos<br>
+        → <strong>DRAW</strong> tab: collaborative real-time canvas — open on multiple devices to see it sync live
       </div>
     </div>
   </div>
 
-  <!-- ROMANCE -->
-  <div id="romanceSection" class="sec">
-    <div class="card">
-      <div class="ct">💌 Reasons I Love You</div>
-      <div id="reasonsList"></div>
-      <div class="row">
-        <input type="text" id="reasonInput" placeholder="e.g. your laugh">
-        <button class="btn" id="addReasonBtn">Add</button>
+  <!-- IMAGES -->
+  <div class="panel" id="panel-images">
+    <div class="panel-title">Image Storage</div>
+    <div class="panel-sub">// upload &amp; manage your images</div>
+    <div class="upload-zone" id="upload-zone">
+      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
+      <div class="upload-icon">📁</div>
+      <div class="upload-label">Drop images here</div>
+      <div class="upload-hint">or click to browse · JPG, PNG, GIF, WEBP</div>
+      <div class="upload-progress" id="upload-progress">
+        <div class="upload-progress-bar" id="progress-bar"></div>
       </div>
-      <button class="bg" id="randomReasonBtn">💫 Random reason</button>
     </div>
-    <div class="card">
-      <div class="ct">🎧 Our Playlist</div>
-      <iframe style="border-radius:13px;width:100%;height:152px;border:none;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
-      <p style="font-size:11px;color:var(--muted);margin-top:7px;">Replace the playlist ID in the code with yours 💿</p>
-    </div>
-    <div class="card">
-      <div class="ct">💌 Love Letter</div>
-      <button class="btn" id="genLetterBtn">Generate a letter</button>
-      <div class="lb2" id="letterBox"></div>
-    </div>
-    <div class="card">
-      <div class="ct">🎟 Date Idea Generator</div>
-      <button class="btn" id="dateIdeaBtn">Pick an idea</button>
-      <div class="sx" id="dateOut"></div>
-    </div>
+    <div id="img-msg"></div>
+    <div class="images-grid" id="images-grid"></div>
   </div>
 
-  <footer>🌙 Us, Always · photos & memories saved across devices</footer>
-</div>
-
-<!-- AI ASSISTANT -->
-<button id="ai-fab" title="Chat with Haven AI">🤖</button>
-<div id="ai-panel">
-  <div class="ai-head">
-    <div class="ai-ava">🌙</div>
-    <div>
-      <div class="ai-name">Haven AI</div>
-      <div class="ai-sub">Your personal assistant</div>
+  <!-- DRAW -->
+  <div class="panel" id="panel-draw">
+    <div class="panel-title">Live Canvas</div>
+    <div class="panel-sub">// real-time collaborative drawing</div>
+    <div class="drawing-controls">
+      <div class="color-row" id="color-row"></div>
+      <div style="display:flex;gap:4px">
+        <button class="size-btn active" onclick="setSize(3,this)">S</button>
+        <button class="size-btn" onclick="setSize(8,this)">M</button>
+        <button class="size-btn" onclick="setSize(18,this)">L</button>
+        <button class="size-btn" onclick="setSize(36,this)">XL</button>
+      </div>
+      <div class="live-indicator"><div class="live-dot"></div>LIVE SYNC</div>
     </div>
-    <button class="ai-close" id="ai-close-btn">✕</button>
-  </div>
-  <div id="ai-msgs"></div>
-  <div class="ai-chips" id="ai-chips">
-    <span class="ai-chip">Change theme 🎨</span>
-    <span class="ai-chip">Add a memory 📝</span>
-    <span class="ai-chip">Write love letter 💌</span>
-    <span class="ai-chip">Date idea 🎟</span>
-    <span class="ai-chip">Add a place 📍</span>
-    <span class="ai-chip">Surprise me ✨</span>
-  </div>
-  <div class="ai-inp-row">
-    <textarea id="ai-input" placeholder="Ask me anything…" rows="1"></textarea>
-    <button id="ai-send">➤</button>
+    <div class="canvas-wrap">
+      <canvas id="draw-canvas"></canvas>
+    </div>
+    <div class="draw-actions">
+      <button class="draw-btn" onclick="saveCanvas()">SAVE PNG</button>
+      <button class="draw-btn danger" onclick="clearCanvas()">CLEAR ALL</button>
+    </div>
   </div>
 </div>
 
-<script>
-// ── STARS ──
-(function(){
-  const c=document.getElementById('sc'),ctx=c.getContext('2d');let S=[];
-  function resize(){c.width=innerWidth;c.height=innerHeight;}
-  function init(){S=[];for(let i=0;i<160;i++)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.3+.2,o:Math.random()*.6+.15,p:Math.random()*Math.PI*2,sp:Math.random()*.0003+.0001});}
-  let t=0;
-  function draw(){ctx.clearRect(0,0,c.width,c.height);t+=.016;S.forEach(s=>{const op=s.o*(.55+.45*Math.sin(t*s.sp*1200+s.p));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(210,200,255,${op})`;ctx.fill();});requestAnimationFrame(draw);}
-  resize();init();draw();addEventListener('resize',()=>{resize();init();});
-})();
+<div id="toast"></div>
 
-// ── LOGIN ──
-const U='kokey',P='muffin1122',SESS='us_sess',ATT='us_att',RMEM=7*24*60*60*1000;
-let fails=parseInt(sessionStorage.getItem(ATT)||'0');
-function sessOk(){const e=localStorage.getItem(SESS);return e&&Date.now()<parseInt(e);}
-function enterApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('ai-fab').style.display='flex';boot();}
-function refreshDots(){for(let i=0;i<3;i++)document.getElementById('d'+i).classList.toggle('used',i<fails);}
-function doLogin(){
-  const user=document.getElementById('lUser').value.trim();
-  const pass=document.getElementById('lPass').value;
-  const eEl=document.getElementById('loginErr'),oEl=document.getElementById('loginOk'),btn=document.getElementById('loginBtn');
-  eEl.style.display='none';oEl.style.display='none';
-  if(!user||!pass){eEl.textContent='Please fill in both fields.';eEl.style.display='block';return;}
-  if(user===U&&pass===P){
-    fails=0;sessionStorage.setItem(ATT,'0');
-    if(document.getElementById('rememberMe').checked)localStorage.setItem(SESS,(Date.now()+RMEM).toString());
-    oEl.style.display='block';btn.disabled=true;setTimeout(enterApp,1200);
-  }else{
-    fails++;sessionStorage.setItem(ATT,fails.toString());refreshDots();
-    ['lUser','lPass'].forEach(id=>{const el=document.getElementById(id);el.classList.add('err');setTimeout(()=>el.classList.remove('err'),350);});
-    if(fails>=3){sessionStorage.setItem(ATT,'0');location.replace('https://www.google.com');return;}
-    const left=3-fails;
-    eEl.textContent=`Wrong credentials. ${left} attempt${left===1?'':'s'} left.`;eEl.style.display='block';
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+const SUPABASE_URL = 'https://aybycwtnfunwimvipjdj.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5Ynljd3RuZnVud2ltdmlwamRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MTEwMzEsImV4cCI6MjA4NjI4NzAzMX0.ILCQwtmy92953fPKgWiiT8mljmu2VXVej3B0Y71tDZ8'
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+let currentUser = null
+let authMode = 'login'
+
+// ── AUTH ──────────────────────────────────────────────
+window.switchAuth = (mode) => {
+  authMode = mode
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&mode==='login')||(i===1&&mode==='signup')))
+  document.getElementById('username-field').style.display = mode === 'signup' ? 'block' : 'none'
+  document.getElementById('auth-msg').textContent = ''
+}
+
+window.handleAuth = async () => {
+  const email = document.getElementById('auth-email').value.trim()
+  const password = document.getElementById('auth-password').value
+  const msg = document.getElementById('auth-msg')
+  msg.className = 'auth-msg'; msg.textContent = '...'
+  if (!email || !password) { msg.className='auth-msg error'; msg.textContent='Fill in all fields'; return }
+  if (authMode === 'signup') {
+    const { error } = await sb.auth.signUp({ email, password })
+    if (error) { msg.className='auth-msg error'; msg.textContent=error.message; return }
+    msg.className='auth-msg success'; msg.textContent='Check your email to confirm!'
+  } else {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password })
+    if (error) { msg.className='auth-msg error'; msg.textContent=error.message; return }
+    bootApp(data.user)
   }
 }
-document.getElementById('loginBtn').addEventListener('click',doLogin);
-document.getElementById('lPass').addEventListener('keydown',e=>e.key==='Enter'&&doLogin());
-document.getElementById('lUser').addEventListener('keydown',e=>e.key==='Enter'&&document.getElementById('lPass').focus());
-document.getElementById('eyeBtn').addEventListener('click',()=>{const p=document.getElementById('lPass'),b=document.getElementById('eyeBtn');p.type=p.type==='password'?'text':'password';b.textContent=p.type==='password'?'👁':'🙈';});
-refreshDots();
-if(sessOk())enterApp();
 
-// ── STORAGE (localStorage only) ──
-function cGet(key){try{const v=localStorage.getItem('us_kv_'+key);return Promise.resolve(v?JSON.parse(v):null);}catch{return Promise.resolve(null);}}
-function cSet(key,val){try{localStorage.setItem('us_kv_'+key,JSON.stringify(val));}catch{}return Promise.resolve(true);}
-function cDel(key){localStorage.removeItem('us_kv_'+key);return Promise.resolve(true);}
-
-// ── LOCAL DATA ──
-let D={loveCount:0,streakLast:null,anniDate:'2025-06-01',memories:[],places:[],reasons:[]};
-function loadLocal(){try{const s=localStorage.getItem('us_d');if(s)Object.assign(D,JSON.parse(s));}catch{}}
-function saveLocal(){try{localStorage.setItem('us_d',JSON.stringify(D));}catch{}}
-
-// ── PHOTOS ──
-const MAX_DIM=900;let photos=[];
-function resizeImg(file){
-  return new Promise(resolve=>{
-    const img=new Image(),url=URL.createObjectURL(file);
-    img.onload=()=>{
-      let{width:w,height:h}=img;
-      if(w>MAX_DIM||h>MAX_DIM){if(w>h){h=Math.round(h*MAX_DIM/w);w=MAX_DIM;}else{w=Math.round(w*MAX_DIM/h);h=MAX_DIM;}}
-      const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);
-      URL.revokeObjectURL(url);resolve(cv.toDataURL('image/jpeg',.75));
-    };
-    img.onerror=()=>resolve(null);img.src=url;
-  });
-}
-async function loadPhotos(){
-  document.getElementById('photoLoadRow').style.display='flex';
-  document.getElementById('photoGrid').innerHTML='';
-  const index=await cGet('photos:index');
-  if(!Array.isArray(index)||!index.length){photos=[];document.getElementById('photoLoadRow').style.display='none';renderPhotos();return;}
-  photos=[];
-  for(const id of index){const p=await cGet('photo:'+id);if(p)photos.push(p);}
-  document.getElementById('photoLoadRow').style.display='none';
-  renderPhotos();
-}
-async function uploadPhoto(file,caption){
-  const prog=document.getElementById('upProg'),pt=document.getElementById('upProgText');
-  prog.style.display='flex';pt.textContent=`Resizing "${file.name}"…`;
-  const dataUrl=await resizeImg(file);
-  if(!dataUrl){prog.style.display='none';alert('Could not read image.');return;}
-  pt.textContent=`Uploading "${file.name}"…`;
-  const id='p'+Date.now()+Math.random().toString(36).slice(2,6);
-  const photo={id,dataUrl,caption:caption||file.name.replace(/\.[^.]+$/,''),date:new Date().toLocaleDateString()};
-  const ok=await cSet('photo:'+id,photo);
-  if(ok){let idx=await cGet('photos:index')||[];idx.unshift(id);await cSet('photos:index',idx);}
-  photos.unshift(photo);
-  prog.style.display='none';renderPhotos();
-}
-async function deletePhoto(id){
-  photos=photos.filter(p=>p.id!==id);renderPhotos();
-  await cDel('photo:'+id);
-  let idx=await cGet('photos:index')||[];idx=idx.filter(i=>i!==id);await cSet('photos:index',idx);
-}
-function renderPhotos(){
-  const grid=document.getElementById('photoGrid');grid.innerHTML='';
-  if(!photos.length){grid.innerHTML='<div class="pe">No photos yet — upload your first one 💜</div>';return;}
-  photos.forEach(p=>{
-    const div=document.createElement('div');div.className='pi';
-    div.innerHTML=`<img src="${p.dataUrl||''}" alt="${p.caption}" loading="lazy"><div class="pov"><div class="pc">${p.caption}</div><button class="pd" data-id="${p.id}">Delete</button></div>`;
-    grid.appendChild(div);
-  });
-  grid.querySelectorAll('.pd').forEach(btn=>{btn.addEventListener('click',()=>{if(confirm('Delete this photo?'))deletePhoto(btn.dataset.id);});});
+window.logout = async () => {
+  await sb.auth.signOut()
+  document.getElementById('app').style.display = 'none'
+  document.getElementById('auth-screen').style.display = 'flex'
+  currentUser = null
 }
 
-// ── RENDER HELPERS ──
-function renderMemories(){
-  const c=document.getElementById('memoriesList');if(!c)return;c.innerHTML='';
-  D.memories.forEach((m,i)=>{
-    const d=document.createElement('div');d.className='mr';
-    d.innerHTML=`<span class="ms" data-i="${i}">${m.fav?'⭐':'☆'}</span><div style="flex:1"><div class="mt">${m.text}</div><div class="md">${m.date||''}</div></div><button class="bs" data-dm="${i}">✕</button>`;
-    c.appendChild(d);
-  });
-  c.querySelectorAll('.ms').forEach(el=>el.addEventListener('click',()=>{const i=parseInt(el.dataset.i);D.memories[i].fav=!D.memories[i].fav;saveLocal();cSet('us:data',D);renderMemories();}));
-  c.querySelectorAll('[data-dm]').forEach(btn=>btn.addEventListener('click',()=>{D.memories.splice(parseInt(btn.dataset.dm),1);saveLocal();cSet('us:data',D);renderMemories();}));
-}
-function renderPlaces(){
-  const c=document.getElementById('placesList');if(!c)return;
-  c.innerHTML=D.places.map((p,i)=>`<span style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:4px 11px;font-size:12px;display:inline-flex;align-items:center;gap:5px;">📍 ${p}<button style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:10px;padding:0;" data-dp="${i}">✕</button></span>`).join('');
-  c.querySelectorAll('[data-dp]').forEach(btn=>btn.addEventListener('click',()=>{D.places.splice(parseInt(btn.dataset.dp),1);saveLocal();cSet('us:data',D);renderPlaces();}));
-}
-function renderReasons(){
-  const c=document.getElementById('reasonsList');if(!c)return;c.innerHTML='';
-  D.reasons.forEach((r,i)=>{const d=document.createElement('div');d.className='ri';d.innerHTML=`<span>💜 ${r}</span><button class="bs" data-dr="${i}">✕</button>`;c.appendChild(d);});
-  c.querySelectorAll('[data-dr]').forEach(btn=>btn.addEventListener('click',()=>{D.reasons.splice(parseInt(btn.dataset.dr),1);saveLocal();cSet('us:data',D);renderReasons();}));
-}
-function updateLove(){
-  document.getElementById('loveNum').textContent=D.loveCount;
-  document.getElementById('loveFill').style.width=Math.min(100,(D.loveCount/500)*100)+'%';
-  document.getElementById('streakNum').textContent=parseInt(localStorage.getItem('us_streak')||'0');
-}
-function updateCountdown(){
-  if(D.anniDate)document.getElementById('anniDate').value=D.anniDate;
-  const diff=Math.ceil((new Date(D.anniDate)-new Date())/(1000*60*60*24));
-  document.getElementById('cdText').textContent=diff>=0?`${diff} days away`:`${Math.abs(diff)} days together ✨`;
-}
-function updateMotd(){
-  const el=document.getElementById('motdBox');
-  if(photos.length&&Math.random()>.4){
-    const p=photos[Math.floor(Math.random()*photos.length)];
-    el.innerHTML=`<img src="${p.dataUrl}" style="width:86px;height:86px;object-fit:cover;border-radius:12px;"><div style="margin-top:6px;font-size:12px;color:var(--muted);">${p.caption}</div>`;
-  }else if(D.memories.length){
-    const m=D.memories[Math.floor(Math.random()*D.memories.length)];
-    el.innerHTML=`<div style="font-size:14px;color:var(--accent);font-style:italic;">"${m.text}"</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">${m.date||''}</div>`;
-  }else{el.innerHTML=`<span style="color:var(--muted)">Add memories or photos to see one here</span>`;}
-}
-function setSyncStatus(){
-  document.getElementById('syncDot').className='sd';
-  document.getElementById('syncLabel').textContent='Saved on this device 💜';
-}
-async function syncData(){
-  saveLocal();setSyncStatus();
-  updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session?.user) bootApp(session.user)
+})
+
+function bootApp(user) {
+  currentUser = user
+  document.getElementById('auth-screen').style.display = 'none'
+  document.getElementById('app').style.display = 'block'
+  document.getElementById('nav-user').textContent = user.email.split('@')[0]
+  loadStats(); loadImages(); initCanvas()
 }
 
-// ── THEME ENGINE ──
-const THEMES={
-  default:{bg:'#06070e',surface:'#0c0e1a',card:'#101320',border:'#1c2040',accent:'#c084fc',accent2:'#818cf8'},
-  'rose':{bg:'#0e0608',surface:'#1a0c0e',card:'#200f12',border:'#401c22',accent:'#f472b6',accent2:'#fb7185'},
-  'ocean':{bg:'#060a0e',surface:'#0c121a',card:'#101820',border:'#1c3040',accent:'#38bdf8',accent2:'#818cf8'},
-  'forest':{bg:'#060e08',surface:'#0c1a0e',card:'#102013',border:'#1c4024',accent:'#6ee7b7',accent2:'#34d399'},
-  'gold':{bg:'#0e0c06',surface:'#1a180c',card:'#201e10',border:'#403a1c',accent:'#f9c846',accent2:'#fbbf24'},
-  'galaxy':{bg:'#04040e',surface:'#08091a',card:'#0c0d20',border:'#181c50',accent:'#a78bfa',accent2:'#c084fc'},
-  'midnight':{bg:'#000000',surface:'#080810',card:'#0c0c18',border:'#18183a',accent:'#818cf8',accent2:'#6366f1'},
-  'cherry':{bg:'#0e0404',surface:'#1a0808',card:'#200c0c',border:'#401818',accent:'#fb7185',accent2:'#f43f5e'},
-};
-function applyTheme(name){
-  const t=THEMES[name.toLowerCase()]||THEMES.default;
-  const r=document.documentElement.style;
-  r.setProperty('--bg',t.bg);r.setProperty('--surface',t.surface);
-  r.setProperty('--card',t.card);r.setProperty('--border',t.border);
-  r.setProperty('--accent',t.accent);r.setProperty('--accent2',t.accent2);
-  localStorage.setItem('us_theme',name.toLowerCase());
+// ── STATS ─────────────────────────────────────────────
+async function loadStats() {
+  const [{ count: imgCount }, { count: strokeCount }] = await Promise.all([
+    sb.from('images').select('*', { count: 'exact', head: true }),
+    sb.from('drawing_strokes').select('*', { count: 'exact', head: true })
+  ])
+  document.getElementById('stat-images').textContent = imgCount ?? 0
+  document.getElementById('stat-strokes').textContent = strokeCount ?? 0
 }
-const savedTheme=localStorage.getItem('us_theme');if(savedTheme)applyTheme(savedTheme);
 
-// ── AI ASSISTANT ──
-const GEMINI_KEY='AIzaSyB5KLoKN06qFlk-9D1kFTlO3yxYf046g2w';
-const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
-
-function getAiMemory(){try{return JSON.parse(localStorage.getItem('us_ai_mem')||'{}');}catch{return{};}}
-function setAiMemory(obj){localStorage.setItem('us_ai_mem',JSON.stringify(obj));}
-
-let aiHistory=[];
-
-const SITE_ACTIONS={
-  changeTheme(name){
-    const valid=Object.keys(THEMES);
-    const match=valid.find(t=>t.includes(name.toLowerCase()))||'default';
-    applyTheme(match);
-    return `Theme changed to "${match}" ✨`;
-  },
-  addMemory(text){
-    if(!text)return'Please provide memory text.';
-    D.memories.unshift({text,fav:false,date:new Date().toLocaleDateString()});
-    saveLocal();cSet('us:data',D);renderMemories();
-    return`Memory added: "${text}" 📝`;
-  },
-  addPlace(place){
-    if(!place)return'Please provide a place name.';
-    D.places.push(place);saveLocal();cSet('us:data',D);renderPlaces();
-    return`Place added: "${place}" 📍`;
-  },
-  addReason(reason){
-    if(!reason)return'Please provide a reason.';
-    D.reasons.push(reason);saveLocal();cSet('us:data',D);renderReasons();
-    return`Added reason: "${reason}" 💜`;
-  },
-  addLovePoint(){
-    D.loveCount++;saveLocal();cSet('us:data',D);updateLove();
-    return`Love meter updated! Now at ${D.loveCount} points 💜`;
-  },
-  setAnniversary(dateStr){
-    D.anniDate=dateStr;saveLocal();cSet('us:data',D);updateCountdown();
-    return`Anniversary set to ${dateStr} 🗓`;
-  },
-  showTab(tab){
-    const tabs={home:'home',memories:'memories',photos:'memories',romance:'romance'};
-    const t=tabs[tab.toLowerCase()]||'home';
-    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-    document.querySelector(`[data-tab="${t}"]`).classList.add('active');
-    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-    document.getElementById(t+'Section').classList.add('active');
-    return`Navigated to ${t} tab 🏠`;
-  },
-  getSiteStatus(){
-    return`Site status: ${D.memories.length} memories, ${D.places.length} places, ${D.reasons.length} reasons, ${D.loveCount} love points, anniversary: ${D.anniDate}, current theme: ${localStorage.getItem('us_theme')||'default'}.`;
-  },
-  rememberFact(key,value){
-    const mem=getAiMemory();mem[key]=value;setAiMemory(mem);
-    return`Got it, I'll remember that ${key} is "${value}" 🧠`;
-  },
-  recallFacts(){
-    const mem=getAiMemory();
-    const entries=Object.entries(mem);
-    if(!entries.length)return"I don't have any memories saved yet — tell me something!";
-    return'What I remember: '+entries.map(([k,v])=>`${k}: ${v}`).join(', ');
+// ── IMAGES ────────────────────────────────────────────
+window.handleFiles = async (files) => {
+  const progress = document.getElementById('upload-progress')
+  const bar = document.getElementById('progress-bar')
+  progress.style.display = 'block'; bar.style.width = '0%'
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const ext = file.name.split('.').pop()
+    const path = `${currentUser.id}/${Date.now()}_${i}.${ext}`
+    const { error: upErr } = await sb.storage.from('images').upload(path, file)
+    if (upErr) { toast('Upload failed: ' + upErr.message, 'err'); continue }
+    const { data: { publicUrl } } = sb.storage.from('images').getPublicUrl(path)
+    await sb.from('images').insert({ user_id: currentUser.id, url: publicUrl, name: file.name })
+    bar.style.width = `${((i+1)/files.length)*100}%`
   }
-};
-
-function executeSiteAction(action,params){
-  try{
-    if(SITE_ACTIONS[action])return SITE_ACTIONS[action](...(params||[]));
-    return'Unknown action.';
-  }catch(e){return'Action failed: '+e.message;}
+  setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0%' }, 600)
+  toast('Uploaded!', 'ok'); loadImages(); loadStats()
 }
 
-function buildSystemPrompt(){
-  const mem=getAiMemory();
-  const memStr=Object.entries(mem).map(([k,v])=>`${k}: ${v}`).join(', ')||'none yet';
-  return `You are Haven AI, a warm and loving personal assistant built into "Us, Always" — a private couples website.
-
-SITE FEATURES:
-- Home tab: Love Meter (love points + streak), Anniversary Countdown, Memory of the Day, Surprise button
-- Memories tab: Photo uploads, Written Memories, Our Places
-- Romance tab: Reasons I Love You, Spotify Playlist, Love Letter generator, Date Idea generator
-
-AVAILABLE THEMES: default (purple/indigo), rose (pink), ocean (blue), forest (green), gold (amber), galaxy (deep purple), midnight (black/indigo), cherry (red/pink)
-
-WHAT YOU CAN DO — when user asks, respond with JSON action blocks like this:
-{"action":"changeTheme","params":["ocean"]}
-{"action":"addMemory","params":["our first trip to Goa"]}
-{"action":"addPlace","params":["Marine Drive, Mumbai"]}
-{"action":"addReason","params":["your beautiful smile"]}
-{"action":"addLovePoint","params":[]}
-{"action":"setAnniversary","params":["2024-02-14"]}
-{"action":"showTab","params":["romance"]}
-{"action":"getSiteStatus","params":[]}
-{"action":"rememberFact","params":["her name","Priya"]}
-{"action":"recallFacts","params":[]}
-
-RULES:
-- Be warm, romantic, and playful — like a friend who knows you both deeply
-- When performing an action, include the JSON block AND a friendly message
-- You can remember personal details using rememberFact — names, anniversary, pet names, favourite things
-- You can perform multiple actions by including multiple JSON blocks
-- Always respond in a loving, personal tone
-- Keep responses concise but heartfelt
-- If asked what you can do, give a friendly summary
-
-THINGS I REMEMBER ABOUT THEM: ${memStr}`;
+async function loadImages() {
+  const { data } = await sb.from('images').select('*').order('created_at', { ascending: false })
+  const grid = document.getElementById('images-grid')
+  if (!data?.length) { grid.innerHTML = '<div style="color:var(--muted);font-size:0.8rem">No images yet — upload something!</div>'; return }
+  grid.innerHTML = data.map(img => `
+    <div class="img-card">
+      <img src="${img.url}" alt="${img.name||'image'}" loading="lazy">
+      <div class="img-card-info"><div class="img-card-name">${img.name||'image'}</div></div>
+      <button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button>
+    </div>`).join('')
 }
 
-async function askGemini(userMsg){
-  aiHistory.push({role:'user',parts:[{text:userMsg}]});
-  const body={
-    system_instruction:{parts:[{text:buildSystemPrompt()}]},
-    contents:aiHistory.slice(-12),
-    generationConfig:{temperature:0.85,maxOutputTokens:600}
-  };
-  const res=await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!res.ok)throw new Error('Gemini API error '+res.status);
-  const data=await res.json();
-  const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Sorry, I couldn\'t respond right now.';
-  aiHistory.push({role:'model',parts:[{text:reply}]});
-  return reply;
+window.deleteImage = async (id, url) => {
+  const parts = url.split('/object/public/images/')
+  if (parts[1]) await sb.storage.from('images').remove([parts[1]])
+  await sb.from('images').delete().eq('id', id)
+  toast('Deleted', 'ok'); loadImages(); loadStats()
 }
 
-function parseAndExecute(reply){
-  const actionRegex=/\{"action"\s*:\s*"([^"]+)"\s*,\s*"params"\s*:\s*(\[[^\]]*\])\}/g;
-  let match,results=[],cleanReply=reply;
-  while((match=actionRegex.exec(reply))!==null){
-    try{
-      const action=match[1];
-      const params=JSON.parse(match[2]);
-      const result=executeSiteAction(action,params);
-      results.push(result);
-      cleanReply=cleanReply.replace(match[0],'').trim();
-    }catch(e){}
-  }
-  return{text:cleanReply,results};
+const zone = document.getElementById('upload-zone')
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag') })
+zone.addEventListener('dragleave', () => zone.classList.remove('drag'))
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); handleFiles(e.dataTransfer.files) })
+
+// ── CANVAS / DRAWING ──────────────────────────────────
+const COLORS = ['#111111','#ef4444','#f59e0b','#22c55e','#06b6d4','#7c3aed','#ec4899','#ffffff']
+let drawing = false, currentColor = '#111111', brushSize = 3
+let lastX = 0, lastY = 0, ctx, canvas, realtimeSub = null
+
+function initCanvas() {
+  canvas = document.getElementById('draw-canvas')
+  ctx = canvas.getContext('2d')
+  resizeCanvas()
+  window.addEventListener('resize', resizeCanvas)
+
+  const row = document.getElementById('color-row')
+  row.innerHTML = COLORS.map((c,i) => `<div class="color-swatch${i===0?' active':''}" style="background:${c};${c==='#ffffff'?'border-color:#444':''}" onclick="setColor('${c}',this)"></div>`).join('')
+
+  canvas.addEventListener('pointerdown', startDraw)
+  canvas.addEventListener('pointermove', doDraw)
+  canvas.addEventListener('pointerup', endDraw)
+  canvas.addEventListener('pointerleave', endDraw)
+
+  loadStrokes()
+
+  if (realtimeSub) realtimeSub.unsubscribe()
+  realtimeSub = sb.channel('drawing')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'drawing_strokes' }, p => drawStroke(p.new.stroke))
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'drawing_strokes' }, () => ctx.clearRect(0, 0, canvas.width, canvas.height))
+    .subscribe()
 }
 
-// ── AI UI ──
-const panel=document.getElementById('ai-panel');
-const fab=document.getElementById('ai-fab');
-const msgs=document.getElementById('ai-msgs');
-const input=document.getElementById('ai-input');
-const sendBtn=document.getElementById('ai-send');
-
-fab.addEventListener('click',()=>{
-  panel.classList.toggle('open');
-  if(panel.classList.contains('open')&&msgs.children.length===0){
-    addMsg('bot',"Hey! 💜 I'm Haven AI — I know your whole site. I can change themes, add memories, write love letters, set your anniversary, and remember things about you both. What can I do for you?");
-  }
-  if(panel.classList.contains('open'))setTimeout(()=>input.focus(),300);
-});
-document.getElementById('ai-close-btn').addEventListener('click',()=>panel.classList.remove('open'));
-
-function addMsg(role,text){
-  const d=document.createElement('div');
-  d.className=`ai-msg ${role}`;
-  d.textContent=text;
-  msgs.appendChild(d);
-  msgs.scrollTop=msgs.scrollHeight;
-  return d;
+function resizeCanvas() {
+  if (!canvas) return
+  const wrap = canvas.parentElement
+  const w = wrap.clientWidth
+  const h = Math.min(480, window.innerHeight * 0.55)
+  const snap = ctx.getImageData(0, 0, canvas.width, canvas.height)
+  canvas.width = w; canvas.height = h
+  try { ctx.putImageData(snap, 0, 0) } catch(e) {}
 }
 
-document.querySelectorAll('.ai-chip').forEach(chip=>{
-  chip.addEventListener('click',()=>{
-    input.value=chip.textContent.replace(/[🎨📝💌🎟📍✨]/g,'').trim();
-    sendAiMsg();
-  });
-});
-
-async function sendAiMsg(){
-  const text=input.value.trim();
-  if(!text)return;
-  input.value='';input.style.height='auto';
-  sendBtn.disabled=true;
-  addMsg('usr',text);
-  const thinking=addMsg('thinking','Thinking…');
-  try{
-    const reply=await askGemini(text);
-    msgs.removeChild(thinking);
-    const{text:cleanText,results}=parseAndExecute(reply);
-    if(cleanText)addMsg('bot',cleanText);
-    results.forEach(r=>addMsg('bot','✅ '+r));
-  }catch(e){
-    msgs.removeChild(thinking);
-    addMsg('bot','Oops, something went wrong. Check your connection and try again 💜');
-  }
-  sendBtn.disabled=false;
-  input.focus();
+async function loadStrokes() {
+  const { data } = await sb.from('drawing_strokes').select('stroke').order('created_at')
+  if (data) data.forEach(r => drawStroke(r.stroke))
 }
 
-sendBtn.addEventListener('click',sendAiMsg);
-input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAiMsg();}});
-input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,80)+'px';});
+function drawStroke(s) {
+  if (!ctx) return
+  ctx.beginPath()
+  ctx.strokeStyle = s.color; ctx.lineWidth = s.size
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  ctx.moveTo(s.x0, s.y0); ctx.lineTo(s.x1, s.y1); ctx.stroke()
+}
 
-// ── BOOT ──
-function boot(){
-  loadLocal();
-  if(!D.reasons.length)D.reasons=['Your smile','Your kindness','How you make me feel safe'];
-  if(!D.places.length)D.places=['Our favourite café ☕','Where we first met 💜'];
+function getPos(e) {
+  const r = canvas.getBoundingClientRect()
+  const src = e.touches ? e.touches[0] : e
+  return [(src.clientX - r.left) * (canvas.width / r.width), (src.clientY - r.top) * (canvas.height / r.height)]
+}
 
-  document.querySelectorAll('.tab').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-      document.getElementById(btn.dataset.tab+'Section').classList.add('active');
-    });
-  });
+function startDraw(e) { drawing = true;[lastX, lastY] = getPos(e) }
 
-  document.getElementById('addLoveBtn').addEventListener('click',()=>{
-    D.loveCount++;
-    const today=new Date().toDateString();
-    if(D.streakLast!==today){
-      const yest=new Date();yest.setDate(yest.getDate()-1);
-      const s=(D.streakLast===yest.toDateString())?parseInt(localStorage.getItem('us_streak')||'0')+1:1;
-      localStorage.setItem('us_streak',s);D.streakLast=today;
-    }
-    saveLocal();cSet('us:data',D);updateLove();
-  });
+async function doDraw(e) {
+  if (!drawing) return
+  e.preventDefault()
+  const [x, y] = getPos(e)
+  const stroke = { x0: lastX, y0: lastY, x1: x, y1: y, color: currentColor, size: brushSize }
+  drawStroke(stroke)
+  await sb.from('drawing_strokes').insert({ user_id: currentUser.id, stroke })
+  lastX = x; lastY = y
+}
 
-  document.getElementById('setAnniBtn').addEventListener('click',()=>{
-    const v=document.getElementById('anniDate').value;if(v){D.anniDate=v;saveLocal();cSet('us:data',D);updateCountdown();}
-  });
-  document.getElementById('refreshMotd').addEventListener('click',updateMotd);
+function endDraw() { drawing = false }
 
-  const sv=['💜 You are my favourite person in the world.','🌙 I fall asleep thinking about you.','✨ Every day with you is a gift.','🎁 Let\'s plan a surprise date soon.','💌 I love you more than I can say.','🌹 You make everything better just by existing.','🌟 I choose you, every single day.'];
-  document.getElementById('surpriseBtn').addEventListener('click',()=>{document.getElementById('surpriseOut').textContent=sv[Math.floor(Math.random()*sv.length)];});
+window.setColor = (c, el) => {
+  currentColor = c
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'))
+  el.classList.add('active')
+}
 
-  document.getElementById('photoInput').addEventListener('change',async e=>{
-    const files=Array.from(e.target.files);
-    for(const f of files){const cap=prompt(`Caption for "${f.name.replace(/\.[^.]+$/,'')}"?`)||f.name.replace(/\.[^.]+$/,'');await uploadPhoto(f,cap);}
-    e.target.value='';
-  });
+window.setSize = (s, el) => {
+  brushSize = s
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'))
+  el.classList.add('active')
+}
 
-  document.getElementById('addMemBtn').addEventListener('click',()=>{const t=document.getElementById('memText').value.trim();if(!t)return;D.memories.unshift({text:t,fav:false,date:new Date().toLocaleDateString()});document.getElementById('memText').value='';saveLocal();cSet('us:data',D);renderMemories();});
-  document.getElementById('addPlaceBtn').addEventListener('click',()=>{const p=document.getElementById('placeInput').value.trim();if(!p)return;D.places.push(p);document.getElementById('placeInput').value='';saveLocal();cSet('us:data',D);renderPlaces();});
-  document.getElementById('addReasonBtn').addEventListener('click',()=>{const r=document.getElementById('reasonInput').value.trim();if(!r)return;D.reasons.push(r);document.getElementById('reasonInput').value='';saveLocal();cSet('us:data',D);renderReasons();});
-  document.getElementById('randomReasonBtn').addEventListener('click',()=>{if(D.reasons.length)alert('💜 '+D.reasons[Math.floor(Math.random()*D.reasons.length)]);});
+window.saveCanvas = () => {
+  const link = document.createElement('a')
+  link.download = 'dyz17-drawing.png'; link.href = canvas.toDataURL(); link.click()
+}
 
-  const letters=['My love, every day with you feels like a dream I never want to wake from. You make the ordinary extraordinary, and I am endlessly grateful you chose me. 💌','There are not enough words in any language to describe how much you mean to me. You are my home, my calm, my favourite adventure. Forever yours.','You walked into my life and suddenly everything made sense. I love you more than yesterday, and less than I will tomorrow. 🌙'];
-  document.getElementById('genLetterBtn').addEventListener('click',()=>{document.getElementById('letterBox').textContent=letters[Math.floor(Math.random()*letters.length)];});
+window.clearCanvas = async () => {
+  if (!confirm('Clear the canvas for everyone?')) return
+  await sb.from('drawing_strokes').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  toast('Canvas cleared', 'ok'); loadStats()
+}
 
-  const di=['🌌 Stargazing with blankets & hot chocolate','🍳 Cook a new recipe together','🌅 Picnic at sunset','🎬 Movie marathon at home','🎶 Long drive with our playlist','🗺 Explore a new part of town','💌 Write letters to each other','🖼 Visit a museum or gallery','🎮 Game night in','🌊 Walk by the water'];
-  document.getElementById('dateIdeaBtn').addEventListener('click',()=>{document.getElementById('dateOut').textContent=di[Math.floor(Math.random()*di.length)];});
+// ── NAV ───────────────────────────────────────────────
+window.showPanel = (id) => {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.nav-tab, .mobile-tab').forEach(t => t.classList.remove('active'))
+  document.getElementById('panel-' + id).classList.add('active')
+  document.querySelectorAll('.nav-tab, .mobile-tab').forEach(t => {
+    if (t.textContent.trim().toLowerCase() === id) t.classList.add('active')
+  })
+  if (id === 'draw') setTimeout(resizeCanvas, 50)
+}
 
-  document.getElementById('syncBtn').addEventListener('click',()=>{syncData();loadPhotos();});
-  document.getElementById('logoutBtn').addEventListener('click',()=>{
-    if(!confirm('Sign out?'))return;
-    localStorage.removeItem(SESS);
-    document.getElementById('app').style.display='none';
-    document.getElementById('ai-fab').style.display='none';
-    panel.classList.remove('open');
-    document.getElementById('lUser').value='';document.getElementById('lPass').value='';
-    document.getElementById('loginErr').style.display='none';document.getElementById('loginOk').style.display='none';
-    document.getElementById('loginBtn').disabled=false;
-    fails=0;sessionStorage.setItem(ATT,'0');refreshDots();
-    document.getElementById('loginScreen').style.display='flex';
-  });
-
-  updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
-  syncData();loadPhotos();
+// ── TOAST ─────────────────────────────────────────────
+window.toast = (msg, type='ok') => {
+  const t = document.getElementById('toast')
+  t.textContent = msg; t.className = 'show ' + type
+  setTimeout(() => t.className = '', 3000)
 }
 </script>
 </body>
