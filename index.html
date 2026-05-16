@@ -3,1033 +3,524 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>💕 Our Private Haven</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>🌙 Us, Always</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #0f0f12;
-      --card: #1e1e2a;
-      --text: #f0eef4;
-      --accent: #ff6b8b;
-      --glow: #ff8aa8;
-      --text-secondary: #b9b9ce;
-      --border: #2d2d3a;
-      --success: #4cd964;
-      --warning: #ff9f4a;
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#06070e;--surface:#0c0e1a;--card:#101320;--border:#1c2040;
+      --accent:#c084fc;--accent2:#818cf8;--gold:#f9c846;
+      --text:#e8e6f0;--muted:#6b6b8a;--danger:#f87171;--success:#6ee7b7;
     }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(124,58,237,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(129,140,248,.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+    #sc{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5}
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.2s, color 0.2s;
-      padding: 20px 0 60px 0;
-    }
+    /* LOGIN */
+    .lo{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:#06070e}
+    .lb{position:relative;z-index:1;width:90%;max-width:345px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:2.1rem 1.7rem;box-shadow:0 0 80px rgba(129,140,248,.07),0 40px 80px rgba(0,0,0,.85)}
+    .lg{text-align:center;font-size:2.2rem;margin-bottom:5px;animation:pulse 3.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+    .lt{font-family:'Cormorant Garamond',serif;text-align:center;font-size:1.85rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2px}
+    .ls{text-align:center;font-size:10px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:2rem}
+    .fl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block}
+    .fw{position:relative;margin-bottom:.95rem}
+    .li{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:11px 40px 11px 13px;outline:none;transition:border-color .2s}
+    .li::placeholder{color:var(--muted);opacity:.4}
+    .li:focus{border-color:var(--accent2)}
+    .li.err{border-color:var(--danger);animation:shake .3s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    .eb{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;padding:4px;line-height:1}
+    .rr{display:flex;align-items:center;gap:8px;margin-bottom:1.3rem}
+    .rr input{accent-color:var(--accent);cursor:pointer}
+    .rr label{font-size:12px;color:var(--muted);cursor:pointer}
+    .lb-btn{width:100%;background:linear-gradient(135deg,#6d28d9,#4338ca);border:none;border-radius:11px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px;cursor:pointer;transition:opacity .2s,transform .15s}
+    .lb-btn:hover{opacity:.88}
+    .lb-btn:active{transform:scale(.98)}
+    .lb-btn:disabled{opacity:.4;cursor:not-allowed}
+    .lm{display:none;text-align:center;font-size:12px;margin-top:11px;padding:9px;border-radius:9px}
+    .lm.err{color:var(--danger);background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15)}
+    .lm.ok{color:var(--success);background:rgba(110,231,183,.07);border:1px solid rgba(110,231,183,.15)}
+    .dr{display:flex;justify-content:center;gap:7px;margin-top:13px}
+    .dd{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s}
+    .dd.used{background:var(--danger)}
+    .lf{text-align:center;font-size:10px;color:var(--muted);margin-top:1.2rem;opacity:.4}
 
-    /* ========== LOGIN SCREEN ========== */
-    .login-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #0a0509;
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+    /* APP */
+    #app{display:none;position:relative;z-index:1;max-width:580px;margin:0 auto;padding:14px}
 
-    .hearts-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
+    /* HEADER */
+    .hdr{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:11px 18px;margin-bottom:12px}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8,#f9c846);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hbs{display:flex;gap:7px}
+    .hb{background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;cursor:pointer;transition:.2s}
+    .hb:hover{border-color:var(--accent2);color:var(--text)}
 
-    .heart-float {
-      position: absolute;
-      opacity: 0.07;
-      animation: floatUp linear infinite;
-      font-size: 16px;
-    }
+    /* SYNC BAR */
+    .sb{text-align:center;font-size:11px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .sd{width:6px;height:6px;border-radius:50%;background:var(--success);animation:blink 2.2s ease-in-out infinite;flex-shrink:0}
+    .sd.off{background:var(--muted);animation:none}
+    .sd.er{background:var(--danger);animation:none}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
-    @keyframes floatUp {
-      0%   { transform: translateY(110vh) rotate(-15deg); opacity: 0; }
-      10%  { opacity: 0.07; }
-      90%  { opacity: 0.07; }
-      100% { transform: translateY(-30px) rotate(15deg); opacity: 0; }
-    }
+    /* NAV */
+    .nav{display:flex;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:18px}
+    .tab{flex:1;background:transparent;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:8px 10px;border-radius:10px;cursor:pointer;transition:.2s}
+    .tab:hover{color:var(--text)}
+    .tab.active{background:rgba(109,40,217,.18);color:var(--accent);border:1px solid rgba(129,140,248,.25)}
 
-    .login-box {
-      position: relative;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,107,139,0.2);
-      border-radius: 32px;
-      padding: 2.5rem 2rem;
-      width: 90%;
-      max-width: 380px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-    }
+    /* SECTIONS */
+    .sec{display:none;animation:fu .2s ease}
+    .sec.active{display:block}
+    @keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 
-    .login-heart {
-      text-align: center;
-      font-size: 40px;
-      margin-bottom: 8px;
-      animation: heartbeat 2s ease-in-out infinite;
-    }
+    /* CARD */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
+    .ct{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;margin-bottom:13px;display:flex;align-items:center;gap:7px}
 
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
+    /* INPUTS */
+    input[type=text],input[type=date],textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:9px 12px;margin-top:7px;outline:none;transition:border-color .2s}
+    input:focus,textarea:focus,select:focus{border-color:var(--accent2)}
+    input::placeholder,textarea::placeholder{color:var(--muted);opacity:.4}
 
-    .login-title {
-      font-family: 'Dancing Script', cursive;
-      text-align: center;
-      font-size: 2rem;
-      color: #f9b8ca;
-      margin-bottom: 4px;
-    }
+    /* BUTTONS */
+    .btn{background:linear-gradient(135deg,#6d28d9,#4338ca);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:9px 17px;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .15s;display:inline-block}
+    .btn:hover{opacity:.88}
+    .btn:active{transform:scale(.97)}
+    .bg{background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:7px 13px;cursor:pointer;margin-top:7px;transition:.2s;display:inline-block}
+    .bg:hover{border-color:var(--accent2);color:var(--text)}
+    .bs{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;color:var(--danger);font-size:11px;padding:3px 9px;cursor:pointer;font-family:'Inter',sans-serif}
+    .row{display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}
+    .row input{flex:1;min-width:120px}
 
-    .login-subtitle {
-      text-align: center;
-      font-size: 12px;
-      color: rgba(249,184,202,0.4);
-      margin-bottom: 2rem;
-      letter-spacing: 1px;
-    }
+    /* HOME */
+    .sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    .sp{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
+    .sn{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--accent)}
+    .sl{font-size:11px;color:var(--muted);margin-top:2px}
+    .lbw{background:var(--surface);border-radius:30px;height:7px;margin:10px 0;overflow:hidden}
+    .lf2{height:100%;background:linear-gradient(90deg,#6d28d9,#c084fc,#f9c846);border-radius:30px;transition:width .4s ease}
+    .cdb{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:600;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin:10px 0}
+    .sx{background:var(--surface);border-radius:11px;padding:13px;margin-top:9px;font-size:14px;min-height:42px;color:var(--accent);font-style:italic;text-align:center}
 
-    .login-label {
-      font-size: 11px;
-      color: rgba(249,184,202,0.5);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      display: block;
-    }
+    /* UPLOAD */
+    .uz{border:2px dashed var(--border);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:.2s;position:relative}
+    .uz:hover{border-color:var(--accent2);background:rgba(129,140,248,.04)}
+    .uz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;margin:0;padding:0;border:none}
+    .ui{font-size:2rem;margin-bottom:7px}
+    .uh{font-size:13px;color:var(--muted)}
+    .uh strong{color:var(--accent)}
+    .upp{display:none;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--muted);padding:8px 0}
+    .sp2{width:15px;height:15px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-top:14px}
+    .pi{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--surface);border:1px solid var(--border)}
+    .pi img{width:100%;height:100%;object-fit:cover;display:block}
+    .pov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.87) 0%,transparent 55%);opacity:0;transition:opacity .2s;display:flex;flex-direction:column;justify-content:flex-end;padding:7px}
+    .pi:hover .pov{opacity:1}
+    .pc{font-size:10px;color:#fff;margin-bottom:4px;line-height:1.3}
+    .pd{background:rgba(248,113,113,.85);border:none;border-radius:5px;color:#fff;font-size:10px;padding:2px 7px;cursor:pointer;font-family:'Inter',sans-serif;align-self:flex-start}
+    .pe{text-align:center;font-size:13px;color:var(--muted);padding:22px 0;grid-column:1/-1}
+    .pl{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:16px 0}
 
-    .login-field {
-      position: relative;
-      margin-bottom: 1.2rem;
-    }
+    /* MEMORIES */
+    .mr{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 12px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
+    .ms{cursor:pointer;font-size:.95rem;flex-shrink:0}
+    .mt{flex:1;font-size:13px}
+    .md{font-size:10px;color:var(--muted);margin-top:2px}
 
-    .login-input {
-      width: 100%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,107,139,0.18);
-      border-radius: 14px;
-      color: #f9b8ca;
-      font-size: 15px;
-      font-family: 'Poppins', sans-serif;
-      padding: 13px 44px 13px 16px;
-      outline: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
+    /* ROMANCE */
+    .ri{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:6px;display:flex;align-items:center;gap:8px;font-size:13px}
+    .ri span{flex:1}
+    .lb2{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;margin-top:9px;font-size:13px;line-height:1.75;font-style:italic;min-height:54px}
 
-    .login-input::placeholder { color: rgba(249,184,202,0.2); }
-    .login-input:focus {
-      border-color: rgba(255,107,139,0.5);
-      background: rgba(255,255,255,0.08);
-    }
-    .login-input.error {
-      border-color: rgba(240,100,100,0.6) !important;
-      animation: shake 0.35s ease;
-    }
-
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
-
-    .eye-toggle {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(249,184,202,0.35);
-      font-size: 15px;
-      padding: 4px;
-      transition: color 0.2s;
-      line-height: 1;
-    }
-    .eye-toggle:hover { color: rgba(249,184,202,0.8); }
-
-    .remember-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 1.5rem;
-    }
-    .remember-row input[type="checkbox"] {
-      accent-color: #ff6b8b;
-      width: 15px; height: 15px;
-      cursor: pointer;
-    }
-    .remember-row label {
-      font-size: 12px;
-      color: rgba(249,184,202,0.45);
-      cursor: pointer;
-    }
-
-    .login-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #c94068, #a02845);
-      border: none;
-      border-radius: 14px;
-      color: #fff0f3;
-      font-family: 'Poppins', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 14px;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .login-btn:hover { opacity: 0.9; }
-    .login-btn:active { transform: scale(0.98); }
-    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .login-error {
-      display: none;
-      text-align: center;
-      font-size: 12px;
-      color: #f09595;
-      margin-top: 14px;
-      padding: 10px 14px;
-      background: rgba(240,100,100,0.08);
-      border-radius: 10px;
-      border: 1px solid rgba(240,100,100,0.18);
-    }
-
-    .login-success {
-      display: none;
-      text-align: center;
-      font-size: 13px;
-      color: #9fe1cb;
-      margin-top: 14px;
-      padding: 10px;
-      background: rgba(100,200,160,0.08);
-      border-radius: 10px;
-      border: 1px solid rgba(100,200,160,0.2);
-    }
-
-    .attempts-dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .attempt-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: rgba(255,107,139,0.3);
-      transition: background 0.3s;
-    }
-    .attempt-dot.used { background: #f09595; }
-
-    .login-footer {
-      text-align: center;
-      font-size: 11px;
-      color: rgba(249,184,202,0.2);
-      margin-top: 1.5rem;
-    }
-
-    /* ========== MAIN APP ========== */
-    .app-container {
-      max-width: 550px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-      background: var(--card);
-      padding: 12px 18px;
-      border-radius: 32px;
-    }
-
-    .logo {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.8rem;
-      color: var(--accent);
-    }
-
-    .header-right {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .theme-toggle, .logout-btn {
-      border: none;
-      padding: 8px 14px;
-      border-radius: 40px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    .theme-toggle { background: var(--accent); color: white; }
-    .logout-btn { background: #3a3a4a; color: var(--text-secondary); }
-    .logout-btn:hover { background: #c94068; color: white; }
-
-    .nav-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-      background: var(--card);
-      padding: 8px;
-      border-radius: 48px;
-      justify-content: center;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      padding: 8px 18px;
-      border-radius: 40px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 0.85rem;
-    }
-
-    .tab-btn.active {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 0 8px var(--glow);
-    }
-
-    .section { display: none; animation: fade 0.25s ease; }
-    .section.active-section { display: block; }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 28px;
-      padding: 20px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      border: 1px solid var(--border);
-    }
-
-    .card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-left: 4px solid var(--accent);
-      padding-left: 12px;
-    }
-
-    button, .button-like {
-      background: var(--accent);
-      border: none;
-      padding: 10px 18px;
-      border-radius: 60px;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 0.9rem;
-      margin-top: 8px;
-    }
-
-    button.secondary { background: #3a3a4a; }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      margin: 8px 0;
-      font-family: inherit;
-    }
-
-    .flex-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .badge {
-      background: var(--accent);
-      padding: 4px 12px;
-      border-radius: 40px;
-      font-size: 0.7rem;
-    }
-
-    .memory-item, .wish-item, .joke-item, .plan-item, .track-item {
-      background: var(--bg);
-      border-radius: 20px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    .favorite-star { color: gold; cursor: pointer; font-size: 1.2rem; }
-
-    .map-placeholder {
-      background: #2c2c3a;
-      height: 160px;
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 12px 0;
-      background-image: url('https://placehold.co/600x200/2c2c3a/ff8aa8?text=📍+Our+Special+Places');
-      background-size: cover;
-      background-position: center;
-    }
-
-    hr { border-color: var(--border); margin: 16px 0; }
-
-    .love-meter-bar {
-      height: 12px;
-      background: #3a3a4a;
-      border-radius: 20px;
-      overflow: hidden;
-      margin: 10px 0;
-    }
-
-    .love-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--accent);
-      transition: width 0.3s;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.7rem;
-      margin-top: 30px;
-      opacity: 0.6;
-    }
+    footer{text-align:center;font-size:11px;color:var(--muted);margin-top:28px;opacity:.35}
   </style>
 </head>
 <body>
 
-<!-- ========== LOGIN SCREEN ========== -->
-<div id="loginScreen" class="login-overlay">
-  <div class="hearts-bg" id="heartsBg"></div>
+<canvas id="sc"></canvas>
 
-  <div class="login-box">
-    <div class="login-heart">💕</div>
-    <div class="login-title">Our Private Haven</div>
-    <div class="login-subtitle">only us · always us</div>
-
-    <label class="login-label" for="loginUsername">Username</label>
-    <div class="login-field">
-      <input class="login-input" type="text" id="loginUsername" placeholder="enter username" autocomplete="off" spellcheck="false" />
+<!-- LOGIN -->
+<div id="loginScreen" class="lo">
+  <div class="lb">
+    <div class="lg">🌙</div>
+    <div class="lt">Us, Always</div>
+    <div class="ls">private · protected · ours</div>
+    <label class="fl" for="lUser">Username</label>
+    <div class="fw"><input class="li" type="text" id="lUser" placeholder="username" autocomplete="off" spellcheck="false"></div>
+    <label class="fl" for="lPass">Password</label>
+    <div class="fw">
+      <input class="li" type="password" id="lPass" placeholder="password" autocomplete="off">
+      <button class="eb" id="eyeBtn" tabindex="-1">👁</button>
     </div>
-
-    <label class="login-label" for="loginPassword">Password</label>
-    <div class="login-field">
-      <input class="login-input" type="password" id="loginPassword" placeholder="enter password" autocomplete="off" />
-      <button class="eye-toggle" id="eyeToggle" tabindex="-1" title="show/hide password">👁</button>
+    <div class="rr">
+      <input type="checkbox" id="rememberMe" checked>
+      <label for="rememberMe">Stay logged in for 7 days</label>
     </div>
-
-    <div class="remember-row">
-      <input type="checkbox" id="rememberMe" checked />
-      <label for="rememberMe">Keep me logged in for 7 days</label>
+    <button class="lb-btn" id="loginBtn">Enter Our Space</button>
+    <div class="lm err" id="loginErr"></div>
+    <div class="lm ok" id="loginOk">Welcome back 🌙</div>
+    <div class="dr">
+      <div class="dd" id="d0"></div>
+      <div class="dd" id="d1"></div>
+      <div class="dd" id="d2"></div>
     </div>
-
-    <button class="login-btn" id="loginSubmitBtn">💕 Enter Our Haven</button>
-
-    <div class="login-error" id="loginError"></div>
-    <div class="login-success" id="loginSuccess">Welcome back, love! Entering... 💕</div>
-
-    <div class="attempts-dots">
-      <div class="attempt-dot" id="dot0"></div>
-      <div class="attempt-dot" id="dot1"></div>
-      <div class="attempt-dot" id="dot2"></div>
-    </div>
-
-    <div class="login-footer">private &amp; protected 🔒</div>
+    <div class="lf">only the two of us 🔒</div>
   </div>
 </div>
 
-<!-- ========== MAIN APP ========== -->
-<div class="app-container" id="appRoot" style="display: none;">
-  <div class="header">
-    <div class="logo">✨ Private Haven ✨</div>
-    <div class="header-right">
-      <button class="theme-toggle" id="themeToggleBtn">🎨 Theme</button>
-      <button class="logout-btn" id="logoutBtn" title="Logout">🚪 Logout</button>
+<!-- APP -->
+<div id="app">
+  <div class="hdr">
+    <div class="logo">🌙 Us, Always</div>
+    <div class="hbs">
+      <button class="hb" id="syncBtn">☁ Sync</button>
+      <button class="hb" id="logoutBtn">Sign out</button>
     </div>
   </div>
 
-  <div class="nav-tabs">
-    <button class="tab-btn active" data-tab="home">🏠 Home</button>
-    <button class="tab-btn" data-tab="memories">📸 Memories</button>
-    <button class="tab-btn" data-tab="romance">💘 Romance</button>
-    <button class="tab-btn" data-tab="interactive">🎮 Fun</button>
-    <button class="tab-btn" data-tab="plans">📋 Lists</button>
-    <button class="tab-btn" data-tab="trackers">📊 Trackers</button>
+  <div class="sb">
+    <div class="sd" id="syncDot"></div>
+    <span id="syncLabel">Connecting…</span>
+  </div>
+
+  <div class="nav">
+    <button class="tab active" data-tab="home">🏠 Home</button>
+    <button class="tab" data-tab="memories">📸 Memories</button>
+    <button class="tab" data-tab="romance">💜 Romance</button>
   </div>
 
   <!-- HOME -->
-  <div id="homeSection" class="section active-section">
+  <div id="homeSection" class="sec active">
     <div class="card">
-      <h3>💕 Love Meter</h3>
-      <div id="loveCounterDisplay">0</div>
-      <div class="love-meter-bar"><div class="love-fill" id="loveFillBar"></div></div>
-      <button id="addLoveBtn">➕ Add loving moment</button>
-      <div class="flex-row" style="justify-content: space-between; margin-top: 12px;">
-        <span>❤️ Cute streak</span>
-        <span id="streakDisplay" class="badge">0 days 🔥</span>
+      <div class="ct">💜 Love Meter</div>
+      <div class="sg">
+        <div class="sp"><div class="sn" id="loveNum">0</div><div class="sl">love points</div></div>
+        <div class="sp"><div class="sn" id="streakNum">0</div><div class="sl">day streak 🔥</div></div>
       </div>
+      <div class="lbw"><div class="lf2" id="loveFill"></div></div>
+      <button class="btn" id="addLoveBtn">+ Add a loving moment</button>
     </div>
     <div class="card">
-      <h3>📅 Anniversary Countdown</h3>
-      <div id="countdownText">Loading...</div>
-      <input type="date" id="anniversaryDate" value="2025-06-01">
-      <button id="setAnniversaryBtn">Set our day</button>
+      <div class="ct">🗓 Anniversary Countdown</div>
+      <div class="cdb" id="cdText">…</div>
+      <input type="date" id="anniDate">
+      <button class="btn" id="setAnniBtn">Save our date</button>
     </div>
     <div class="card">
-      <h3>🎲 Memory of the Day</h3>
-      <div id="memoryOfDayText">✨ Click refresh ✨</div>
-      <button id="refreshMemoryDay">🔄 New memory</button>
+      <div class="ct">✨ Memory of the Day</div>
+      <div id="motdBox" style="text-align:center;padding:12px;color:var(--muted);font-size:13px;">Add memories to see one here</div>
+      <button class="bg" id="refreshMotd">↺ Refresh</button>
     </div>
     <div class="card">
-      <h3>🎁 Surprise Button</h3>
-      <button id="surpriseBtn">✨ Surprise Me ✨</button>
-      <div id="surpriseMessage" style="margin-top: 12px; font-style: italic;"></div>
+      <div class="ct">🎁 Surprise</div>
+      <button class="btn" id="surpriseBtn">Surprise me ✨</button>
+      <div class="sx" id="surpriseOut"></div>
     </div>
   </div>
 
   <!-- MEMORIES -->
-  <div id="memoriesSection" class="section">
+  <div id="memoriesSection" class="sec">
     <div class="card">
-      <h3>📸 Timeline + Captions & Favorites</h3>
-      <div id="timelineList"></div>
-      <div class="flex-row">
-        <input type="text" id="newMemoryUrl" placeholder="Image URL (or use placeholder)">
-        <input type="text" id="newMemoryCaption" placeholder="Caption / memory">
+      <div class="ct">📸 Our Photos</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Photos are compressed and saved to the cloud — they appear on every device, always. ☁️</p>
+      <div class="uz" id="uploadZone">
+        <input type="file" id="photoInput" accept="image/*" multiple>
+        <div class="ui">📷</div>
+        <div class="uh"><strong>Tap to upload photos</strong><br>Supports multiple at once</div>
       </div>
-      <button id="addMemoryBtn">➕ Add Memory</button>
-      <button id="resetDefaultMemories" class="secondary">↺ Reset examples</button>
+      <div class="upp" id="upProg">
+        <div class="sp2"></div>
+        <span id="upProgText">Uploading…</span>
+      </div>
+      <div id="photoLoadRow" class="pl"><div class="sp2"></div> Loading your photos…</div>
+      <div class="pg" id="photoGrid"></div>
     </div>
     <div class="card">
-      <h3>🗺️ Our Places Map</h3>
-      <div class="map-placeholder" id="staticMap">📍 Paris, Rome, Tokyo memories</div>
-      <input type="text" id="newPlaceInput" placeholder="Add a place we visited">
-      <button id="addPlaceBtn">Add place</button>
-      <div id="placesList"></div>
+      <div class="ct">📝 Written Memories</div>
+      <div id="memoriesList"></div>
+      <div class="row">
+        <input type="text" id="memText" placeholder="Describe a memory…">
+        <button class="btn" id="addMemBtn">Add</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">📍 Our Places</div>
+      <div id="placesList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px;"></div>
+      <div class="row">
+        <input type="text" id="placeInput" placeholder="A place we've been…">
+        <button class="btn" id="addPlaceBtn">Add</button>
+      </div>
     </div>
   </div>
 
   <!-- ROMANCE -->
-  <div id="romanceSection" class="section">
+  <div id="romanceSection" class="sec">
     <div class="card">
-      <h3>💌 Reasons I Love You</h3>
+      <div class="ct">💌 Reasons I Love You</div>
       <div id="reasonsList"></div>
-      <input type="text" id="newReason" placeholder="e.g., your smile">
-      <button id="addReasonBtn">Add reason</button>
-      <button id="randomReasonBtn">✨ Show random reason</button>
-    </div>
-    <div class="card">
-      <h3>🎧 Our Playlist</h3>
-      <iframe style="border-radius:16px; width:100%; height:152px;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
-      <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:8px;">You can replace with your own Spotify playlist ID 💿</p>
-    </div>
-    <div class="card">
-      <h3>💬 Love Letter Generator</h3>
-      <button id="generateLetterBtn">💌 Generate sweet letter</button>
-      <div id="generatedLetter" style="background:var(--bg); padding:14px; border-radius:24px; margin-top:12px;"></div>
-    </div>
-    <div class="card">
-      <h3>🎲 Virtual Date Ideas</h3>
-      <button id="randomDateBtn">🎟️ Pick a date idea</button>
-      <div id="dateIdeaDisplay" class="badge" style="margin-top:12px; font-size:1rem;"></div>
-    </div>
-  </div>
-
-  <!-- FUN -->
-  <div id="interactiveSection" class="section">
-    <div class="card">
-      <h3>🎭 Couple Quiz</h3>
-      <div id="quizQuestion">Click start to test how well you know each other</div>
-      <input type="text" id="quizAnswer" placeholder="Your answer">
-      <button id="checkQuizBtn">Check answer</button>
-      <button id="nextQuizBtn">Next question</button>
-      <p id="quizFeedback"></p>
-    </div>
-    <div class="card">
-      <h3>🥠 Fortune Cookie</h3>
-      <button id="fortuneBtn">Open fortune cookie</button>
-      <div id="fortuneText"></div>
-    </div>
-    <div class="card">
-      <h3>🤔 Would You Rather? (Couple)</h3>
-      <button id="wyrBtn">New question</button>
-      <div id="wyrDisplay" style="font-weight:bold; margin-top:12px;"></div>
-    </div>
-    <div class="card">
-      <h3>🐾 Virtual Pet</h3>
-      <div id="petEmoji">🐣</div>
-      <div>❤️ Love points feed pet: <span id="petLevel">baby</span></div>
-      <button id="feedPetBtn">🍎 Feed (10 love points)</button>
-    </div>
-  </div>
-
-  <!-- LISTS -->
-  <div id="plansSection" class="section">
-    <div class="card">
-      <h3>✅ Shared To-Do List</h3>
-      <div id="todoList"></div>
-      <div class="flex-row"><input type="text" id="newTodo" placeholder="e.g., Watch a movie"><button id="addTodoBtn">Add</button></div>
-    </div>
-    <div class="card">
-      <h3>🎁 Wishlist / Gift Ideas</h3>
-      <div id="wishlistDiv"></div>
-      <input type="text" id="newWish" placeholder="Gift idea"><button id="addWishBtn">Add</button>
-    </div>
-    <div class="card">
-      <h3>😂 Inside Jokes</h3>
-      <div id="jokesDiv"></div>
-      <input type="text" id="newJoke" placeholder="Our joke"><button id="addJokeBtn">Add</button>
-    </div>
-    <div class="card">
-      <h3>🌍 Future Plans / Dream Trips</h3>
-      <div id="futurePlansDiv"></div>
-      <input type="text" id="newPlan" placeholder="Dream together..."><button id="addPlanBtn">Add</button>
-    </div>
-  </div>
-
-  <!-- TRACKERS -->
-  <div id="trackersSection" class="section">
-    <div class="card">
-      <h3>📊 Mood Tracker (Today)</h3>
-      <div class="flex-row">
-        <button id="moodHappy">😊 Happy</button>
-        <button id="moodLove">🥰 Loved</button>
-        <button id="moodMissing">😢 Missing you</button>
+      <div class="row">
+        <input type="text" id="reasonInput" placeholder="e.g. your laugh">
+        <button class="btn" id="addReasonBtn">Add</button>
       </div>
-      <div id="moodHistory">No moods recorded yet.</div>
+      <button class="bg" id="randomReasonBtn">💫 Random reason</button>
     </div>
     <div class="card">
-      <h3>🎬 Movies Watched Together</h3>
-      <div id="moviesList"></div>
-      <input type="text" id="newMovie" placeholder="Movie title + rating"><button id="addMovieBtn">Add</button>
+      <div class="ct">🎧 Our Playlist</div>
+      <iframe style="border-radius:13px;width:100%;height:152px;border:none;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+      <p style="font-size:11px;color:var(--muted);margin-top:7px;">Replace the playlist ID in the code with yours 💿</p>
     </div>
     <div class="card">
-      <h3>🎵 Song Tracker (our songs)</h3>
-      <div id="songsList"></div>
-      <input type="text" id="newSong" placeholder="Song - Artist"><button id="addSongBtn">Add</button>
+      <div class="ct">💌 Love Letter</div>
+      <button class="btn" id="genLetterBtn">Generate a letter</button>
+      <div class="lb2" id="letterBox"></div>
     </div>
     <div class="card">
-      <h3>💍 Firsts Tracker</h3>
-      <div id="firstsList"></div>
-      <select id="firstTypeSelect">
-        <option>First kiss</option><option>First date</option><option>First trip</option><option>First I love you</option>
-      </select>
-      <input type="date" id="firstDateInput">
-      <button id="addFirstBtn">Record first</button>
+      <div class="ct">🎟 Date Idea Generator</div>
+      <button class="btn" id="dateIdeaBtn">Pick an idea</button>
+      <div class="sx" id="dateOut"></div>
     </div>
   </div>
 
-  <footer>💖 Only us — every memory saved on this device 💖</footer>
+  <footer>🌙 Us, Always · photos & memories saved across devices</footer>
 </div>
 
 <script>
-// =============================================
-//  LOGIN SYSTEM
-// =============================================
-const LOGIN_USER     = 'kokey';
-const LOGIN_PASS     = 'muffin1122';
-const MAX_ATTEMPTS   = 3;
-const REMEMBER_DAYS  = 7;
-const SESSION_KEY    = 'ph_session_expiry';
-const ATTEMPTS_KEY   = 'ph_fail_attempts';
+// STARS
+(function(){
+  const c=document.getElementById('sc'),ctx=c.getContext('2d');let S=[];
+  function resize(){c.width=innerWidth;c.height=innerHeight;}
+  function init(){S=[];for(let i=0;i<160;i++)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.3+.2,o:Math.random()*.6+.15,p:Math.random()*Math.PI*2,sp:Math.random()*.0003+.0001});}
+  let t=0;
+  function draw(){ctx.clearRect(0,0,c.width,c.height);t+=.016;S.forEach(s=>{const op=s.o*(.55+.45*Math.sin(t*s.sp*1200+s.p));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(210,200,255,${op})`;ctx.fill();});requestAnimationFrame(draw);}
+  resize();init();draw();addEventListener('resize',()=>{resize();init();});
+})();
 
-let failCount = parseInt(sessionStorage.getItem(ATTEMPTS_KEY) || '0');
-
-function isSessionValid() {
-  const exp = localStorage.getItem(SESSION_KEY);
-  return exp && Date.now() < parseInt(exp);
-}
-
-function showLogin() {
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('appRoot').style.display = 'none';
-}
-
-function unlockApp() {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('appRoot').style.display = 'block';
-  loadData();
-  updateLoveAndStreak();
-  renderAllDynamic();
-  updateCountdown();
-}
-
-function updateDots() {
-  for (let i = 0; i < 3; i++) {
-    const dot = document.getElementById('dot' + i);
-    if (dot) dot.classList.toggle('used', i < failCount);
+// LOGIN
+const U='kokey',P='muffin1122',SESS='us_sess',ATT='us_att',RMEM=7*24*60*60*1000;
+let fails=parseInt(sessionStorage.getItem(ATT)||'0');
+function sessOk(){const e=localStorage.getItem(SESS);return e&&Date.now()<parseInt(e);}
+function enterApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';boot();}
+function refreshDots(){for(let i=0;i<3;i++)document.getElementById('d'+i).classList.toggle('used',i<fails);}
+function doLogin(){
+  const user=document.getElementById('lUser').value.trim();
+  const pass=document.getElementById('lPass').value;
+  const eEl=document.getElementById('loginErr'),oEl=document.getElementById('loginOk'),btn=document.getElementById('loginBtn');
+  eEl.style.display='none';oEl.style.display='none';
+  if(!user||!pass){eEl.textContent='Please fill in both fields.';eEl.style.display='block';return;}
+  if(user===U&&pass===P){
+    fails=0;sessionStorage.setItem(ATT,'0');
+    if(document.getElementById('rememberMe').checked)localStorage.setItem(SESS,(Date.now()+RMEM).toString());
+    oEl.style.display='block';btn.disabled=true;setTimeout(enterApp,1200);
+  }else{
+    fails++;sessionStorage.setItem(ATT,fails.toString());refreshDots();
+    ['lUser','lPass'].forEach(id=>{const el=document.getElementById(id);el.classList.add('err');setTimeout(()=>el.classList.remove('err'),350);});
+    if(fails>=3){sessionStorage.setItem(ATT,'0');location.replace('https://www.google.com');return;}
+    const left=3-fails;
+    eEl.textContent=`Wrong credentials. ${left} attempt${left===1?'':'s'} left.`;eEl.style.display='block';
   }
 }
+document.getElementById('loginBtn').addEventListener('click',doLogin);
+document.getElementById('lPass').addEventListener('keydown',e=>e.key==='Enter'&&doLogin());
+document.getElementById('lUser').addEventListener('keydown',e=>e.key==='Enter'&&document.getElementById('lPass').focus());
+document.getElementById('eyeBtn').addEventListener('click',()=>{const p=document.getElementById('lPass'),b=document.getElementById('eyeBtn');p.type=p.type==='password'?'text':'password';b.textContent=p.type==='password'?'👁':'🙈';});
+refreshDots();
+if(sessOk())enterApp();
 
-function doLogin() {
-  const user = document.getElementById('loginUsername').value.trim();
-  const pass = document.getElementById('loginPassword').value;
-  const errEl = document.getElementById('loginError');
-  const sucEl = document.getElementById('loginSuccess');
-  const btn   = document.getElementById('loginSubmitBtn');
+// CLOUD API
+const API='/api/data';let cloudOk=false;
+async function cGet(key){try{const r=await fetch(`${API}?key=${encodeURIComponent(key)}`);if(!r.ok)throw 0;const j=await r.json();cloudOk=true;return j.value??null;}catch{cloudOk=false;return null;}}
+async function cSet(key,val){try{await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key,value:val})});cloudOk=true;return true;}catch{cloudOk=false;return false;}}
+async function cDel(key){try{await fetch(`${API}?key=${encodeURIComponent(key)}`,{method:'DELETE'});return true;}catch{return false;}}
 
-  errEl.style.display = 'none';
-  sucEl.style.display = 'none';
+// LOCAL DATA
+let D={loveCount:0,streakLast:null,anniDate:'2025-06-01',memories:[],places:[],reasons:[]};
+function loadLocal(){try{const s=localStorage.getItem('us_d');if(s)Object.assign(D,JSON.parse(s));}catch{}}
+function saveLocal(){try{localStorage.setItem('us_d',JSON.stringify(D));}catch{}}
 
-  if (!user || !pass) {
-    errEl.textContent = 'Please enter both username and password.';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  if (user === LOGIN_USER && pass === LOGIN_PASS) {
-    // Success
-    failCount = 0;
-    sessionStorage.setItem(ATTEMPTS_KEY, '0');
-
-    if (document.getElementById('rememberMe').checked) {
-      const expiry = Date.now() + REMEMBER_DAYS * 24 * 60 * 60 * 1000;
-      localStorage.setItem(SESSION_KEY, expiry.toString());
-    }
-
-    sucEl.style.display = 'block';
-    btn.disabled = true;
-    setTimeout(unlockApp, 1400);
-
-  } else {
-    // Wrong credentials
-    failCount++;
-    sessionStorage.setItem(ATTEMPTS_KEY, failCount.toString());
-    updateDots();
-
-    document.getElementById('loginUsername').classList.add('error');
-    document.getElementById('loginPassword').classList.add('error');
-    setTimeout(() => {
-      document.getElementById('loginUsername').classList.remove('error');
-      document.getElementById('loginPassword').classList.remove('error');
-    }, 500);
-
-    if (failCount >= MAX_ATTEMPTS) {
-      // Redirect to confuse intruder
-      sessionStorage.setItem(ATTEMPTS_KEY, '0');
-      window.location.replace('https://www.google.com');
-      return;
-    }
-
-    const left = MAX_ATTEMPTS - failCount;
-    errEl.textContent = `Wrong username or password. ${left} attempt${left === 1 ? '' : 's'} left.`;
-    errEl.style.display = 'block';
-  }
-}
-
-function initLogin() {
-  // Floating hearts
-  const bg = document.getElementById('heartsBg');
-  const symbols = ['💕','💖','🌹','💗','✨','🥀','💓'];
-  for (let i = 0; i < 20; i++) {
-    const h = document.createElement('div');
-    h.className = 'heart-float';
-    h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    h.style.left = Math.random() * 100 + '%';
-    h.style.fontSize = (10 + Math.random() * 14) + 'px';
-    h.style.animationDuration = (9 + Math.random() * 12) + 's';
-    h.style.animationDelay = (Math.random() * 10) + 's';
-    bg.appendChild(h);
-  }
-
-  // Eye toggle
-  document.getElementById('eyeToggle').addEventListener('click', () => {
-    const p = document.getElementById('loginPassword');
-    const btn = document.getElementById('eyeToggle');
-    p.type = p.type === 'password' ? 'text' : 'password';
-    btn.textContent = p.type === 'password' ? '👁' : '🙈';
-  });
-
-  // Login button
-  document.getElementById('loginSubmitBtn').addEventListener('click', doLogin);
-
-  // Enter key
-  document.getElementById('loginPassword').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin();
-  });
-  document.getElementById('loginUsername').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('loginPassword').focus();
-  });
-
-  updateDots();
-
-  // Check existing session
-  if (isSessionValid()) {
-    unlockApp();
-  }
-}
-
-// =============================================
-//  APP DATA & STORAGE
-// =============================================
-let appData = {
-  loveCount: 0,
-  notes: [],
-  memories: [],
-  places: [],
-  reasons: [],
-  todoItems: [],
-  wishlist: [],
-  jokes: [],
-  futurePlans: [],
-  movies: [],
-  songs: [],
-  firsts: [],
-  moodEntries: [],
-  streakLastDate: null,
-  anniversaryDate: "2025-06-01",
-  petFeed: 0
-};
-
-function loadData() {
-  const saved = localStorage.getItem("PrivateHavenFull");
-  if (saved) {
-    try { Object.assign(appData, JSON.parse(saved)); } catch(e) {}
-  }
-  if (!appData.memories.length) {
-    appData.memories = [
-      {url:"https://picsum.photos/id/20/400/300", caption:"Coffee date ☕", favorite:false, date:new Date().toLocaleDateString()},
-      {url:"https://picsum.photos/id/96/400/300", caption:"Mountain sunset", favorite:true, date:new Date().toLocaleDateString()},
-      {url:"https://picsum.photos/id/169/400/300", caption:"Beach walk", favorite:false, date:new Date().toLocaleDateString()}
-    ];
-  }
-  if (!appData.reasons.length) appData.reasons = ["Your kindness","Your laugh","How you care"];
-  if (!appData.todoItems.length) appData.todoItems = ["Plan a picnic","Watch sunset together"];
-  if (!appData.wishlist.length) appData.wishlist = ["Matching rings","Weekend getaway"];
-  if (!appData.jokes.length) appData.jokes = ["We finish each other's... sandwiches 🥪"];
-  if (!appData.futurePlans.length) appData.futurePlans = ["Japan trip","Adopt a pet"];
-  if (!appData.places.length) appData.places = ["Eiffel Tower (dream)","Local cafe 💕"];
-  if (!appData.firsts.length) appData.firsts = [{type:"First date",date:"2024-01-15"},{type:"First kiss",date:"2024-02-10"}];
-  saveData();
-}
-
-function saveData() {
-  localStorage.setItem("PrivateHavenFull", JSON.stringify(appData));
-}
-
-function updateLoveAndStreak() {
-  document.getElementById("loveCounterDisplay").innerText = appData.loveCount;
-  document.getElementById("loveFillBar").style.width = Math.min(100, (appData.loveCount/500)*100) + "%";
-  let streak = 0;
-  if (appData.streakLastDate) {
-    const last = new Date(appData.streakLastDate);
-    const diffDays = Math.floor((new Date() - last) / (1000*60*60*24));
-    if (diffDays <= 1) streak = parseInt(localStorage.getItem("tempStreak")||"0");
-    else streak = 0;
-    localStorage.setItem("tempStreak", streak);
-    document.getElementById("streakDisplay").innerText = streak + " days 🔥";
-  } else {
-    document.getElementById("streakDisplay").innerText = "0 days 🔥";
-  }
-  const lc = appData.loveCount;
-  document.getElementById("petLevel").innerText = lc>=500 ? "magical 🦄" : lc>=200 ? "fox 🦊" : "baby 🐣";
-  document.getElementById("petEmoji").innerHTML = lc>=500 ? "🦄" : lc>=200 ? "🦊" : "🐣";
-}
-
-function addLove() {
-  appData.loveCount++;
-  const todayStr = new Date().toDateString();
-  if (appData.streakLastDate !== todayStr) {
-    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
-    if (appData.streakLastDate === yesterday.toDateString()) {
-      let s = parseInt(localStorage.getItem("tempStreak")||"0")+1;
-      localStorage.setItem("tempStreak", s);
-    } else localStorage.setItem("tempStreak","1");
-    appData.streakLastDate = todayStr;
-  }
-  saveData();
-  updateLoveAndStreak();
-}
-
-function renderTimeline() {
-  const c = document.getElementById("timelineList");
-  if (!c) return;
-  c.innerHTML = "";
-  appData.memories.forEach((mem, idx) => {
-    const div = document.createElement("div");
-    div.className = "memory-item";
-    div.innerHTML = `<div style="display:flex;gap:12px;align-items:center;">
-      <img src="${mem.url}" style="width:60px;height:60px;object-fit:cover;border-radius:16px;" onerror="this.src='https://picsum.photos/id/1/60/60'">
-      <div style="flex:1"><strong>${mem.caption||"Memory"}</strong><br><small>${mem.date||""}</small></div>
-      <span class="favorite-star" data-idx="${idx}">${mem.favorite?"⭐":"☆"}</span>
-      <button class="secondary" data-del="${idx}" style="padding:4px 10px;">🗑️</button>
-    </div>`;
-    c.appendChild(div);
-  });
-  document.querySelectorAll(".favorite-star").forEach(el => {
-    el.addEventListener("click", () => { const i=parseInt(el.dataset.idx); appData.memories[i].favorite=!appData.memories[i].favorite; saveData(); renderTimeline(); });
-  });
-  document.querySelectorAll("[data-del]").forEach(btn => {
-    btn.addEventListener("click", () => { appData.memories.splice(parseInt(btn.dataset.del),1); saveData(); renderTimeline(); updateMemoryOfDay(); });
+// PHOTOS
+const MAX_DIM=900;let photos=[];
+function resizeImg(file){
+  return new Promise(resolve=>{
+    const img=new Image(),url=URL.createObjectURL(file);
+    img.onload=()=>{
+      let{width:w,height:h}=img;
+      if(w>MAX_DIM||h>MAX_DIM){if(w>h){h=Math.round(h*MAX_DIM/w);w=MAX_DIM;}else{w=Math.round(w*MAX_DIM/h);h=MAX_DIM;}}
+      const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(url);resolve(cv.toDataURL('image/jpeg',.75));
+    };
+    img.onerror=()=>resolve(null);img.src=url;
   });
 }
+async function loadPhotos(){
+  document.getElementById('photoLoadRow').style.display='flex';
+  document.getElementById('photoGrid').innerHTML='';
+  const index=await cGet('photos:index');
+  if(!Array.isArray(index)||!index.length){photos=[];document.getElementById('photoLoadRow').style.display='none';renderPhotos();return;}
+  photos=[];
+  for(const id of index){const p=await cGet('photo:'+id);if(p)photos.push(p);}
+  document.getElementById('photoLoadRow').style.display='none';
+  renderPhotos();
+}
+async function uploadPhoto(file,caption){
+  const prog=document.getElementById('upProg'),pt=document.getElementById('upProgText');
+  prog.style.display='flex';pt.textContent=`Resizing "${file.name}"…`;
+  const dataUrl=await resizeImg(file);
+  if(!dataUrl){prog.style.display='none';alert('Could not read image.');return;}
+  pt.textContent=`Uploading "${file.name}"…`;
+  const id='p'+Date.now()+Math.random().toString(36).slice(2,6);
+  const photo={id,dataUrl,caption:caption||file.name.replace(/\.[^.]+$/,''),date:new Date().toLocaleDateString()};
+  const ok=await cSet('photo:'+id,photo);
+  if(ok){let idx=await cGet('photos:index')||[];idx.unshift(id);await cSet('photos:index',idx);}
+  photos.unshift(photo);
+  prog.style.display='none';renderPhotos();
+}
+async function deletePhoto(id){
+  photos=photos.filter(p=>p.id!==id);renderPhotos();
+  await cDel('photo:'+id);
+  let idx=await cGet('photos:index')||[];idx=idx.filter(i=>i!==id);await cSet('photos:index',idx);
+}
+function renderPhotos(){
+  const grid=document.getElementById('photoGrid');grid.innerHTML='';
+  if(!photos.length){grid.innerHTML='<div class="pe">No photos yet — upload your first one 💜</div>';return;}
+  photos.forEach(p=>{
+    const div=document.createElement('div');div.className='pi';
+    div.innerHTML=`<img src="${p.dataUrl||''}" alt="${p.caption}" loading="lazy"><div class="pov"><div class="pc">${p.caption}</div><button class="pd" data-id="${p.id}">Delete</button></div>`;
+    grid.appendChild(div);
+  });
+  grid.querySelectorAll('.pd').forEach(btn=>{btn.addEventListener('click',()=>{if(confirm('Delete this photo?'))deletePhoto(btn.dataset.id);});});
+}
 
-function renderPlaces()  { const c=document.getElementById("placesList"); if(c) c.innerHTML=appData.places.map(p=>`<div class="badge" style="margin:4px">📍 ${p}</div>`).join(""); }
-function renderReasons() { const c=document.getElementById("reasonsList"); if(c){c.innerHTML=appData.reasons.map((r,i)=>`<div class="memory-item">💖 ${r} <button data-delR="${i}" class="secondary" style="float:right">x</button></div>`).join(""); document.querySelectorAll("[data-delR]").forEach(b=>b.addEventListener("click",()=>{appData.reasons.splice(parseInt(b.dataset.delr),1);saveData();renderReasons();}));}}
-function renderTodos()   { const d=document.getElementById("todoList"); if(d){d.innerHTML=appData.todoItems.map((t,i)=>`<div>✅ ${t} <button data-td="${i}" class="secondary">✔️ done</button></div>`).join("");document.querySelectorAll("[data-td]").forEach(b=>b.addEventListener("click",()=>{appData.todoItems.splice(parseInt(b.dataset.td),1);saveData();renderTodos();}));}}
-function renderWishlist(){ const d=document.getElementById("wishlistDiv"); if(d){d.innerHTML=appData.wishlist.map((w,i)=>`<div>🎁 ${w} <button data-wish="${i}" class="secondary">remove</button></div>`).join("");document.querySelectorAll("[data-wish]").forEach(b=>b.addEventListener("click",()=>{appData.wishlist.splice(parseInt(b.dataset.wish),1);saveData();renderWishlist();}));}}
-function renderJokes()   { const d=document.getElementById("jokesDiv"); if(d){d.innerHTML=appData.jokes.map((j,i)=>`<div>😂 ${j} <button data-jk="${i}" class="secondary">🗑️</button></div>`).join("");document.querySelectorAll("[data-jk]").forEach(b=>b.addEventListener("click",()=>{appData.jokes.splice(parseInt(b.dataset.jk),1);saveData();renderJokes();}));}}
-function renderPlans()   { const d=document.getElementById("futurePlansDiv"); if(d){d.innerHTML=appData.futurePlans.map((p,i)=>`<div>✈️ ${p} <button data-pl="${i}" class="secondary">remove</button></div>`).join("");document.querySelectorAll("[data-pl]").forEach(b=>b.addEventListener("click",()=>{appData.futurePlans.splice(parseInt(b.dataset.pl),1);saveData();renderPlans();}));}}
-function renderMovies()  { const d=document.getElementById("moviesList"); if(d){d.innerHTML=appData.movies.map((m,i)=>`<div>🎬 ${m} <button data-mv="${i}" class="secondary">x</button></div>`).join("");document.querySelectorAll("[data-mv]").forEach(b=>b.addEventListener("click",()=>{appData.movies.splice(parseInt(b.dataset.mv),1);saveData();renderMovies();}));}}
-function renderSongs()   { const d=document.getElementById("songsList"); if(d){d.innerHTML=appData.songs.map((s,i)=>`<div>🎵 ${s} <button data-sg="${i}" class="secondary">x</button></div>`).join("");document.querySelectorAll("[data-sg]").forEach(b=>b.addEventListener("click",()=>{appData.songs.splice(parseInt(b.dataset.sg),1);saveData();renderSongs();}));}}
-function renderFirsts()  { const d=document.getElementById("firstsList"); if(d){d.innerHTML=appData.firsts.map((f,i)=>`<div>💍 ${f.type}: ${f.date} <button data-fr="${i}" class="secondary">remove</button></div>`).join("");document.querySelectorAll("[data-fr]").forEach(b=>b.addEventListener("click",()=>{appData.firsts.splice(parseInt(b.dataset.fr),1);saveData();renderFirsts();}));}}
-function renderMoodHistory(){ const d=document.getElementById("moodHistory"); if(d) d.innerHTML=appData.moodEntries.slice(-5).reverse().map(m=>`${m.date}: ${m.mood}`).join("<br>")||"No moods yet"; }
-
-function updateMemoryOfDay() {
-  const el = document.getElementById("memoryOfDayText");
-  if (!el) return;
-  if (appData.memories.length) {
-    const r = appData.memories[Math.floor(Math.random()*appData.memories.length)];
-    el.innerHTML = `<img src="${r.url}" style="width:80px;height:80px;object-fit:cover;border-radius:20px;"><br>${r.caption||"Sweet memory"}`;
-  } else {
-    el.innerText = "Add memories first!";
+// RENDER HELPERS
+function renderMemories(){
+  const c=document.getElementById('memoriesList');if(!c)return;c.innerHTML='';
+  D.memories.forEach((m,i)=>{
+    const d=document.createElement('div');d.className='mr';
+    d.innerHTML=`<span class="ms" data-i="${i}">${m.fav?'⭐':'☆'}</span><div style="flex:1"><div class="mt">${m.text}</div><div class="md">${m.date||''}</div></div><button class="bs" data-dm="${i}">✕</button>`;
+    c.appendChild(d);
+  });
+  c.querySelectorAll('.ms').forEach(el=>el.addEventListener('click',()=>{const i=parseInt(el.dataset.i);D.memories[i].fav=!D.memories[i].fav;saveLocal();cSet('us:data',D);renderMemories();}));
+  c.querySelectorAll('[data-dm]').forEach(btn=>btn.addEventListener('click',()=>{D.memories.splice(parseInt(btn.dataset.dm),1);saveLocal();cSet('us:data',D);renderMemories();}));
+}
+function renderPlaces(){
+  const c=document.getElementById('placesList');if(!c)return;
+  c.innerHTML=D.places.map((p,i)=>`<span style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:4px 11px;font-size:12px;display:inline-flex;align-items:center;gap:5px;">📍 ${p}<button style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:10px;padding:0;" data-dp="${i}">✕</button></span>`).join('');
+  c.querySelectorAll('[data-dp]').forEach(btn=>btn.addEventListener('click',()=>{D.places.splice(parseInt(btn.dataset.dp),1);saveLocal();cSet('us:data',D);renderPlaces();}));
+}
+function renderReasons(){
+  const c=document.getElementById('reasonsList');if(!c)return;c.innerHTML='';
+  D.reasons.forEach((r,i)=>{const d=document.createElement('div');d.className='ri';d.innerHTML=`<span>💜 ${r}</span><button class="bs" data-dr="${i}">✕</button>`;c.appendChild(d);});
+  c.querySelectorAll('[data-dr]').forEach(btn=>btn.addEventListener('click',()=>{D.reasons.splice(parseInt(btn.dataset.dr),1);saveLocal();cSet('us:data',D);renderReasons();}));
+}
+function updateLove(){
+  document.getElementById('loveNum').textContent=D.loveCount;
+  document.getElementById('loveFill').style.width=Math.min(100,(D.loveCount/500)*100)+'%';
+  document.getElementById('streakNum').textContent=parseInt(localStorage.getItem('us_streak')||'0');
+}
+function updateCountdown(){
+  if(D.anniDate)document.getElementById('anniDate').value=D.anniDate;
+  const diff=Math.ceil((new Date(D.anniDate)-new Date())/(1000*60*60*24));
+  document.getElementById('cdText').textContent=diff>=0?`${diff} days away`:`${Math.abs(diff)} days together ✨`;
+}
+function updateMotd(){
+  const el=document.getElementById('motdBox');
+  if(photos.length&&Math.random()>.4){
+    const p=photos[Math.floor(Math.random()*photos.length)];
+    el.innerHTML=`<img src="${p.dataUrl}" style="width:86px;height:86px;object-fit:cover;border-radius:12px;"><div style="margin-top:6px;font-size:12px;color:var(--muted);">${p.caption}</div>`;
+  }else if(D.memories.length){
+    const m=D.memories[Math.floor(Math.random()*D.memories.length)];
+    el.innerHTML=`<div style="font-size:14px;color:var(--accent);font-style:italic;">"${m.text}"</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">${m.date||''}</div>`;
+  }else{el.innerHTML=`<span style="color:var(--muted)">Add memories or photos to see one here</span>`;}
+}
+function setSyncStatus(s){
+  const dot=document.getElementById('syncDot'),lbl=document.getElementById('syncLabel');
+  dot.className='sd'+(s==='ok'?'':s==='err'?' er':' off');
+  lbl.textContent={ok:'Synced ✓ — photos stay across all devices',err:'Offline — saved locally on this device',syncing:'Syncing…'}[s]||'…';
+}
+async function syncData(){
+  setSyncStatus('syncing');
+  const cloud=await cGet('us:data');
+  if(!cloudOk){setSyncStatus('err');return;}
+  if(cloud){
+    D.loveCount=Math.max(D.loveCount,cloud.loveCount||0);
+    D.anniDate=cloud.anniDate||D.anniDate;
+    const mSet=new Set(D.memories.map(m=>m.text));(cloud.memories||[]).forEach(m=>{if(!mSet.has(m.text))D.memories.push(m);});
+    const pSet=new Set(D.places);(cloud.places||[]).forEach(p=>{if(!pSet.has(p))D.places.push(p);});
+    const rSet=new Set(D.reasons);(cloud.reasons||[]).forEach(r=>{if(!rSet.has(r))D.reasons.push(r);});
   }
+  await cSet('us:data',D);saveLocal();setSyncStatus('ok');
+  updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
 }
 
-function updateCountdown() {
-  const target = new Date(appData.anniversaryDate);
-  const diff = Math.ceil((target - new Date()) / (1000*60*60*24));
-  document.getElementById("countdownText").innerHTML = diff >= 0
-    ? `${diff} days until our special day ❤️`
-    : "That day has passed, but love remains ✨";
-}
+// BOOT
+function boot(){
+  loadLocal();
+  if(!D.reasons.length)D.reasons=['Your smile','Your kindness','How you make me feel safe'];
+  if(!D.places.length)D.places=['Our favourite café ☕','Where we first met 💜'];
 
-function renderAllDynamic() {
-  renderTimeline(); renderPlaces(); renderReasons();
-  renderTodos(); renderWishlist(); renderJokes(); renderPlans();
-  renderMovies(); renderSongs(); renderFirsts(); renderMoodHistory();
-  updateMemoryOfDay(); updateCountdown();
-}
-
-function bindMainEvents() {
-  document.getElementById("addLoveBtn").onclick = addLove;
-  document.getElementById("setAnniversaryBtn").onclick = () => {
-    const v = document.getElementById("anniversaryDate").value;
-    if (v) { appData.anniversaryDate = v; saveData(); updateCountdown(); }
-  };
-  document.getElementById("refreshMemoryDay").onclick = updateMemoryOfDay;
-  document.getElementById("surpriseBtn").onclick = () => {
-    const s = ["💋 You are my sunshine","🌹 I fall for you every day","🎁 Let's plan a date","💕 I love you more than pizza","✨ You make everything better"];
-    document.getElementById("surpriseMessage").innerHTML = s[Math.floor(Math.random()*s.length)];
-  };
-  document.getElementById("addMemoryBtn").onclick = () => {
-    let url = document.getElementById("newMemoryUrl").value || "https://picsum.photos/id/100/400/300";
-    let cap = document.getElementById("newMemoryCaption").value || "Beautiful moment";
-    appData.memories.unshift({url, caption:cap, favorite:false, date:new Date().toLocaleDateString()});
-    saveData(); renderTimeline();
-  };
-  document.getElementById("resetDefaultMemories").onclick = () => { appData.memories=[]; saveData(); loadData(); renderTimeline(); };
-  document.getElementById("addPlaceBtn").onclick = () => { let p=document.getElementById("newPlaceInput").value; if(p){appData.places.push(p);saveData();renderPlaces();} };
-  document.getElementById("addReasonBtn").onclick = () => { let r=document.getElementById("newReason").value; if(r){appData.reasons.push(r);saveData();renderReasons();} };
-  document.getElementById("randomReasonBtn").onclick = () => { if(appData.reasons.length) alert("💖 "+appData.reasons[Math.floor(Math.random()*appData.reasons.length)]); };
-  document.getElementById("generateLetterBtn").onclick = () => {
-    const l=["My love, every day with you is magic. I can't wait to grow old with you. 💌","You are my greatest adventure. I love you more than words can say.","You make my world brighter. Forever yours."];
-    document.getElementById("generatedLetter").innerHTML = l[Math.floor(Math.random()*l.length)];
-  };
-  document.getElementById("randomDateBtn").onclick = () => {
-    const d=["Picnic under stars","Cook together","Dance in living room","Road trip","Museum date"];
-    document.getElementById("dateIdeaDisplay").innerHTML = d[Math.floor(Math.random()*d.length)];
-  };
-  const quizBank=[{q:"What's my favorite color?",a:["pink","red"]},{q:"My dream travel destination?",a:["japan","paris"]}];
-  let qIdx=0;
-  document.getElementById("nextQuizBtn").onclick = () => { qIdx=(qIdx+1)%quizBank.length; document.getElementById("quizQuestion").innerText=quizBank[qIdx].q; document.getElementById("quizFeedback").innerText=""; };
-  document.getElementById("checkQuizBtn").onclick = () => { const ans=document.getElementById("quizAnswer").value.toLowerCase(); document.getElementById("quizFeedback").innerHTML=quizBank[qIdx].a.includes(ans)?"✅ Perfect! You know me 💕":"❌ Not quite, but I love you anyway 😘"; };
-  document.getElementById("fortuneBtn").onclick = () => {
-    const f=["You will receive a sweet kiss today","A surprise date awaits","Love is in the air","Happiness is coming your way"];
-    document.getElementById("fortuneText").innerHTML = "🥠 "+f[Math.floor(Math.random()*f.length)];
-  };
-  document.getElementById("wyrBtn").onclick = () => {
-    const w=["Would you rather have unlimited hugs or unlimited kisses?","Travel the world together or stay home cuddling?"];
-    document.getElementById("wyrDisplay").innerHTML = w[Math.floor(Math.random()*w.length)];
-  };
-  document.getElementById("feedPetBtn").onclick = () => {
-    if(appData.loveCount>=10){appData.loveCount-=10;saveData();updateLoveAndStreak();alert("🐾 Pet loves the treat!");}
-    else alert("Not enough love points. Add loving moments first!");
-  };
-  document.getElementById("addTodoBtn").onclick  = () => { let t=document.getElementById("newTodo").value; if(t){appData.todoItems.push(t);saveData();renderTodos();} };
-  document.getElementById("addWishBtn").onclick  = () => { let w=document.getElementById("newWish").value; if(w){appData.wishlist.push(w);saveData();renderWishlist();} };
-  document.getElementById("addJokeBtn").onclick  = () => { let j=document.getElementById("newJoke").value; if(j){appData.jokes.push(j);saveData();renderJokes();} };
-  document.getElementById("addPlanBtn").onclick  = () => { let p=document.getElementById("newPlan").value; if(p){appData.futurePlans.push(p);saveData();renderPlans();} };
-  document.getElementById("addMovieBtn").onclick = () => { let m=document.getElementById("newMovie").value; if(m){appData.movies.push(m);saveData();renderMovies();} };
-  document.getElementById("addSongBtn").onclick  = () => { let s=document.getElementById("newSong").value; if(s){appData.songs.push(s);saveData();renderSongs();} };
-  document.getElementById("addFirstBtn").onclick = () => { let type=document.getElementById("firstTypeSelect").value; let date=document.getElementById("firstDateInput").value; if(date){appData.firsts.push({type,date});saveData();renderFirsts();} };
-  document.getElementById("moodHappy").onclick   = () => { appData.moodEntries.push({date:new Date().toLocaleDateString(),mood:"😊 Happy"});saveData();renderMoodHistory(); };
-  document.getElementById("moodLove").onclick    = () => { appData.moodEntries.push({date:new Date().toLocaleDateString(),mood:"🥰 Loved"});saveData();renderMoodHistory(); };
-  document.getElementById("moodMissing").onclick = () => { appData.moodEntries.push({date:new Date().toLocaleDateString(),mood:"😢 Missing you"});saveData();renderMoodHistory(); };
-
-  let themeIdx=0;
-  document.getElementById("themeToggleBtn").onclick = () => {
-    const themes=[["#0f0f12","#1e1e2a","#ff6b8b"],["#fff0f5","#ffe4ed","#d4586a"],["#1a1a2e","#16213e","#e94560"]];
-    themeIdx=(themeIdx+1)%themes.length;
-    document.documentElement.style.setProperty('--bg',themes[themeIdx][0]);
-    document.documentElement.style.setProperty('--card',themes[themeIdx][1]);
-    document.documentElement.style.setProperty('--accent',themes[themeIdx][2]);
-    document.documentElement.style.setProperty('--glow',themes[themeIdx][2]);
-  };
-
-  // Logout
-  document.getElementById("logoutBtn").onclick = () => {
-    if(confirm("Log out of Our Private Haven?")) {
-      localStorage.removeItem(SESSION_KEY);
-      document.getElementById("appRoot").style.display = "none";
-      document.getElementById("loginUsername").value = "";
-      document.getElementById("loginPassword").value = "";
-      document.getElementById("loginError").style.display = "none";
-      document.getElementById("loginSuccess").style.display = "none";
-      document.getElementById("loginSubmitBtn").disabled = false;
-      failCount = 0;
-      sessionStorage.setItem(ATTEMPTS_KEY, '0');
-      updateDots();
-      document.getElementById("loginScreen").style.display = "flex";
-    }
-  };
-
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active-section"));
-      document.getElementById(btn.dataset.tab+"Section").classList.add("active-section");
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+      document.getElementById(btn.dataset.tab+'Section').classList.add('active');
     });
   });
-}
 
-// =============================================
-//  BOOT
-// =============================================
-document.addEventListener("DOMContentLoaded", () => {
-  initLogin();
-  bindMainEvents();
-});
+  document.getElementById('addLoveBtn').addEventListener('click',()=>{
+    D.loveCount++;
+    const today=new Date().toDateString();
+    if(D.streakLast!==today){
+      const yest=new Date();yest.setDate(yest.getDate()-1);
+      const s=(D.streakLast===yest.toDateString())?parseInt(localStorage.getItem('us_streak')||'0')+1:1;
+      localStorage.setItem('us_streak',s);D.streakLast=today;
+    }
+    saveLocal();cSet('us:data',D);updateLove();
+  });
+
+  document.getElementById('setAnniBtn').addEventListener('click',()=>{
+    const v=document.getElementById('anniDate').value;if(v){D.anniDate=v;saveLocal();cSet('us:data',D);updateCountdown();}
+  });
+  document.getElementById('refreshMotd').addEventListener('click',updateMotd);
+
+  const sv=['💜 You are my favourite person in the world.','🌙 I fall asleep thinking about you.','✨ Every day with you is a gift.','🎁 Let\'s plan a surprise date soon.','💌 I love you more than I can say.','🌹 You make everything better just by existing.','🌟 I choose you, every single day.'];
+  document.getElementById('surpriseBtn').addEventListener('click',()=>{document.getElementById('surpriseOut').textContent=sv[Math.floor(Math.random()*sv.length)];});
+
+  document.getElementById('photoInput').addEventListener('change',async e=>{
+    const files=Array.from(e.target.files);
+    for(const f of files){const cap=prompt(`Caption for "${f.name.replace(/\.[^.]+$/,'')}"?`)||f.name.replace(/\.[^.]+$/,'');await uploadPhoto(f,cap);}
+    e.target.value='';
+  });
+
+  document.getElementById('addMemBtn').addEventListener('click',()=>{const t=document.getElementById('memText').value.trim();if(!t)return;D.memories.unshift({text:t,fav:false,date:new Date().toLocaleDateString()});document.getElementById('memText').value='';saveLocal();cSet('us:data',D);renderMemories();});
+  document.getElementById('addPlaceBtn').addEventListener('click',()=>{const p=document.getElementById('placeInput').value.trim();if(!p)return;D.places.push(p);document.getElementById('placeInput').value='';saveLocal();cSet('us:data',D);renderPlaces();});
+  document.getElementById('addReasonBtn').addEventListener('click',()=>{const r=document.getElementById('reasonInput').value.trim();if(!r)return;D.reasons.push(r);document.getElementById('reasonInput').value='';saveLocal();cSet('us:data',D);renderReasons();});
+  document.getElementById('randomReasonBtn').addEventListener('click',()=>{if(D.reasons.length)alert('💜 '+D.reasons[Math.floor(Math.random()*D.reasons.length)]);});
+
+  const letters=['My love, every day with you feels like a dream I never want to wake from. You make the ordinary extraordinary, and I am endlessly grateful you chose me. 💌','There are not enough words in any language to describe how much you mean to me. You are my home, my calm, my favourite adventure. Forever yours.','You walked into my life and suddenly everything made sense. I love you more than yesterday, and less than I will tomorrow. 🌙'];
+  document.getElementById('genLetterBtn').addEventListener('click',()=>{document.getElementById('letterBox').textContent=letters[Math.floor(Math.random()*letters.length)];});
+
+  const di=['🌌 Stargazing with blankets & hot chocolate','🍳 Cook a new recipe together','🌅 Picnic at sunset','🎬 Movie marathon at home','🎶 Long drive with our playlist','🗺 Explore a new part of town','💌 Write letters to each other','🖼 Visit a museum or gallery','🎮 Game night in','🌊 Walk by the water'];
+  document.getElementById('dateIdeaBtn').addEventListener('click',()=>{document.getElementById('dateOut').textContent=di[Math.floor(Math.random()*di.length)];});
+
+  document.getElementById('syncBtn').addEventListener('click',()=>{syncData();loadPhotos();});
+
+  document.getElementById('logoutBtn').addEventListener('click',()=>{
+    if(!confirm('Sign out?'))return;
+    localStorage.removeItem(SESS);
+    document.getElementById('app').style.display='none';
+    document.getElementById('lUser').value='';document.getElementById('lPass').value='';
+    document.getElementById('loginErr').style.display='none';document.getElementById('loginOk').style.display='none';
+    document.getElementById('loginBtn').disabled=false;
+    fails=0;sessionStorage.setItem(ATT,'0');refreshDots();
+    document.getElementById('loginScreen').style.display='flex';
+  });
+
+  updateLove();updateCountdown();updateMotd();renderMemories();renderPlaces();renderReasons();
+  syncData();
+  loadPhotos();
+}
 </script>
 </body>
 </html>
