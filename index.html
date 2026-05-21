@@ -184,12 +184,27 @@ nav {
 .upload-hint { color:var(--muted); font-size:0.75rem; }
 .upload-progress { display:none; background:var(--surface2); border-radius:8px; overflow:hidden; height:4px; margin-top:16px; }
 .upload-progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; transition:width 0.3s; }
-.images-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; }
+.memories-toolbar{display:flex;justify-content:flex-end;margin-bottom:14px;}
+.add-memory-fab{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:1.35rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.add-memory-fab:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+.images-grid { column-count:4; column-gap:16px; }
+.img-card-wrap{break-inside:avoid;margin-bottom:16px;perspective:1000px;}
+.img-card{min-height:180px;position:relative;transform-style:preserve-3d;transition:transform .35s;}
+.img-card.is-flipped{transform:rotateY(180deg);}
+.img-face{position:relative;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.img-face.back{position:absolute;inset:0;transform:rotateY(180deg);padding:16px;display:flex;flex-direction:column;gap:10px;}
+.memory-msg{font-size:.78rem;line-height:1.5;color:var(--text);opacity:.95;white-space:pre-wrap;}
+.memory-empty{margin:auto 0;padding:12px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:8px;font-size:.76rem;}
+.memory-empty i{font-style:normal;font-size:1rem;color:var(--accent);}
+.memory-form{margin-top:auto;display:flex;gap:8px;}
+.memory-input{flex:1;min-width:0;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 10px;font-size:.72rem;font-family:'DM Mono',monospace;}
+.memory-save{padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:.7rem;cursor:pointer;}
+.memory-save:hover{border-color:var(--accent);color:var(--accent);}
 .img-card {
   background:var(--surface); border:1px solid var(--border);
   border-radius:10px; overflow:hidden; position:relative; transition:transform 0.2s,border-color 0.2s;
 }
-.img-card:hover { transform:translateY(-2px); border-color:var(--accent); }
+.img-card:hover { border-color:var(--accent); box-shadow:0 8px 18px rgba(0,0,0,.18); }
 .img-card img { width:100%; aspect-ratio:1; object-fit:cover; display:block; cursor:pointer; }
 .img-card-info { padding:10px 12px; }
 .img-card-name { font-size:0.72rem; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -200,6 +215,9 @@ nav {
   font-size:0.75rem; opacity:0; transition:opacity 0.2s;
 }
 .img-card:hover .img-del { opacity:1; }
+
+@media (max-width: 1024px){.images-grid{column-count:3;}}
+@media (max-width: 760px){.images-grid{column-count:2;}.img-card-wrap{margin-bottom:12px;}}
 
 /* LIGHTBOX */
 #lightbox {
@@ -460,13 +478,11 @@ nav {
   <div class="panel" id="panel-images">
     <div class="panel-title">Our Memories</div>
     <div class="panel-sub">// every moment with you — synced forever</div>
-    <div class="upload-zone" id="upload-zone">
-      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
-      <div class="upload-icon">💕</div>
-      <div class="upload-label">Drop our photos here</div>
-      <div class="upload-hint">or click to browse · JPG PNG GIF WEBP · stays on all devices</div>
-      <div class="upload-progress" id="upload-progress"><div class="upload-progress-bar" id="progress-bar"></div></div>
+    <div class="memories-toolbar">
+      <button class="add-memory-fab" onclick="triggerMemoryUpload()" title="Add memory">+</button>
+      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)" style="display:none">
     </div>
+    <div class="upload-progress" id="upload-progress"><div class="upload-progress-bar" id="progress-bar"></div></div>
     <div id="img-msg" style="font-size:0.78rem;color:var(--muted);margin-bottom:16px;min-height:18px;"></div>
     <div class="images-grid" id="images-grid"></div>
   </div>
@@ -634,13 +650,23 @@ window.handleFiles = async(files)=>{
 async function loadImages(){
   const {data}=await sb.from('images').select('*').order('created_at',{ascending:false})
   const grid=document.getElementById('images-grid')
-  if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — add some together!</div>';return}
-  grid.innerHTML=data.map(img=>`
-    <div class="img-card">
-      <img src="${img.url}" alt="${img.name||'memory'}" loading="lazy" onclick="openLightbox('${img.url}')">
-      <div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div>
-      <button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button>
-    </div>`).join('')
+  if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — tap + in the top-right to add one.</div>';return}
+  grid.innerHTML=data.map(img=>{
+    const note=img.note||''
+    return `<div class="img-card-wrap"><div class="img-card" data-id="${img.id}">
+      <div class="img-face front">
+        <img src="${img.url}" alt="${img.name||'memory'}" loading="lazy">
+        <div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div>
+        <button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button>
+      </div>
+      <div class="img-face back">
+        <div class="memory-msg" id="memory-msg-${img.id}">${note?note:''}</div>
+        ${note?'':`<div class="memory-empty"><i>+</i> Add sth special</div>`}
+        <div class="memory-form"><input class="memory-input" id="memory-input-${img.id}" placeholder="Write a message..."><button class="memory-save" onclick="saveMemoryMessage('${img.id}')">Save</button></div>
+      </div>
+    </div></div>`
+  }).join('')
+  bindMemoryCardEvents()
 }
 
 window.deleteImage=async(id,url)=>{
@@ -650,10 +676,37 @@ window.deleteImage=async(id,url)=>{
   toast('Gone, but never forgotten','ok'); loadImages(); loadStats()
 }
 
-const zone=document.getElementById('upload-zone')
-zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')})
-zone.addEventListener('dragleave',()=>zone.classList.remove('drag'))
-zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');handleFiles(e.dataTransfer.files)})
+window.triggerMemoryUpload=()=>document.getElementById('file-input').click()
+
+function bindMemoryCardEvents(){
+  document.querySelectorAll('.img-card').forEach(card=>{
+    let clickTimer=null
+    card.onclick=(e)=>{
+      if(e.target.closest('.img-del')||e.target.closest('.memory-form')||e.target.closest('.memory-save')||e.target.closest('.memory-input')) return
+      if(e.detail===2){
+        if(clickTimer){clearTimeout(clickTimer);clickTimer=null}
+        card.classList.toggle('is-flipped')
+        return
+      }
+      clickTimer=setTimeout(()=>{
+        if(!card.classList.contains('is-flipped')){
+          const img=card.querySelector('img')
+          if(img) openLightbox(img.src)
+        }
+      },230)
+    }
+  })
+}
+
+window.saveMemoryMessage=async(id)=>{
+  const input=document.getElementById(`memory-input-${id}`)
+  const note=input?.value.trim()
+  if(!note) return
+  const {error}=await sb.from('images').update({note}).eq('id',id)
+  if(error){toast('Could not save note','err');return}
+  toast('Message saved on this memory ♡','ok')
+  loadImages()
+}
 
 // lightbox
 window.openLightbox=(url)=>{
