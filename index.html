@@ -747,6 +747,8 @@ window.clearCanvas=async()=>{
 }
 
 // ── IVY AI ───────────────────────────────────────────────────────
+// UPDATE: Now using GROQ API (more generous free tier)
+const GROQ_API_KEY = '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'; // <--- YOU MUST ADD YOUR KEY
 const IVY_MEMORY_KEY = 'ivy-memories'
 const IVY_HISTORY_KEY = 'ivy-chat-history'
 
@@ -836,7 +838,6 @@ window.sendToIvy = async()=>{
 
   try {
     const memories = getAllMemoriesText()
-    const siteContext = document.documentElement.outerHTML.substring(0,8000)
 
     const systemPrompt = `You are Ivy, a warm, intelligent, and caring AI who lives inside a private website called "DYZ17" — a secret space shared between two people (Kokey and their partner). You are their personal assistant, companion, and site controller.
 
@@ -855,9 +856,6 @@ YOUR CAPABILITIES:
 STORED MEMORIES ABOUT THEM:
 ${memories}
 
-CURRENT SITE CODE (first 8000 chars):
-${siteContext.substring(0,4000)}
-
 IMPORTANT RULES:
 - When someone says "remember that X" or "my X is Y" — include [SAVE_MEMORY: X is Y] in your response
 - When editing the site, be very specific: say exactly which section to find and what to replace/add
@@ -865,44 +863,43 @@ IMPORTANT RULES:
 - Keep responses concise unless they ask for details
 - Today's date: ${new Date().toLocaleDateString()}`
 
-    // Build Gemini conversation history
-    const geminiHistory = ivyChatHistory.slice(-12).map(m => ({
-      role: m.role === 'user' ? 'user' : 'model',
-      parts: [{ text: m.content.replace(/<[^>]*>/g,'') }]
-    }))
-    // Remove last entry if it's the current user message (we add it in contents)
-    if(geminiHistory.length && geminiHistory[geminiHistory.length-1].role === 'user'){
-      geminiHistory.pop()
-    }
+    // Build Groq conversation history
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...ivyChatHistory.slice(-12).map(m => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: m.content.replace(/<[^>]*>/g, '')
+      }))
+    ]
 
     const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5KLoKN06qFlk-9D1kFTlO3yxYf046g2w',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
         body:JSON.stringify({
-          system_instruction:{ parts:[{ text: systemPrompt }] },
-          contents:[
-            ...geminiHistory,
-            { role:'user', parts:[{ text: msg }] }
-          ],
-          generationConfig:{ maxOutputTokens:1500, temperature:0.9 },
-          tools:[{ google_search:{} }]
+          model: 'llama-3.3-70b-versatile', // Or 'llama-3.1-8b-instant' for faster responses
+          messages: messages,
+          max_tokens: 1500,
+          temperature: 0.9
         })
       }
     )
 
+    // Improved error handling
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMsg = errorData?.error?.message || `HTTP ${response.status}`;
+      throw new Error(`Ivy (Groq): ${errorMsg}`);
+    }
+
     const data = await response.json()
     removeTyping()
 
-    let replyText = ''
-    if(data.candidates?.[0]?.content?.parts){
-      for(const part of data.candidates[0].content.parts){
-        if(part.text) replyText += part.text
-      }
-    }
-
-    if(!replyText) replyText = "I'm here! Something went slightly wrong on my end — try again? ♡"
+    let replyText = data.choices?.[0]?.message?.content || "I'm here! Something went slightly wrong on my end — try again? ♡"
 
     // extract and save any memories
     const memMatches = replyText.match(/\[SAVE_MEMORY:\s*([^\]]+)\]/g)
@@ -931,7 +928,8 @@ IMPORTANT RULES:
 
   } catch(err){
     removeTyping()
-    appendIvyMsg('ivy',`Oops, something went wrong: ${err.message}. Try again? ♡`)
+    appendIvyMsg('ivy',`Oops! ${err.message}.<br><br>If this is a key/permission issue, check your Groq console or wait a minute.`)
+    console.error('Ivy error:', err)
   }
 
   sendBtn.disabled=false
