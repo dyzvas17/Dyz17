@@ -865,36 +865,40 @@ IMPORTANT RULES:
 - Keep responses concise unless they ask for details
 - Today's date: ${new Date().toLocaleDateString()}`
 
-    const messages = [
-      ...ivyChatHistory.slice(-12).map(m=>({role:m.role, content:m.content}))
-    ]
-    // Make sure last message is from user
-    if(messages[messages.length-1]?.role!=='user'){
-      messages.push({role:'user',content:msg})
+    // Build Gemini conversation history
+    const geminiHistory = ivyChatHistory.slice(-12).map(m => ({
+      role: m.role === 'user' ? 'user' : 'model',
+      parts: [{ text: m.content.replace(/<[^>]*>/g,'') }]
+    }))
+    // Remove last entry if it's the current user message (we add it in contents)
+    if(geminiHistory.length && geminiHistory[geminiHistory.length-1].role === 'user'){
+      geminiHistory.pop()
     }
 
-    const response = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1500,
-        system: systemPrompt,
-        messages: messages,
-        tools:[{
-          type:'web_search_20250305',
-          name:'web_search'
-        }]
-      })
-    })
+    const response = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5KLoKN06qFlk-9D1kFTlO3yxYf046g2w',
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{ parts:[{ text: systemPrompt }] },
+          contents:[
+            ...geminiHistory,
+            { role:'user', parts:[{ text: msg }] }
+          ],
+          generationConfig:{ maxOutputTokens:1500, temperature:0.9 },
+          tools:[{ google_search:{} }]
+        })
+      }
+    )
 
     const data = await response.json()
     removeTyping()
 
     let replyText = ''
-    if(data.content){
-      for(const block of data.content){
-        if(block.type==='text') replyText += block.text
+    if(data.candidates?.[0]?.content?.parts){
+      for(const part of data.candidates[0].content.parts){
+        if(part.text) replyText += part.text
       }
     }
 
