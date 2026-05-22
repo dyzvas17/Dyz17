@@ -1240,18 +1240,64 @@ async function generateEmbedding(text) {
 function chunkConversation(data) {
   let messages = []
   
-  if(data.messages && Array.isArray(data.messages)) {
+  // Case 1: Instagram export format (messages array at root)
+  if (data.messages && Array.isArray(data.messages)) {
     messages = data.messages
-  } else if(Array.isArray(data)) {
+  }
+  // Case 2: Array of messages directly
+  else if (Array.isArray(data)) {
     messages = data
-  } else {
-    for(const key in data) {
-      if(Array.isArray(data[key]) && data[key][0]?.sender_name) {
+  }
+  // Case 3: Nested under a key like "conversations"
+  else {
+    for (const key in data) {
+      if (Array.isArray(data[key]) && data[key][0]?.sender_name) {
         messages = data[key]
         break
       }
     }
   }
+  
+  if (messages.length === 0) {
+    console.error('No messages found in JSON', Object.keys(data))
+    throw new Error('No messages found in JSON. Make sure it has a "messages" array.')
+  }
+  
+  console.log(`Found ${messages.length} messages. Grouping into chunks...`)
+  
+  const chunks = []
+  const chunkSize = 12  // slightly larger for better context
+  
+  for (let i = 0; i < messages.length; i += chunkSize) {
+    const chunkMessages = messages.slice(i, i + chunkSize)
+    let chunkText = ''
+    
+    for (const msg of chunkMessages) {
+      let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Friend')
+      let content = ''
+      
+      // Get message content
+      if (msg.content) content = msg.content
+      else if (msg.share?.share_text) content = msg.share.share_text
+      else if (msg.photos) content = '[Image]'
+      else if (msg.sticker) content = '[Sticker]'
+      else continue  // skip empty messages
+      
+      // Clean emoji and weird characters (optional but safe)
+      content = content.substring(0, 500)
+      if (content.trim().length === 0) continue
+      
+      chunkText += `${sender}: ${content}\n`
+    }
+    
+    if (chunkText.trim().length > 30) {
+      chunks.push({ text: chunkText, timestamp: messages[i]?.timestamp_ms || Date.now() })
+    }
+  }
+  
+  console.log(`Created ${chunks.length} non-empty chunks.`)
+  return chunks
+}
   
   if(messages.length === 0) throw new Error('Could not find messages in JSON')
   
