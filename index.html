@@ -171,6 +171,11 @@ nav {
 }
 .welcome-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:8px; }
 .welcome-text { color:var(--muted); font-size:0.8rem; line-height:1.7; }
+.naqii-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:26px;
+}
+.naqii-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:10px;}
+.naqii-text{font-size:.82rem;line-height:1.8;color:var(--muted);}
 
 /* IMAGES */
 .upload-zone {
@@ -184,12 +189,38 @@ nav {
 .upload-hint { color:var(--muted); font-size:0.75rem; }
 .upload-progress { display:none; background:var(--surface2); border-radius:8px; overflow:hidden; height:4px; margin-top:16px; }
 .upload-progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; transition:width 0.3s; }
-.images-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; }
+.memories-toolbar{display:flex;justify-content:flex-end;margin-bottom:14px;}
+.add-memory-fab{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:1.35rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.add-memory-fab:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+.images-grid { column-count:4; column-gap:16px; }
+.img-card-wrap{break-inside:avoid;margin-bottom:16px;perspective:1000px;}
+.img-card{min-height:180px;position:relative;transform-style:preserve-3d;transition:transform .35s;}
+.img-card.is-flipped{transform:rotateY(180deg);}
+.img-face{position:relative;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.img-face.back{position:absolute;inset:0;transform:rotateY(180deg);padding:16px;display:flex;flex-direction:column;gap:10px;}
+.memory-msg{font-size:.78rem;line-height:1.5;color:var(--text);opacity:.95;white-space:pre-wrap;}
+.memory-empty{margin:auto 0;padding:12px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:8px;font-size:.76rem;}
+.memory-empty i{font-style:normal;font-size:1rem;color:var(--accent);}
+.memory-form{margin-top:auto;display:flex;gap:8px;}
+.memory-input{flex:1;min-width:0;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 10px;font-size:.72rem;font-family:'DM Mono',monospace;}
+.memory-save{padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:.7rem;cursor:pointer;}
+.memory-save:hover{border-color:var(--accent);color:var(--accent);}
+.memory-input,.memory-save{position:relative;z-index:3;pointer-events:auto;}
+.sql-editor {
+  margin-top:20px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;
+}
+.sql-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:8px;}
+.sql-help{font-size:.72rem;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.sql-textarea{
+  width:100%; min-height:260px; resize:vertical; border-radius:10px; border:1px solid var(--border);
+  background:#121015; color:#d1f7d6; padding:12px; font-size:.72rem; font-family:'DM Mono',monospace;
+}
+.sql-actions{display:flex;justify-content:flex-end;margin-top:10px;}
 .img-card {
   background:var(--surface); border:1px solid var(--border);
   border-radius:10px; overflow:hidden; position:relative; transition:transform 0.2s,border-color 0.2s;
 }
-.img-card:hover { transform:translateY(-2px); border-color:var(--accent); }
+.img-card:hover { border-color:var(--accent); box-shadow:0 8px 18px rgba(0,0,0,.18); }
 .img-card img { width:100%; aspect-ratio:1; object-fit:cover; display:block; cursor:pointer; }
 .img-card-info { padding:10px 12px; }
 .img-card-name { font-size:0.72rem; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -200,6 +231,9 @@ nav {
   font-size:0.75rem; opacity:0; transition:opacity 0.2s;
 }
 .img-card:hover .img-del { opacity:1; }
+
+@media (max-width: 1024px){.images-grid{column-count:3;}}
+@media (max-width: 760px){.images-grid{column-count:2;}.img-card-wrap{margin-bottom:12px;}}
 
 /* LIGHTBOX */
 #lightbox {
@@ -414,6 +448,7 @@ nav {
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showPanel('home')">HOME</button>
       <button class="nav-tab" onclick="showPanel('images')">MEMORIES</button>
+      <button class="nav-tab" onclick="showPanel('naqii')">NAQII</button>
       <button class="nav-tab" onclick="showPanel('draw')">DRAW</button>
       <button class="nav-tab" onclick="showPanel('ivy')">✦ IVY</button>
     </div>
@@ -432,6 +467,7 @@ nav {
   <div class="mobile-tabs">
     <button class="mobile-tab active" onclick="showPanel('home')">HOME</button>
     <button class="mobile-tab" onclick="showPanel('images')">MEMORIES</button>
+    <button class="mobile-tab" onclick="showPanel('naqii')">NAQII</button>
     <button class="mobile-tab" onclick="showPanel('draw')">DRAW</button>
     <button class="mobile-tab" onclick="showPanel('ivy')">✦ IVY</button>
   </div>
@@ -456,19 +492,36 @@ nav {
     </div>
   </div>
 
+  <!-- NAQII -->
+  <div class="panel" id="panel-naqii">
+    <div class="panel-title">Naqii</div>
+    <div class="panel-sub">// a special corner</div>
+    <div class="naqii-card">
+      <div class="naqii-title">Welcome to Naqii ✨</div>
+      <div class="naqii-text">
+        This new section is now live on your site. You can use it as your personal area for notes, ideas,
+        plans, or anything meaningful you want to keep here.
+      </div>
+    </div>
+  </div>
+
   <!-- IMAGES -->
   <div class="panel" id="panel-images">
     <div class="panel-title">Our Memories</div>
     <div class="panel-sub">// every moment with you — synced forever</div>
-    <div class="upload-zone" id="upload-zone">
-      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
-      <div class="upload-icon">💕</div>
-      <div class="upload-label">Drop our photos here</div>
-      <div class="upload-hint">or click to browse · JPG PNG GIF WEBP · stays on all devices</div>
-      <div class="upload-progress" id="upload-progress"><div class="upload-progress-bar" id="progress-bar"></div></div>
+    <div class="memories-toolbar">
+      <button class="add-memory-fab" onclick="triggerMemoryUpload()" title="Add memory">+</button>
+      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)" style="display:none">
     </div>
+    <div class="upload-progress" id="upload-progress"><div class="upload-progress-bar" id="progress-bar"></div></div>
     <div id="img-msg" style="font-size:0.78rem;color:var(--muted);margin-bottom:16px;min-height:18px;"></div>
     <div class="images-grid" id="images-grid"></div>
+    <div class="sql-editor">
+      <div class="sql-title">Supabase SQL Editor (Diary Setup)</div>
+      <div class="sql-help">Copy this and run in Supabase → SQL Editor, so diary entries table/policies/bucket are created.</div>
+      <textarea id="diary-sql" class="sql-textarea" readonly></textarea>
+      <div class="sql-actions"><button class="draw-btn" onclick="copyDiarySql()">COPY SQL</button></div>
+    </div>
   </div>
 
   <!-- DRAW -->
@@ -541,6 +594,44 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = 'https://aybycwtnfunwimvipjdj.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5Ynljd3RuZnVud2ltdmlwamRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MTEwMzEsImV4cCI6MjA4NjI4NzAzMX0.ILCQwtmy92953fPKgWiiT8mljmu2VXVej3B0Y71tDZ8'
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+const MEMORY_NOTES_FALLBACK_KEY = 'dyz17-memory-notes-fallback'
+const DIARY_SETUP_SQL = `-- 1. Create diary_entries table
+CREATE TABLE IF NOT EXISTS public.diary_entries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT,
+  content TEXT,
+  entry_date DATE NOT NULL,
+  image_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 2. Enable Row Level Security
+ALTER TABLE public.diary_entries ENABLE ROW LEVEL SECURITY;
+
+-- 3. Policies (users can only see/edit their own entries)
+CREATE POLICY "Users can view own entries"
+  ON public.diary_entries FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own entries"
+  ON public.diary_entries FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own entries"
+  ON public.diary_entries FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own entries"
+  ON public.diary_entries FOR DELETE USING (auth.uid() = user_id);
+
+-- 4. Create storage bucket for diary images
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('diary-images', 'diary-images', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 5. Allow authenticated users to upload to diary-images bucket
+CREATE POLICY "Give users access to own folder"
+  ON storage.objects FOR ALL USING (
+    auth.role() = 'authenticated' AND
+    bucket_id = 'diary-images' AND
+    (storage.foldername(name))[1] = auth.uid()::text
+  );`
 
 let currentUser = null
 let authMode = 'login'
@@ -586,6 +677,20 @@ function bootApp(user){
   document.getElementById('app').style.display='block'
   document.getElementById('nav-user').textContent=user.email.split('@')[0]
   loadStats(); loadImages(); initCanvas(); initIvy()
+  initDiarySqlEditor()
+}
+function initDiarySqlEditor(){
+  const el=document.getElementById('diary-sql')
+  if(el) el.value=DIARY_SETUP_SQL
+}
+window.copyDiarySql=async()=>{
+  const txt=document.getElementById('diary-sql')?.value||DIARY_SETUP_SQL
+  try{
+    await navigator.clipboard.writeText(txt)
+    toast('Diary SQL copied. Paste in Supabase SQL editor.','ok')
+  }catch(e){
+    toast('Could not copy automatically. Please copy manually.','err')
+  }
 }
 
 // ── THEME ────────────────────────────────────────────────────────
@@ -624,7 +729,7 @@ window.handleFiles = async(files)=>{
     const {error:upErr}=await sb.storage.from('images').upload(path,file,{upsert:true})
     if(upErr){toast('Upload failed: '+upErr.message,'err');continue}
     const {data:{publicUrl}}=sb.storage.from('images').getPublicUrl(path)
-    await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name})
+    await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name,note:''})
     bar.style.width=`${((i+1)/files.length)*100}%`
   }
   setTimeout(()=>{progress.style.display='none';bar.style.width='0%'},600)
@@ -634,13 +739,25 @@ window.handleFiles = async(files)=>{
 async function loadImages(){
   const {data}=await sb.from('images').select('*').order('created_at',{ascending:false})
   const grid=document.getElementById('images-grid')
-  if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — add some together!</div>';return}
-  grid.innerHTML=data.map(img=>`
-    <div class="img-card">
-      <img src="${img.url}" alt="${img.name||'memory'}" loading="lazy" onclick="openLightbox('${img.url}')">
-      <div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div>
-      <button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button>
-    </div>`).join('')
+  if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — tap + in the top-right to add one.</div>';return}
+  const escAttr=(txt='')=>txt.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  const localNotes=getFallbackNotes()
+  grid.innerHTML=data.map(img=>{
+    const note=(img.note ?? localNotes[img.id] ?? '')
+    return `<div class="img-card-wrap"><div class="img-card" data-id="${img.id}">
+      <div class="img-face front">
+        <img src="${img.url}" alt="${img.name||'memory'}" loading="lazy">
+        <div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div>
+        <button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button>
+      </div>
+      <div class="img-face back">
+        <div class="memory-msg" id="memory-msg-${img.id}">${note?note:''}</div>
+        ${note?'':`<div class="memory-empty"><i>+</i> Add sth special</div>`}
+        <div class="memory-form"><input class="memory-input" id="memory-input-${img.id}" placeholder="Write in diary..." value="${escAttr(note)}"><button class="memory-save" onclick="saveMemoryMessage(event,'${img.id}')">Save</button></div>
+      </div>
+    </div></div>`
+  }).join('')
+  bindMemoryCardEvents()
 }
 
 window.deleteImage=async(id,url)=>{
@@ -650,10 +767,62 @@ window.deleteImage=async(id,url)=>{
   toast('Gone, but never forgotten','ok'); loadImages(); loadStats()
 }
 
-const zone=document.getElementById('upload-zone')
-zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')})
-zone.addEventListener('dragleave',()=>zone.classList.remove('drag'))
-zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');handleFiles(e.dataTransfer.files)})
+window.triggerMemoryUpload=()=>document.getElementById('file-input').click()
+
+function bindMemoryCardEvents(){
+  document.querySelectorAll('.img-card').forEach(card=>{
+    let tapTimeout=null
+    let lastTapAt=0
+    card.onclick=(e)=>{
+      if(e.target.closest('.img-del')||e.target.closest('.memory-form')||e.target.closest('.memory-save')||e.target.closest('.memory-input')) return
+      const now=Date.now()
+      const isDoubleTap=(now-lastTapAt)<280
+      lastTapAt=now
+      if(isDoubleTap){
+        if(tapTimeout){clearTimeout(tapTimeout);tapTimeout=null}
+        card.classList.toggle('is-flipped')
+        return
+      }
+      tapTimeout=setTimeout(()=>{
+        if(!card.classList.contains('is-flipped')){
+          const img=card.querySelector('img')
+          if(img) openLightbox(img.src)
+        }
+      },290)
+    }
+  })
+}
+
+window.saveMemoryMessage=async(evt,id)=>{
+  if(evt){evt.preventDefault();evt.stopPropagation()}
+  const input=document.getElementById(`memory-input-${id}`)
+  const note=input?.value?.trim() ?? ''
+  const {error}=await sb.from('images').update({note}).eq('id',id)
+  if(error){
+    saveFallbackNote(id,note)
+    toast('Saved on this device (sync unavailable right now)','ok')
+    loadImages()
+    return
+  }
+  clearFallbackNote(id)
+  toast(note ? 'Message saved on this memory ♡' : 'Diary cleared for this memory','ok')
+  loadImages()
+}
+
+function getFallbackNotes(){
+  return JSON.parse(localStorage.getItem(MEMORY_NOTES_FALLBACK_KEY)||'{}')
+}
+function saveFallbackNote(id,note){
+  const notes=getFallbackNotes()
+  notes[id]=note
+  localStorage.setItem(MEMORY_NOTES_FALLBACK_KEY,JSON.stringify(notes))
+}
+function clearFallbackNote(id){
+  const notes=getFallbackNotes()
+  if(notes[id]===undefined) return
+  delete notes[id]
+  localStorage.setItem(MEMORY_NOTES_FALLBACK_KEY,JSON.stringify(notes))
+}
 
 // lightbox
 window.openLightbox=(url)=>{
