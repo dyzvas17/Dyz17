@@ -5,130 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Our Space — DYZ17 + Diary + Ivy Memory</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- Diary fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:opsz@14..32&display=swap" rel="stylesheet">
-<!-- Font Awesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-:root {
-  --bg: #1a0f18; --surface: #2a1e28; --surface2: #362730;
-  --accent: #ff7ba6; --accent2: #c44569; --accent3: #f5a623;
-  --text: #fce4ec; --muted: #b08c96; --border: #4d3548;
-  --danger: #ef4444; --pattern-opacity: 0.15;
-}
+/* ========== YOUR COMPLETE STYLES HERE (same as original) ========== */
+:root { --bg: #1a0f18; --surface: #2a1e28; --surface2: #362730; --accent: #ff7ba6; --accent2: #c44569; --accent3: #f5a623; --text: #fce4ec; --muted: #b08c96; --border: #4d3548; --danger: #ef4444; --pattern-opacity: 0.15; }
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:var(--bg); color:var(--text);
-  font-family:'DM Mono',monospace; min-height:100vh;
-  overflow-x:hidden; position:relative; transition:background 0.4s,color 0.4s;
-}
-body::after {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background-repeat:repeat; background-size:120px 120px;
-  opacity:var(--pattern-opacity); transition:background-image 0.4s;
-}
-body.theme-anime::after {
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23ff7ba6' fill-opacity='0.6'%3E%3Cpath d='M60 10c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm-8 25c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm16 0c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm-24 25c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm32 0c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm-16 20c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7z'/%3E%3C/g%3E%3C/svg%3E");
-}
-body.theme-soft {
-  --bg:#f8f0f4; --surface:#fff5f9; --surface2:#fbeff2;
-  --accent:#f8a5c2; --accent2:#e66791; --accent3:#f7c5cc;
-  --text:#4a3142; --muted:#9e7b8b; --border:#e7cdd5; --pattern-opacity:0.3;
-}
-body.theme-soft::after {
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23f8a5c2' fill-opacity='0.6'%3E%3Cpath d='M10 18c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm-30 20c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6z'/%3E%3C/g%3E%3C/svg%3E");
-}
-body.theme-miraculous {
-  --bg:#2e1214; --surface:#3d1f20; --surface2:#4e2a2b;
-  --accent:#e11d48; --accent2:#ff2d55; --accent3:#fbbf24;
-  --text:#fce4e4; --muted:#c19b9b; --border:#6a3a3c; --pattern-opacity:0.18;
-}
-body.theme-miraculous::after {
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='20' r='12' fill='%231f0a0c' fill-opacity='0.8'/%3E%3Ccircle cx='70' cy='70' r='14' fill='%231f0a0c' fill-opacity='0.8'/%3E%3Ccircle cx='90' cy='20' r='10' fill='%231f0a0c' fill-opacity='0.6'/%3E%3Ccircle cx='10' cy='80' r='10' fill='%231f0a0c' fill-opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='18' fill='%23ff2d55' fill-opacity='0.4'/%3E%3C/svg%3E");
-}
-
-/* AUTH */
-#auth-screen {
-  position:fixed; inset:0; z-index:100;
-  display:flex; align-items:center; justify-content:center; background:var(--bg);
-}
-.auth-box {
-  width:100%; max-width:420px; background:var(--surface);
-  border:1px solid var(--border); border-radius:16px; padding:40px; position:relative;
-}
-.auth-box::before {
-  content:''; position:absolute; top:-1px; left:20px; right:20px; height:2px;
-  background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:2px;
-}
-.auth-logo {
-  font-family:'Syne',sans-serif; font-size:2rem; font-weight:800;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px;
-}
+body { background:var(--bg); color:var(--text); font-family:'DM Mono',monospace; min-height:100vh; overflow-x:hidden; position:relative; transition:background 0.4s,color 0.4s; }
+body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-repeat:repeat; background-size:120px 120px; opacity:var(--pattern-opacity); transition:background-image 0.4s; }
+body.theme-anime::after { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23ff7ba6' fill-opacity='0.6'%3E%3Cpath d='M60 10c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm-8 25c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm16 0c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm-24 25c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm32 0c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7zm-16 20c-4 0-7 3-7 7 0 4 2 8 7 13 5-5 7-9 7-13 0-4-3-7-7-7z'/%3E%3C/g%3E%3C/svg%3E"); }
+body.theme-soft { --bg:#f8f0f4; --surface:#fff5f9; --surface2:#fbeff2; --accent:#f8a5c2; --accent2:#e66791; --accent3:#f7c5cc; --text:#4a3142; --muted:#9e7b8b; --border:#e7cdd5; --pattern-opacity:0.3; }
+body.theme-soft::after { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23f8a5c2' fill-opacity='0.6'%3E%3Cpath d='M10 18c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm-30 20c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6z'/%3E%3C/g%3E%3C/svg%3E"); }
+body.theme-miraculous { --bg:#2e1214; --surface:#3d1f20; --surface2:#4e2a2b; --accent:#e11d48; --accent2:#ff2d55; --accent3:#fbbf24; --text:#fce4e4; --muted:#c19b9b; --border:#6a3a3c; --pattern-opacity:0.18; }
+body.theme-miraculous::after { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='20' r='12' fill='%231f0a0c' fill-opacity='0.8'/%3E%3Ccircle cx='70' cy='70' r='14' fill='%231f0a0c' fill-opacity='0.8'/%3E%3Ccircle cx='90' cy='20' r='10' fill='%231f0a0c' fill-opacity='0.6'/%3E%3Ccircle cx='10' cy='80' r='10' fill='%231f0a0c' fill-opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='18' fill='%23ff2d55' fill-opacity='0.4'/%3E%3C/svg%3E"); }
+#auth-screen { position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; background:var(--bg); }
+.auth-box { width:100%; max-width:420px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px; position:relative; }
+.auth-box::before { content:''; position:absolute; top:-1px; left:20px; right:20px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:2px; }
+.auth-logo { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
 .auth-sub { color:var(--muted); font-size:0.8rem; margin-bottom:32px; }
 .auth-tabs { display:flex; gap:4px; margin-bottom:28px; background:var(--surface2); border-radius:8px; padding:4px; }
-.auth-tab {
-  flex:1; padding:8px; text-align:center; cursor:pointer; border-radius:6px;
-  font-size:0.8rem; font-family:'DM Mono',monospace; color:var(--muted);
-  transition:all 0.2s; border:none; background:none;
-}
+.auth-tab { flex:1; padding:8px; text-align:center; cursor:pointer; border-radius:6px; font-size:0.8rem; font-family:'DM Mono',monospace; color:var(--muted); transition:all 0.2s; border:none; background:none; }
 .auth-tab.active { background:var(--accent); color:white; }
 .field { margin-bottom:16px; }
 .field label { display:block; font-size:0.75rem; color:var(--muted); margin-bottom:6px; letter-spacing:0.05em; }
-.field input {
-  width:100%; padding:10px 14px; background:var(--surface2); border:1px solid var(--border);
-  border-radius:8px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.85rem;
-  outline:none; transition:border-color 0.2s;
-}
+.field input { width:100%; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.85rem; outline:none; transition:border-color 0.2s; }
 .field input:focus { border-color:var(--accent); }
-.btn {
-  width:100%; padding:12px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none; border-radius:8px; color:white;
-  font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem;
-  cursor:pointer; transition:all 0.2s; margin-top:8px;
-}
+.btn { width:100%; padding:12px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:8px; color:white; font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.2s; margin-top:8px; }
 .btn:hover { opacity:0.9; transform:translateY(-1px); }
 .auth-msg { font-size:0.78rem; margin-top:12px; text-align:center; min-height:18px; }
 .auth-msg.error { color:var(--danger); }
 .auth-msg.success { color:var(--accent2); }
-
-/* APP */
 #app { display:none; min-height:100vh; position:relative; z-index:1; }
-
-/* NAV */
-nav {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px 32px; border-bottom:1px solid var(--border);
-  background:var(--bg); backdrop-filter:blur(20px);
-  position:sticky; top:0; z-index:50;
-}
-.nav-logo {
-  font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
+nav { display:flex; align-items:center; justify-content:space-between; padding:16px 32px; border-bottom:1px solid var(--border); background:var(--bg); backdrop-filter:blur(20px); position:sticky; top:0; z-index:50; }
+.nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .nav-tabs { display:flex; gap:4px; }
-.nav-tab {
-  padding:7px 18px; border-radius:8px; cursor:pointer;
-  font-size:0.78rem; font-family:'DM Mono',monospace;
-  color:var(--muted); border:none; background:none; transition:all 0.2s;
-}
+.nav-tab { padding:7px 18px; border-radius:8px; cursor:pointer; font-size:0.78rem; font-family:'DM Mono',monospace; color:var(--muted); border:none; background:none; transition:all 0.2s; }
 .nav-tab:hover { color:var(--text); background:var(--surface2); }
 .nav-tab.active { background:var(--accent); color:white; }
 .nav-right { display:flex; align-items:center; gap:12px; }
-.user-chip {
-  display:flex; align-items:center; gap:8px;
-  background:var(--surface2); border:1px solid var(--border);
-  border-radius:20px; padding:6px 14px; font-size:0.78rem; color:var(--muted);
-}
+.user-chip { display:flex; align-items:center; gap:8px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:6px 14px; font-size:0.78rem; color:var(--muted); }
 .user-dot { width:7px; height:7px; border-radius:50%; background:#22c55e; }
-.btn-sm {
-  padding:7px 16px; border-radius:8px; cursor:pointer;
-  font-size:0.78rem; font-family:'DM Mono',monospace;
-  background:var(--surface2); border:1px solid var(--border);
-  color:var(--muted); transition:all 0.2s;
-}
+.btn-sm { padding:7px 16px; border-radius:8px; cursor:pointer; font-size:0.78rem; font-family:'DM Mono',monospace; background:var(--surface2); border:1px solid var(--border); color:var(--muted); transition:all 0.2s; }
 .btn-sm:hover { color:var(--danger); border-color:var(--danger); }
 .theme-picker { display:flex; gap:4px; background:var(--surface2); border-radius:20px; padding:3px; margin-right:4px; }
 .theme-dot { width:22px; height:22px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:all 0.2s; }
@@ -136,50 +53,27 @@ nav {
 .theme-dot.anime { background:#ff7ba6; }
 .theme-dot.soft { background:#f8a5c2; }
 .theme-dot.miraculous { background:#e11d48; }
-
-.ivy-nav-btn {
-  display:flex; align-items:center; gap:6px;
-  padding:7px 16px; border-radius:20px; cursor:pointer;
-  font-size:0.78rem; font-family:'DM Mono',monospace;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none; color:white; transition:all 0.2s;
-  box-shadow:0 0 12px rgba(255,123,166,0.3);
-}
+.ivy-nav-btn { display:flex; align-items:center; gap:6px; padding:7px 16px; border-radius:20px; cursor:pointer; font-size:0.78rem; font-family:'DM Mono',monospace; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; color:white; transition:all 0.2s; box-shadow:0 0 12px rgba(255,123,166,0.3); }
 .ivy-nav-btn:hover { opacity:0.9; transform:translateY(-1px); }
 .ivy-pulse { width:7px; height:7px; border-radius:50%; background:white; animation:ivyPulse 1.5s infinite; }
 @keyframes ivyPulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.4);} }
-
-/* PANELS */
 .panel { display:none; padding:40px 32px; max-width:1100px; margin:0 auto; }
 .panel.active { display:block; animation:fadeIn 0.3s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
 .panel-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.8rem; margin-bottom:8px; }
 .panel-sub { color:var(--muted); font-size:0.8rem; margin-bottom:32px; }
-
-/* HOME */
 .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
-.stat-card {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:12px; padding:24px; position:relative; overflow:hidden;
-}
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; position:relative; overflow:hidden; }
 .stat-card::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
 .stat-card:nth-child(1)::after { background:var(--accent); }
 .stat-card:nth-child(2)::after { background:var(--accent2); }
 .stat-card:nth-child(3)::after { background:var(--accent3); }
 .stat-label { font-size:0.72rem; color:var(--muted); letter-spacing:0.08em; margin-bottom:8px; }
 .stat-value { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; }
-.welcome-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px;
-  background-image:radial-gradient(ellipse at 100% 0%,var(--accent)10 0%,transparent 60%);
-}
+.welcome-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px; background-image:radial-gradient(ellipse at 100% 0%,var(--accent)10 0%,transparent 60%); }
 .welcome-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:8px; }
 .welcome-text { color:var(--muted); font-size:0.8rem; line-height:1.7; }
-
-/* IMAGES */
-.upload-zone {
-  border:2px dashed var(--border); border-radius:12px; padding:48px;
-  text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:32px; position:relative;
-}
+.upload-zone { border:2px dashed var(--border); border-radius:12px; padding:48px; text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:32px; position:relative; }
 .upload-zone:hover,.upload-zone.drag { border-color:var(--accent); background:rgba(255,123,166,0.05); }
 .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
 .upload-icon { font-size:2.5rem; margin-bottom:12px; }
@@ -188,44 +82,23 @@ nav {
 .upload-progress { display:none; background:var(--surface2); border-radius:8px; overflow:hidden; height:4px; margin-top:16px; }
 .upload-progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; transition:width 0.3s; }
 .images-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; }
-.img-card {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:10px; overflow:hidden; position:relative; transition:transform 0.2s,border-color 0.2s;
-}
+.img-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; position:relative; transition:transform 0.2s,border-color 0.2s; }
 .img-card:hover { transform:translateY(-2px); border-color:var(--accent); }
 .img-card img { width:100%; aspect-ratio:1; object-fit:cover; display:block; cursor:pointer; }
 .img-card-info { padding:10px 12px; }
 .img-card-name { font-size:0.72rem; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.img-del {
-  position:absolute; top:8px; right:8px;
-  background:rgba(0,0,0,0.7); border:none; color:var(--danger);
-  width:28px; height:28px; border-radius:6px; cursor:pointer;
-  font-size:0.75rem; opacity:0; transition:opacity 0.2s;
-}
+.img-del { position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); border:none; color:var(--danger); width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:0.75rem; opacity:0; transition:opacity 0.2s; }
 .img-card:hover .img-del { opacity:1; }
-
-/* LIGHTBOX */
-#lightbox {
-  position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.92);
-  display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px;
-}
+#lightbox { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.92); display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
 #lightbox.open { display:flex; }
 #lightbox img { max-width:90vw; max-height:80vh; border-radius:12px; object-fit:contain; }
-#lightbox-close {
-  position:absolute; top:20px; right:24px; background:none; border:none;
-  color:white; font-size:2rem; cursor:pointer; opacity:0.7;
-}
+#lightbox-close { position:absolute; top:20px; right:24px; background:none; border:none; color:white; font-size:2rem; cursor:pointer; opacity:0.7; }
 #lightbox-close:hover { opacity:1; }
-
-/* DRAWING */
 .drawing-controls { display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
 .color-row { display:flex; gap:6px; align-items:center; }
 .color-swatch { width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:all 0.15s; }
 .color-swatch.active { border-color:white; transform:scale(1.2); }
-.size-btn {
-  background:var(--surface2); border:1px solid var(--border); color:var(--text);
-  border-radius:6px; padding:5px 12px; cursor:pointer; font-family:'DM Mono',monospace; font-size:0.75rem; transition:all 0.15s;
-}
+.size-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:5px 12px; cursor:pointer; font-family:'DM Mono',monospace; font-size:0.75rem; transition:all 0.15s; }
 .size-btn.active { border-color:var(--accent); color:var(--accent); }
 .canvas-wrap { position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:#fff; }
 #draw-canvas { display:block; cursor:crosshair; touch-action:none; width:100%; }
@@ -233,668 +106,167 @@ nav {
 .live-dot { width:6px; height:6px; border-radius:50%; background:var(--accent2); animation:pulse 1.5s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 .draw-actions { display:flex; gap:8px; margin-top:12px; }
-.draw-btn {
-  padding:8px 16px; border-radius:8px; cursor:pointer; font-size:0.78rem; font-family:'DM Mono',monospace;
-  background:var(--surface2); border:1px solid var(--border); color:var(--text); transition:all 0.2s;
-}
+.draw-btn { padding:8px 16px; border-radius:8px; cursor:pointer; font-size:0.78rem; font-family:'DM Mono',monospace; background:var(--surface2); border:1px solid var(--border); color:var(--text); transition:all 0.2s; }
 .draw-btn:hover { border-color:var(--accent); color:var(--accent); }
 .draw-btn.danger:hover { border-color:var(--danger); color:var(--danger); }
-
-/* IVY PANEL */
 #panel-ivy { padding-bottom:0; }
 .ivy-header { display:flex; align-items:center; gap:16px; margin-bottom:8px; }
-.ivy-avatar {
-  width:56px; height:56px; border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex; align-items:center; justify-content:center;
-  font-size:1.6rem; flex-shrink:0;
-  box-shadow:0 0 20px rgba(255,123,166,0.4);
-  animation:ivyGlow 3s ease-in-out infinite;
-}
-@keyframes ivyGlow {
-  0%,100%{box-shadow:0 0 20px rgba(255,123,166,0.4);}
-  50%{box-shadow:0 0 35px rgba(255,123,166,0.7);}
-}
+.ivy-avatar { width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0; box-shadow:0 0 20px rgba(255,123,166,0.4); animation:ivyGlow 3s ease-in-out infinite; }
+@keyframes ivyGlow { 0%,100%{box-shadow:0 0 20px rgba(255,123,166,0.4);} 50%{box-shadow:0 0 35px rgba(255,123,166,0.7);} }
 .ivy-name { font-family:'Syne',sans-serif; font-weight:800; font-size:1.6rem; }
 .ivy-tagline { color:var(--muted); font-size:0.75rem; margin-top:2px; }
 .ivy-status-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; margin-top:8px; }
-.ivy-badge {
-  font-size:0.68rem; padding:4px 10px; border-radius:20px;
-  background:var(--surface2); border:1px solid var(--border); color:var(--muted);
-}
+.ivy-badge { font-size:0.68rem; padding:4px 10px; border-radius:20px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); }
 .ivy-badge.on { border-color:var(--accent); color:var(--accent); }
-.ivy-chat-wrap {
-  background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  display:flex; flex-direction:column; height:520px; overflow:hidden;
-}
-.ivy-messages {
-  flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px;
-  scroll-behavior:smooth;
-}
+.ivy-chat-wrap { background:var(--surface); border:1px solid var(--border); border-radius:16px; display:flex; flex-direction:column; height:520px; overflow:hidden; }
+.ivy-messages { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px; scroll-behavior:smooth; }
 .ivy-messages::-webkit-scrollbar { width:4px; }
 .ivy-messages::-webkit-scrollbar-track { background:transparent; }
 .ivy-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
 .msg { display:flex; gap:10px; align-items:flex-start; max-width:85%; }
 .msg.user { align-self:flex-end; flex-direction:row-reverse; }
-.msg-avatar {
-  width:30px; height:30px; border-radius:50%; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center; font-size:0.85rem;
-  background:var(--surface2); border:1px solid var(--border);
-}
+.msg-avatar { width:30px; height:30px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.85rem; background:var(--surface2); border:1px solid var(--border); }
 .msg.ivy .msg-avatar { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; }
-.msg-bubble {
-  padding:10px 14px; border-radius:12px; font-size:0.82rem; line-height:1.6;
-  background:var(--surface2); border:1px solid var(--border);
-}
+.msg-bubble { padding:10px 14px; border-radius:12px; font-size:0.82rem; line-height:1.6; background:var(--surface2); border:1px solid var(--border); }
 .msg.user .msg-bubble { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; border:none; }
 .msg.ivy .msg-bubble { border-color:rgba(255,123,166,0.2); }
-.msg-bubble code {
-  background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px;
-  font-family:'DM Mono',monospace; font-size:0.78rem;
-}
-.msg-bubble pre {
-  background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-top:8px;
-  overflow-x:auto; font-size:0.75rem; white-space:pre-wrap;
-}
+.msg-bubble code { background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; font-family:'DM Mono',monospace; font-size:0.78rem; }
+.msg-bubble pre { background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-top:8px; overflow-x:auto; font-size:0.75rem; white-space:pre-wrap; }
 .typing-indicator { display:flex; gap:4px; align-items:center; padding:4px 0; }
-.typing-dot {
-  width:7px; height:7px; border-radius:50%; background:var(--accent);
-  animation:typingBounce 1.2s infinite;
-}
+.typing-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); animation:typingBounce 1.2s infinite; }
 .typing-dot:nth-child(2) { animation-delay:0.2s; }
 .typing-dot:nth-child(3) { animation-delay:0.4s; }
 @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);} 30%{transform:translateY(-8px);} }
-.ivy-input-row {
-  display:flex; gap:8px; padding:16px; border-top:1px solid var(--border);
-  background:var(--surface); align-items:flex-end;
-}
-#ivy-input {
-  flex:1; background:var(--surface2); border:1px solid var(--border);
-  border-radius:10px; color:var(--text); font-family:'DM Mono',monospace;
-  font-size:0.82rem; padding:10px 14px; outline:none; resize:none;
-  transition:border-color 0.2s; max-height:120px; overflow-y:auto; line-height:1.5;
-}
+.ivy-input-row { display:flex; gap:8px; padding:16px; border-top:1px solid var(--border); background:var(--surface); align-items:flex-end; }
+#ivy-input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.82rem; padding:10px 14px; outline:none; resize:none; transition:border-color 0.2s; max-height:120px; overflow-y:auto; line-height:1.5; }
 #ivy-input:focus { border-color:var(--accent); }
-#ivy-send {
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none; border-radius:10px; color:white; cursor:pointer;
-  padding:10px 18px; font-family:'DM Mono',monospace; font-size:0.82rem;
-  transition:all 0.2s; white-space:nowrap; flex-shrink:0;
-}
+#ivy-send { background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:10px; color:white; cursor:pointer; padding:10px 18px; font-family:'DM Mono',monospace; font-size:0.82rem; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
 #ivy-send:hover { opacity:0.9; }
 #ivy-send:disabled { opacity:0.5; cursor:not-allowed; }
 .ivy-caps { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
-.ivy-cap {
-  font-size:0.7rem; padding:5px 12px; border-radius:20px; cursor:pointer;
-  background:var(--surface); border:1px solid var(--border); color:var(--muted);
-  transition:all 0.2s;
-}
+.ivy-cap { font-size:0.7rem; padding:5px 12px; border-radius:20px; cursor:pointer; background:var(--surface); border:1px solid var(--border); color:var(--muted); transition:all 0.2s; }
 .ivy-cap:hover { border-color:var(--accent); color:var(--accent); }
-
-/* DATE ZONE */
 #panel-dates { max-width:1100px; }
-.date-lobby-wrap {
-  background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:40px 32px; text-align:center; margin-bottom:24px;
-}
+.date-lobby-wrap { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px 32px; text-align:center; margin-bottom:24px; }
 .date-lobby-wrap h2 { font-family:'Syne',sans-serif; font-size:1.4rem; margin-bottom:10px; }
 .date-lobby-wrap p { color:var(--muted); font-size:0.8rem; margin-bottom:24px; }
-.date-presets {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:12px; margin-bottom:24px; text-align:left;
-}
-.preset-card {
-  background:var(--surface2); border:1px solid var(--border); border-radius:12px;
-  padding:16px; cursor:pointer; transition:all 0.2s;
-}
+.date-presets { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; margin-bottom:24px; text-align:left; }
+.preset-card { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:16px; cursor:pointer; transition:all 0.2s; }
 .preset-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,123,166,0.15); }
 .preset-card .pc-icon { font-size:1.6rem; margin-bottom:8px; }
 .preset-card .pc-title { font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; margin-bottom:4px; }
 .preset-card .pc-desc { font-size:0.7rem; color:var(--muted); line-height:1.5; }
 .date-custom-row { display:flex; gap:8px; }
-.date-custom-input {
-  flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:10px;
-  color:var(--text); font-family:'DM Mono',monospace; font-size:0.82rem;
-  padding:10px 14px; outline:none; transition:border-color 0.2s;
-}
+.date-custom-input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.82rem; padding:10px 14px; outline:none; transition:border-color 0.2s; }
 .date-custom-input:focus { border-color:var(--accent); }
-.date-launch-btn {
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none; border-radius:10px; color:white; cursor:pointer;
-  padding:10px 20px; font-family:'DM Mono',monospace; font-size:0.82rem;
-  transition:all 0.2s; white-space:nowrap;
-}
+.date-launch-btn { background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:10px; color:white; cursor:pointer; padding:10px 20px; font-family:'DM Mono',monospace; font-size:0.82rem; transition:all 0.2s; white-space:nowrap; }
 .date-launch-btn:hover { opacity:0.9; }
-#date-game-ui {
-  display:none; background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  overflow:hidden; margin-bottom:24px;
-  flex-direction:column;
-  height:680px;
-  max-height:80vh;
-}
+#date-game-ui { display:none; background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:24px; flex-direction:column; height:680px; max-height:80vh; }
 #date-game-ui.active { display:flex; }
-#dg-topbar {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 20px; border-bottom:1px solid var(--border);
-  background:var(--surface2); flex-shrink:0;
-}
-#dg-game-title {
-  font-family:'Syne',sans-serif; font-size:1rem; font-weight:700;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
+#dg-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid var(--border); background:var(--surface2); flex-shrink:0; }
+#dg-game-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 #dg-topbar-meta { font-size:0.68rem; color:var(--muted); margin-top:2px; }
-.dg-top-btn {
-  padding:7px 14px; border-radius:8px; cursor:pointer;
-  font-size:0.72rem; font-family:'DM Mono',monospace;
-  background:var(--surface); border:1px solid var(--border);
-  color:var(--muted); transition:all 0.2s;
-}
+.dg-top-btn { padding:7px 14px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-family:'DM Mono',monospace; background:var(--surface); border:1px solid var(--border); color:var(--muted); transition:all 0.2s; }
 .dg-top-btn:hover { border-color:var(--accent); color:var(--accent); }
 .dg-top-btn.end-btn:hover { border-color:var(--danger); color:var(--danger); }
-#dg-turn-count {
-  font-size:0.68rem; color:var(--muted); padding:4px 10px;
-  background:var(--surface); border:1px solid var(--border); border-radius:20px;
-}
-#dg-log {
-  flex:1; overflow-y:auto; padding:20px 24px;
-  display:flex; flex-direction:column; gap:20px;
-  scroll-behavior:smooth;
-}
+#dg-turn-count { font-size:0.68rem; color:var(--muted); padding:4px 10px; background:var(--surface); border:1px solid var(--border); border-radius:20px; }
+#dg-log { flex:1; overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:20px; scroll-behavior:smooth; }
 #dg-log::-webkit-scrollbar { width:4px; }
 #dg-log::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
 .dg-gm-msg { display:flex; gap:12px; max-width:820px; animation:dgMsgIn 0.35s ease; }
-.dg-gm-ava {
-  width:34px; height:34px; border-radius:50%; flex-shrink:0; margin-top:2px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex; align-items:center; justify-content:center; font-size:1rem;
-  box-shadow:0 0 12px rgba(255,123,166,0.3);
-}
-.dg-gm-body {}
-.dg-gm-label {
-  font-size:0.65rem; color:var(--accent); letter-spacing:0.08em;
-  text-transform:uppercase; margin-bottom:5px; font-weight:500;
-}
-.dg-gm-bubble {
-  background:var(--surface2); border:1px solid rgba(255,123,166,0.2);
-  border-radius:0 12px 12px 12px; padding:14px 18px;
-  font-size:0.83rem; line-height:1.75; color:var(--text);
-}
+.dg-gm-ava { width:34px; height:34px; border-radius:50%; flex-shrink:0; margin-top:2px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:1rem; box-shadow:0 0 12px rgba(255,123,166,0.3); }
+.dg-gm-label { font-size:0.65rem; color:var(--accent); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:5px; font-weight:500; }
+.dg-gm-bubble { background:var(--surface2); border:1px solid rgba(255,123,166,0.2); border-radius:0 12px 12px 12px; padding:14px 18px; font-size:0.83rem; line-height:1.75; color:var(--text); }
 .dg-gm-bubble p { margin-bottom:8px; }
 .dg-gm-bubble p:last-child { margin-bottom:0; }
-.dg-scene-img {
-  width:100%; max-width:580px; border-radius:10px; display:block;
-  margin-bottom:12px; border:1px solid var(--border);
-  background:var(--surface); min-height:160px; object-fit:cover;
-  transition:opacity 0.4s; opacity:0;
-}
+.dg-scene-img { width:100%; max-width:580px; border-radius:10px; display:block; margin-bottom:12px; border:1px solid var(--border); background:var(--surface); min-height:160px; object-fit:cover; transition:opacity 0.4s; opacity:0; }
 .dg-scene-img.loaded { opacity:1; }
-.dg-player-msg {
-  display:flex; gap:12px; max-width:640px; align-self:flex-end;
-  flex-direction:row-reverse; animation:dgMsgIn 0.35s ease;
-}
-.dg-player-ava {
-  width:34px; height:34px; border-radius:50%; flex-shrink:0; margin-top:2px;
-  background:linear-gradient(135deg,var(--accent2),var(--accent3));
-  display:flex; align-items:center; justify-content:center; font-size:1rem;
-}
-.dg-player-label {
-  font-size:0.65rem; color:var(--accent2); letter-spacing:0.08em;
-  text-transform:uppercase; margin-bottom:5px; font-weight:500; text-align:right;
-}
-.dg-player-bubble {
-  background:linear-gradient(135deg,rgba(196,69,105,0.25),rgba(245,166,35,0.12));
-  border:1px solid rgba(196,69,105,0.35);
-  border-radius:12px 0 12px 12px; padding:12px 16px;
-  font-size:0.83rem; line-height:1.65; color:var(--text);
-}
-.dg-typing {
-  display:flex; gap:12px; align-self:flex-start; animation:dgMsgIn 0.3s ease;
-}
-.dg-typing-inner {
-  background:var(--surface2); border:1px solid var(--border);
-  border-radius:12px; padding:14px 20px; display:flex; gap:5px; align-items:center;
-}
-.dg-typing-inner span {
-  width:7px; height:7px; border-radius:50%; background:var(--accent); display:block;
-  animation:dgDot 1.2s ease infinite;
-}
+.dg-player-msg { display:flex; gap:12px; max-width:640px; align-self:flex-end; flex-direction:row-reverse; animation:dgMsgIn 0.35s ease; }
+.dg-player-ava { width:34px; height:34px; border-radius:50%; flex-shrink:0; margin-top:2px; background:linear-gradient(135deg,var(--accent2),var(--accent3)); display:flex; align-items:center; justify-content:center; font-size:1rem; }
+.dg-player-label { font-size:0.65rem; color:var(--accent2); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:5px; font-weight:500; text-align:right; }
+.dg-player-bubble { background:linear-gradient(135deg,rgba(196,69,105,0.25),rgba(245,166,35,0.12)); border:1px solid rgba(196,69,105,0.35); border-radius:12px 0 12px 12px; padding:12px 16px; font-size:0.83rem; line-height:1.65; color:var(--text); }
+.dg-typing { display:flex; gap:12px; align-self:flex-start; animation:dgMsgIn 0.3s ease; }
+.dg-typing-inner { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px 20px; display:flex; gap:5px; align-items:center; }
+.dg-typing-inner span { width:7px; height:7px; border-radius:50%; background:var(--accent); display:block; animation:dgDot 1.2s ease infinite; }
 .dg-typing-inner span:nth-child(2) { animation-delay:0.2s; }
 .dg-typing-inner span:nth-child(3) { animation-delay:0.4s; }
 @keyframes dgDot { 0%,60%,100%{transform:translateY(0);opacity:0.4;} 30%{transform:translateY(-7px);opacity:1;} }
 @keyframes dgMsgIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
-#dg-input-row {
-  display:flex; gap:8px; padding:14px 16px; border-top:1px solid var(--border);
-  background:var(--surface2); align-items:flex-end; flex-shrink:0;
-}
-#dg-input {
-  flex:1; background:var(--surface); border:1px solid var(--border);
-  border-radius:10px; color:var(--text); font-family:'DM Mono',monospace;
-  font-size:0.82rem; padding:10px 14px; outline:none; resize:none;
-  transition:border-color 0.2s; max-height:120px; line-height:1.5;
-}
+#dg-input-row { display:flex; gap:8px; padding:14px 16px; border-top:1px solid var(--border); background:var(--surface2); align-items:flex-end; flex-shrink:0; }
+#dg-input { flex:1; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.82rem; padding:10px 14px; outline:none; resize:none; transition:border-color 0.2s; max-height:120px; line-height:1.5; }
 #dg-input:focus { border-color:var(--accent); }
 #dg-input::placeholder { color:var(--muted); }
-#dg-send {
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none; border-radius:10px; color:white; cursor:pointer;
-  padding:10px 20px; font-family:'DM Mono',monospace; font-size:0.82rem;
-  transition:all 0.2s; flex-shrink:0;
-}
+#dg-send { background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:10px; color:white; cursor:pointer; padding:10px 20px; font-family:'DM Mono',monospace; font-size:0.82rem; transition:all 0.2s; flex-shrink:0; }
 #dg-send:hover { opacity:0.9; }
 #dg-send:disabled { opacity:0.5; cursor:not-allowed; }
-
-/* RATING MODAL */
-.modal-bg {
-  position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300;
-  display:flex; align-items:center; justify-content:center;
-}
-.modal-box {
-  background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:32px; max-width:420px; width:90%;
-  box-shadow:0 8px 40px rgba(0,0,0,0.6);
-  animation:fadeIn 0.25s ease;
-}
+.modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; display:flex; align-items:center; justify-content:center; }
+.modal-box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:32px; max-width:420px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,0.6); animation:fadeIn 0.25s ease; }
 .modal-box h3 { font-family:'Syne',sans-serif; font-size:1.3rem; margin-bottom:8px; }
 .modal-box p { color:var(--muted); font-size:0.8rem; margin-bottom:20px; line-height:1.6; }
-.modal-input {
-  width:100%; background:var(--surface2); border:1px solid var(--border);
-  border-radius:8px; color:var(--text); font-family:'DM Mono',monospace;
-  font-size:0.82rem; padding:10px 14px; outline:none; margin-bottom:14px;
-}
+.modal-input { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.82rem; padding:10px 14px; outline:none; margin-bottom:14px; }
 .modal-input:focus { border-color:var(--accent); }
 .star-row { display:flex; gap:6px; margin-bottom:20px; }
 .star { font-size:24px; cursor:pointer; color:var(--border); transition:color 0.15s; }
 .star.active { color:var(--accent3); }
 .modal-btns { display:flex; gap:8px; justify-content:flex-end; }
-.modal-btn {
-  padding:9px 18px; border-radius:8px; border:none; cursor:pointer;
-  font-size:0.8rem; font-family:'DM Mono',monospace; transition:all 0.2s;
-}
+.modal-btn { padding:9px 18px; border-radius:8px; border:none; cursor:pointer; font-size:0.8rem; font-family:'DM Mono',monospace; transition:all 0.2s; }
 .modal-btn.primary { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; }
 .modal-btn.secondary { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
-.date-history-item {
-  background:var(--surface); border:1px solid var(--border); border-radius:10px;
-  padding:14px; margin-bottom:10px;
-}
-
-/* TOAST */
-#toast {
-  position:fixed; bottom:24px; right:24px; z-index:999;
-  background:var(--surface2); border:1px solid var(--border);
-  border-radius:10px; padding:12px 20px; font-size:0.8rem; color:var(--text);
-  transform:translateY(80px); opacity:0; transition:all 0.3s; max-width:280px;
-}
+.date-history-item { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; margin-bottom:10px; }
+#toast { position:fixed; bottom:24px; right:24px; z-index:999; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px 20px; font-size:0.8rem; color:var(--text); transform:translateY(80px); opacity:0; transition:all 0.3s; max-width:280px; }
 #toast.show { transform:translateY(0); opacity:1; }
 #toast.ok { border-color:var(--accent2); }
 #toast.err { border-color:var(--danger); }
-
-/* DIARY MODAL */
-.diary-modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #faf9f7;
-  z-index: 2000;
-  overflow-y: auto;
-  padding: 2rem 1.5rem;
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  color: #1e1e2a;
-}
-.diary-modal .diary-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 2.5rem;
-  align-items: start;
-}
+.diary-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #faf9f7; z-index: 2000; overflow-y: auto; padding: 2rem 1.5rem; font-family: 'Cormorant Garamond', 'Georgia', serif; color: #1e1e2a; }
+.diary-modal .diary-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 320px; gap: 2.5rem; align-items: start; }
 .diary-modal .entries-section { min-width: 0; }
-.diary-modal .header-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  gap: 1rem;
-  border-bottom: 1px solid #e6e2db;
-  padding-bottom: 1rem;
-}
-.diary-modal .logo-area h1 {
-  font-weight: 500;
-  font-size: 1.9rem;
-  letter-spacing: -0.3px;
-  color: #2c2b28;
-}
-.diary-modal .logo-area p {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  color: #7f6e5d;
-  letter-spacing: 0.3px;
-}
-.diary-modal .search-bar {
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 48px;
-  border: 1px solid #e2dcd5;
-  padding: 0.3rem 0.8rem;
-}
+.diary-modal .header-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; border-bottom: 1px solid #e6e2db; padding-bottom: 1rem; }
+.diary-modal .logo-area h1 { font-weight: 500; font-size: 1.9rem; letter-spacing: -0.3px; color: #2c2b28; }
+.diary-modal .logo-area p { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #7f6e5d; letter-spacing: 0.3px; }
+.diary-modal .search-bar { display: flex; align-items: center; background: white; border-radius: 48px; border: 1px solid #e2dcd5; padding: 0.3rem 0.8rem; }
 .diary-modal .search-bar i { color: #a5927e; font-size: 0.9rem; }
-.diary-modal .search-bar input {
-  border: none;
-  padding: 0.6rem 0.6rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  width: 200px;
-  background: transparent;
-  outline: none;
-}
-.diary-modal .btn-new {
-  background: #2c2b28;
-  color: white;
-  border: none;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  padding: 0.6rem 1.3rem;
-  border-radius: 40px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.diary-modal .search-bar input { border: none; padding: 0.6rem 0.6rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; width: 200px; background: transparent; outline: none; }
+.diary-modal .btn-new { background: #2c2b28; color: white; border: none; font-family: 'Inter', sans-serif; font-weight: 500; padding: 0.6rem 1.3rem; border-radius: 40px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
 .diary-modal .btn-new:hover { background: #4a3f35; }
-.diary-modal .entries-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-}
-.diary-modal .entry-card {
-  background: white;
-  border-radius: 20px;
-  padding: 1.2rem 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-  border: 1px solid #edeae5;
-}
-.diary-modal .entry-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-.diary-modal .entry-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2c2b28;
-}
-.diary-modal .entry-date {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  background: #f3f0ea;
-  padding: 0.2rem 0.8rem;
-  border-radius: 30px;
-  color: #5f5346;
-}
-.diary-modal .entry-content {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #3b3a36;
-  margin: 0.8rem 0 1rem;
-  white-space: pre-wrap;
-}
-.diary-modal .entry-img {
-  max-width: 100%;
-  max-height: 180px;
-  border-radius: 16px;
-  margin: 0.8rem 0;
-  object-fit: cover;
-  border: 1px solid #f0ece5;
-}
-.diary-modal .entry-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  border-top: 1px solid #f0ece5;
-  padding-top: 0.9rem;
-  margin-top: 0.4rem;
-}
-.diary-modal .icon-btn {
-  background: none;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #8f8478;
-  font-family: 'Inter', sans-serif;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
+.diary-modal .entries-list { display: flex; flex-direction: column; gap: 1.6rem; }
+.diary-modal .entry-card { background: white; border-radius: 20px; padding: 1.2rem 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); border: 1px solid #edeae5; }
+.diary-modal .entry-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.diary-modal .entry-title { font-size: 1.5rem; font-weight: 600; color: #2c2b28; }
+.diary-modal .entry-date { font-family: 'Inter', sans-serif; font-size: 0.75rem; background: #f3f0ea; padding: 0.2rem 0.8rem; border-radius: 30px; color: #5f5346; }
+.diary-modal .entry-content { font-family: 'Cormorant Garamond', serif; font-size: 1rem; line-height: 1.5; color: #3b3a36; margin: 0.8rem 0 1rem; white-space: pre-wrap; }
+.diary-modal .entry-img { max-width: 100%; max-height: 180px; border-radius: 16px; margin: 0.8rem 0; object-fit: cover; border: 1px solid #f0ece5; }
+.diary-modal .entry-actions { display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid #f0ece5; padding-top: 0.9rem; margin-top: 0.4rem; }
+.diary-modal .icon-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: #8f8478; font-family: 'Inter', sans-serif; display: inline-flex; align-items: center; gap: 5px; }
 .diary-modal .icon-btn:hover { color: #2c2b28; }
-.diary-modal .empty-message {
-  background: #fefcf9;
-  text-align: center;
-  padding: 3rem;
-  border-radius: 40px;
-  color: #a39486;
-  font-family: 'Inter', sans-serif;
-}
-.diary-modal .calendar-panel {
-  background: white;
-  border-radius: 28px;
-  padding: 1.3rem 1rem 1.5rem;
-  border: 1px solid #edeae5;
-  position: sticky;
-  top: 1.5rem;
-}
-.diary-modal .cal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.4rem;
-}
-.diary-modal .cal-month-year {
-  font-weight: 600;
-  font-size: 1.2rem;
-  font-family: 'Inter', sans-serif;
-}
-.diary-modal .cal-nav button {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #5c5246;
-  padding: 0 8px;
-}
-.diary-modal .cal-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: #9b8d7c;
-  margin-bottom: 0.5rem;
-}
-.diary-modal .cal-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-}
-.diary-modal .cal-day {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  border-radius: 40px;
-  cursor: pointer;
-  background: #fefcf9;
-  color: #3f3a34;
-}
-.diary-modal .cal-day.has-entry {
-  background: #e9e2d9;
-  font-weight: 600;
-  color: #2a241e;
-  box-shadow: inset 0 0 0 1px #dad1c6;
-}
-.diary-modal .cal-day.selected {
-  background: #2c2b28;
-  color: white;
-  font-weight: 500;
-}
-.diary-modal .cal-day.empty-day {
-  background: transparent;
-  cursor: default;
-  color: #ddd6cf;
-}
-.diary-modal .filter-reset {
-  margin-top: 1.4rem;
-  width: 100%;
-  background: #f5f2ed;
-  border: none;
-  font-family: 'Inter', sans-serif;
-  padding: 0.5rem;
-  border-radius: 60px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  color: #5e5347;
-}
-.diary-modal .diary-footer {
-  text-align: center;
-  margin-top: 3rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  color: #bcafa1;
-}
-.diary-modal .close-diary {
-  position: fixed;
-  top: 20px;
-  right: 30px;
-  background: #2c2b28;
-  color: white;
-  border: none;
-  border-radius: 40px;
-  padding: 8px 18px;
-  font-family: 'Inter', sans-serif;
-  cursor: pointer;
-  z-index: 2100;
-  font-weight: 500;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+.diary-modal .empty-message { background: #fefcf9; text-align: center; padding: 3rem; border-radius: 40px; color: #a39486; font-family: 'Inter', sans-serif; }
+.diary-modal .calendar-panel { background: white; border-radius: 28px; padding: 1.3rem 1rem 1.5rem; border: 1px solid #edeae5; position: sticky; top: 1.5rem; }
+.diary-modal .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; }
+.diary-modal .cal-month-year { font-weight: 600; font-size: 1.2rem; font-family: 'Inter', sans-serif; }
+.diary-modal .cal-nav button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #5c5246; padding: 0 8px; }
+.diary-modal .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500; color: #9b8d7c; margin-bottom: 0.5rem; }
+.diary-modal .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.diary-modal .cal-day { aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 0.8rem; border-radius: 40px; cursor: pointer; background: #fefcf9; color: #3f3a34; }
+.diary-modal .cal-day.has-entry { background: #e9e2d9; font-weight: 600; color: #2a241e; box-shadow: inset 0 0 0 1px #dad1c6; }
+.diary-modal .cal-day.selected { background: #2c2b28; color: white; font-weight: 500; }
+.diary-modal .cal-day.empty-day { background: transparent; cursor: default; color: #ddd6cf; }
+.diary-modal .filter-reset { margin-top: 1.4rem; width: 100%; background: #f5f2ed; border: none; font-family: 'Inter', sans-serif; padding: 0.5rem; border-radius: 60px; font-size: 0.75rem; cursor: pointer; color: #5e5347; }
+.diary-modal .diary-footer { text-align: center; margin-top: 3rem; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: #bcafa1; }
+.diary-modal .close-diary { position: fixed; top: 20px; right: 30px; background: #2c2b28; color: white; border: none; border-radius: 40px; padding: 8px 18px; font-family: 'Inter', sans-serif; cursor: pointer; z-index: 2100; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 .diary-modal .close-diary:hover { background: #4a3f35; }
-@media (max-width: 800px) {
-  .diary-modal .diary-container { grid-template-columns: 1fr; gap: 1.8rem; }
-  .diary-modal .calendar-panel { position: static; }
-  .diary-modal { padding: 1rem; }
-}
-
-.diary-teaser {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 32px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
+@media (max-width: 800px) { .diary-modal .diary-container { grid-template-columns: 1fr; gap: 1.8rem; } .diary-modal .calendar-panel { position: static; } .diary-modal { padding: 1rem; } }
+.diary-teaser { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px; margin-bottom: 32px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .diary-teaser:hover { border-color: var(--accent); transform: translateY(-3px); background: var(--surface2); }
-.diary-teaser-icon {
-  font-size: 3rem;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+.diary-teaser-icon { font-size: 3rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .diary-teaser-text { flex: 1; }
-.diary-teaser-text h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.2rem;
-  margin-bottom: 4px;
-}
-.diary-teaser-text p {
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-.diary-teaser-arrow {
-  font-size: 1.5rem;
-  opacity: 0.6;
-}
-
-/* JSON UPLOAD ZONE */
-.json-upload-zone {
-  background: var(--surface);
-  border: 2px dashed var(--border);
-  border-radius: 20px;
-  padding: 32px;
-  margin-bottom: 32px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.json-upload-zone:hover {
-  border-color: var(--accent);
-  background: var(--surface2);
-}
-.json-upload-zone .upload-icon {
-  font-size: 2.5rem;
-  margin-bottom: 12px;
-}
-.json-upload-zone .upload-label {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.json-upload-zone .upload-hint {
-  color: var(--muted);
-  font-size: 0.75rem;
-}
-.upload-progress {
-  display: none;
-  background: var(--surface2);
-  border-radius: 8px;
-  overflow: hidden;
-  height: 4px;
-  margin-top: 16px;
-}
-.upload-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  width: 0%;
-  transition: width 0.3s;
-}
-
-@media(max-width:640px){
-  nav { padding:12px 16px; }
-  .nav-tabs { display:none; }
-  .panel { padding:24px 16px; }
-  .stats-grid { grid-template-columns:1fr; }
-  .mobile-tabs {
-    display:flex; border-bottom:1px solid var(--border);
-    position:sticky; top:57px; background:var(--bg); z-index:40; overflow-x:auto;
-  }
-  .mobile-tab {
-    flex:0 0 auto; padding:12px 14px; text-align:center; font-size:0.68rem;
-    font-family:'DM Mono',monospace; color:var(--muted);
-    border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap;
-  }
-  .mobile-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
-  .ivy-chat-wrap { height:420px; }
-  #date-game-ui { height:560px; }
-}
+.diary-teaser-text h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; margin-bottom: 4px; }
+.diary-teaser-text p { font-size: 0.75rem; color: var(--muted); }
+.diary-teaser-arrow { font-size: 1.5rem; opacity: 0.6; }
+.json-upload-zone { background: var(--surface); border: 2px dashed var(--border); border-radius: 20px; padding: 32px; margin-bottom: 32px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.json-upload-zone:hover { border-color: var(--accent); background: var(--surface2); }
+.json-upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.json-upload-zone .upload-label { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.json-upload-zone .upload-hint { color: var(--muted); font-size: 0.75rem; }
+@media(max-width:640px){ nav { padding:12px 16px; } .nav-tabs { display:none; } .panel { padding:24px 16px; } .stats-grid { grid-template-columns:1fr; } .mobile-tabs { display:flex; border-bottom:1px solid var(--border); position:sticky; top:57px; background:var(--bg); z-index:40; overflow-x:auto; } .mobile-tab { flex:0 0 auto; padding:12px 14px; text-align:center; font-size:0.68rem; font-family:'DM Mono',monospace; color:var(--muted); border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; } .mobile-tab.active { color:var(--accent); border-bottom-color:var(--accent); } .ivy-chat-wrap { height:420px; } #date-game-ui { height:560px; } }
 @media(min-width:641px){ .mobile-tabs { display:none; } }
 </style>
 </head>
@@ -1038,36 +410,12 @@ nav {
         <h2>Start a Date Adventure</h2>
         <p>Pick a preset below, type your own idea, or ask Ivy in the IVY tab to plan one for you.</p>
         <div class="date-presets">
-          <div class="preset-card" onclick="startAIDateGame('A moonlit fantasy quest through an enchanted forest')">
-            <div class="pc-icon">🏰</div>
-            <div class="pc-title">Fantasy Quest</div>
-            <div class="pc-desc">Enchanted kingdoms, magic spells, hero's journey</div>
-          </div>
-          <div class="preset-card" onclick="startAIDateGame('A cozy mystery date in a rainy English manor')">
-            <div class="pc-icon">🕵️</div>
-            <div class="pc-title">Cozy Mystery</div>
-            <div class="pc-desc">Clues, suspects, and stolen glances</div>
-          </div>
-          <div class="preset-card" onclick="startAIDateGame('A romantic space odyssey through the stars')">
-            <div class="pc-icon">🚀</div>
-            <div class="pc-title">Space Odyssey</div>
-            <div class="pc-desc">Galaxies, alien worlds, infinite wonder</div>
-          </div>
-          <div class="preset-card" onclick="startAIDateGame('A whimsical date in a Parisian café in 1920s Paris')">
-            <div class="pc-icon">☕</div>
-            <div class="pc-title">Parisian Café</div>
-            <div class="pc-desc">Croissants, jazz, cobblestone romance</div>
-          </div>
-          <div class="preset-card" onclick="startAIDateGame('A magical underwater adventure in a lost ocean city')">
-            <div class="pc-icon">🌊</div>
-            <div class="pc-title">Ocean Depths</div>
-            <div class="pc-desc">Bioluminescent wonder, sunken worlds</div>
-          </div>
-          <div class="preset-card" onclick="startAIDateGame('A spooky but sweet haunted manor date on Halloween')">
-            <div class="pc-icon">🕸️</div>
-            <div class="pc-title">Haunted Manor</div>
-            <div class="pc-desc">Delightfully spooky, mysteriously sweet</div>
-          </div>
+          <div class="preset-card" onclick="startAIDateGame('A moonlit fantasy quest through an enchanted forest')"><div class="pc-icon">🏰</div><div class="pc-title">Fantasy Quest</div><div class="pc-desc">Enchanted kingdoms, magic spells, hero's journey</div></div>
+          <div class="preset-card" onclick="startAIDateGame('A cozy mystery date in a rainy English manor')"><div class="pc-icon">🕵️</div><div class="pc-title">Cozy Mystery</div><div class="pc-desc">Clues, suspects, and stolen glances</div></div>
+          <div class="preset-card" onclick="startAIDateGame('A romantic space odyssey through the stars')"><div class="pc-icon">🚀</div><div class="pc-title">Space Odyssey</div><div class="pc-desc">Galaxies, alien worlds, infinite wonder</div></div>
+          <div class="preset-card" onclick="startAIDateGame('A whimsical date in a Parisian café in 1920s Paris')"><div class="pc-icon">☕</div><div class="pc-title">Parisian Café</div><div class="pc-desc">Croissants, jazz, cobblestone romance</div></div>
+          <div class="preset-card" onclick="startAIDateGame('A magical underwater adventure in a lost ocean city')"><div class="pc-icon">🌊</div><div class="pc-title">Ocean Depths</div><div class="pc-desc">Bioluminescent wonder, sunken worlds</div></div>
+          <div class="preset-card" onclick="startAIDateGame('A spooky but sweet haunted manor date on Halloween')"><div class="pc-icon">🕸️</div><div class="pc-title">Haunted Manor</div><div class="pc-desc">Delightfully spooky, mysteriously sweet</div></div>
         </div>
         <div class="date-custom-row">
           <input class="date-custom-input" id="date-custom" placeholder="Or describe your own date idea… e.g. 'A Viking adventure on the high seas'" onkeydown="if(event.key==='Enter')launchCustomDate()">
@@ -1075,130 +423,26 @@ nav {
         </div>
       </div>
     </div>
-    <div id="date-game-ui">
-      <div id="dg-topbar">
-        <div>
-          <div id="dg-game-title">Adventure Loading…</div>
-          <div id="dg-topbar-meta">Ivy · Game Master · Live Roleplay</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div id="dg-turn-count">Turn 0</div>
-          <button class="dg-top-btn end-btn" onclick="endDateGame()">💾 End &amp; Save</button>
-        </div>
-      </div>
-      <div id="dg-log"></div>
-      <div id="dg-input-row">
-        <textarea id="dg-input" placeholder="What do you do? Type your action… (Ctrl+Enter to send)" rows="1"
-          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
-          onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();sendDateAction();}"></textarea>
-        <button id="dg-send" onclick="sendDateAction()">SEND ♡</button>
-      </div>
-    </div>
-    <div style="margin-top:8px;">
-      <h3 style="font-family:'Syne',sans-serif;margin-bottom:12px;">📜 Past Dates</h3>
-      <div id="date-history"></div>
-    </div>
+    <div id="date-game-ui"><div id="dg-topbar"><div><div id="dg-game-title">Adventure Loading…</div><div id="dg-topbar-meta">Ivy · Game Master · Live Roleplay</div></div><div style="display:flex;gap:8px;align-items:center;"><div id="dg-turn-count">Turn 0</div><button class="dg-top-btn end-btn" onclick="endDateGame()">💾 End &amp; Save</button></div></div><div id="dg-log"></div><div id="dg-input-row"><textarea id="dg-input" placeholder="What do you do? Type your action… (Ctrl+Enter to send)" rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();sendDateAction();}"></textarea><button id="dg-send" onclick="sendDateAction()">SEND ♡</button></div></div>
+    <div style="margin-top:8px;"><h3 style="font-family:'Syne',sans-serif;margin-bottom:12px;">📜 Past Dates</h3><div id="date-history"></div></div>
   </div>
 
   <!-- IVY -->
   <div class="panel" id="panel-ivy">
-    <div class="ivy-header">
-      <div class="ivy-avatar">🌸</div>
-      <div>
-        <div class="ivy-name">Ivy</div>
-        <div class="ivy-tagline">// your personal AI — she remembers everything, forever</div>
-      </div>
-    </div>
-    <div class="ivy-status-row">
-      <span class="ivy-badge on">● ONLINE</span>
-      <span class="ivy-badge on">PERMANENT MEMORY</span>
-      <span class="ivy-badge on">DATE ARCHITECT</span>
-      <span class="ivy-badge on">LIVE GM</span>
-    </div>
-    <div class="ivy-caps">
-      <span class="ivy-cap" onclick="ivyQuick('Plan us a mystery detective date for tonight!')">🕵️ Mystery Date</span>
-      <span class="ivy-cap" onclick="ivyQuick('Create a fantasy roleplay date where we are royalty')">👑 Royal Ball</span>
-      <span class="ivy-cap" onclick="ivyQuick('Design a space adventure date for us')">🚀 Space Adventure</span>
-      <span class="ivy-cap" onclick="ivyQuick('What do you remember about us?')">🧠 Memories</span>
-      <span class="ivy-cap" onclick="ivyQuick('Remember that our anniversary is on June 1st')">📌 Save Memory</span>
-    </div>
-    <div class="ivy-chat-wrap">
-      <div class="ivy-messages" id="ivy-messages"></div>
-      <div class="ivy-input-row">
-        <textarea id="ivy-input" placeholder="Talk to Ivy… she remembers everything ♡" rows="1"></textarea>
-        <button id="ivy-send" onclick="sendToIvy()">SEND ♡</button>
-      </div>
-    </div>
+    <div class="ivy-header"><div class="ivy-avatar">🌸</div><div><div class="ivy-name">Ivy</div><div class="ivy-tagline">// your personal AI — she remembers everything, forever</div></div></div>
+    <div class="ivy-status-row"><span class="ivy-badge on">● ONLINE</span><span class="ivy-badge on">PERMANENT MEMORY</span><span class="ivy-badge on">DATE ARCHITECT</span><span class="ivy-badge on">LIVE GM</span></div>
+    <div class="ivy-caps"><span class="ivy-cap" onclick="ivyQuick('Plan us a mystery detective date for tonight!')">🕵️ Mystery Date</span><span class="ivy-cap" onclick="ivyQuick('Create a fantasy roleplay date where we are royalty')">👑 Royal Ball</span><span class="ivy-cap" onclick="ivyQuick('Design a space adventure date for us')">🚀 Space Adventure</span><span class="ivy-cap" onclick="ivyQuick('What do you remember about us?')">🧠 Memories</span><span class="ivy-cap" onclick="ivyQuick('Remember that our anniversary is on June 1st')">📌 Save Memory</span></div>
+    <div class="ivy-chat-wrap"><div class="ivy-messages" id="ivy-messages"></div><div class="ivy-input-row"><textarea id="ivy-input" placeholder="Talk to Ivy… she remembers everything ♡" rows="1"></textarea><button id="ivy-send" onclick="sendToIvy()">SEND ♡</button></div></div>
   </div>
 </div>
 
 <!-- LIGHTBOX -->
-<div id="lightbox">
-  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" alt="">
-</div>
-
+<div id="lightbox"><button id="lightbox-close" onclick="closeLightbox()">✕</button><img id="lightbox-img" src="" alt=""></div>
 <div id="toast"></div>
 
 <!-- DIARY MODAL -->
-<div id="diaryModal" class="diary-modal">
-  <button class="close-diary" id="closeDiaryBtn"><i class="fas fa-times"></i> Close diary</button>
-  <div class="diary-container">
-    <div class="entries-section">
-      <div class="header-toolbar">
-        <div class="logo-area">
-          <h1><i class="far fa-book-open"></i> marga.</h1>
-          <p>personal diary · quiet pages</p>
-        </div>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" id="diarySearchInput" placeholder="search entries..." autocomplete="off">
-          </div>
-          <button class="btn-new" id="diaryNewEntryBtn"><i class="fas fa-feather-alt"></i> new entry</button>
-        </div>
-      </div>
-      <div id="diaryEntriesContainer" class="entries-list">
-        <div class="empty-message">✧ loading your diary... ✧</div>
-      </div>
-    </div>
-    <div class="calendar-panel">
-      <div class="cal-header">
-        <span class="cal-month-year" id="diaryCalMonthYear">June 2026</span>
-        <div class="cal-nav">
-          <button id="diaryPrevMonthBtn"><i class="fas fa-chevron-left"></i></button>
-          <button id="diaryNextMonthBtn"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
-      <div class="cal-weekdays">
-        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
-      </div>
-      <div id="diaryCalendarDays" class="cal-days"></div>
-      <button id="diaryResetDateFilterBtn" class="filter-reset"><i class="fas fa-list-ul"></i> show all entries</button>
-      <div style="margin-top: 1rem; font-size: 0.7rem; font-family: Inter; text-align: center; color: #b9aa9a;">
-        📅 click date → view entries
-      </div>
-    </div>
-  </div>
-  <div class="diary-footer">minimalist diary · words & images live here</div>
-</div>
-
-<!-- DIARY ENTRY MODAL -->
-<div id="diaryEntryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); justify-content:center; align-items:center; z-index:2200;">
-  <div style="background:white; max-width:550px; width:90%; border-radius:32px; padding:1.8rem; font-family:'Inter',sans-serif;">
-    <h3 id="diaryModalTitle" style="font-family:'Cormorant Garamond',serif; font-size:1.8rem;">✍️ new memory</h3>
-    <input type="text" id="diaryEntryTitle" placeholder="Title" style="width:100%; padding:0.8rem; margin:0.6rem 0; border:1px solid #ddd6ce; border-radius:20px;">
-    <input type="date" id="diaryEntryDate" style="width:100%; padding:0.8rem; margin:0.6rem 0; border:1px solid #ddd6ce; border-radius:20px;">
-    <textarea id="diaryEntryContent" placeholder="Write your thoughts..." style="width:100%; padding:0.8rem; margin:0.6rem 0; border:1px solid #ddd6ce; border-radius:20px; min-height:120px; resize:vertical;"></textarea>
-    <label style="font-size:0.8rem;">📎 add image (optional)</label>
-    <input type="file" id="diaryEntryImage" accept="image/jpeg, image/png, image/webp" style="margin:0.6rem 0;">
-    <div id="diaryImagePreview"></div>
-    <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:1rem;">
-      <button id="diaryCancelBtn" style="background:#eae5df; border:none; border-radius:40px; padding:0.5rem 1.4rem; cursor:pointer;">cancel</button>
-      <button id="diarySaveBtn" style="background:#2c2b28; color:white; border:none; border-radius:40px; padding:0.5rem 1.4rem; cursor:pointer;">save entry</button>
-    </div>
-  </div>
-</div>
+<div id="diaryModal" class="diary-modal"><button class="close-diary" id="closeDiaryBtn"><i class="fas fa-times"></i> Close diary</button><div class="diary-container"><div class="entries-section"><div class="header-toolbar"><div class="logo-area"><h1><i class="far fa-book-open"></i> marga.</h1><p>personal diary · quiet pages</p></div><div style="display: flex; gap: 12px; flex-wrap: wrap;"><div class="search-bar"><i class="fas fa-search"></i><input type="text" id="diarySearchInput" placeholder="search entries..." autocomplete="off"></div><button class="btn-new" id="diaryNewEntryBtn"><i class="fas fa-feather-alt"></i> new entry</button></div></div><div id="diaryEntriesContainer" class="entries-list"><div class="empty-message">✧ loading your diary... ✧</div></div></div><div class="calendar-panel"><div class="cal-header"><span class="cal-month-year" id="diaryCalMonthYear">June 2026</span><div class="cal-nav"><button id="diaryPrevMonthBtn"><i class="fas fa-chevron-left"></i></button><button id="diaryNextMonthBtn"><i class="fas fa-chevron-right"></i></button></div></div><div class="cal-weekdays"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div id="diaryCalendarDays" class="cal-days"></div><button id="diaryResetDateFilterBtn" class="filter-reset"><i class="fas fa-list-ul"></i> show all entries</button><div style="margin-top: 1rem; font-size: 0.7rem; font-family: Inter; text-align: center; color: #b9aa9a;">📅 click date → view entries</div></div></div><div class="diary-footer">minimalist diary · words & images live here</div></div>
+<div id="diaryEntryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); justify-content:center; align-items:center; z-index:2200;"><div style="background:white; max-width:550px; width:90%; border-radius:32px; padding:1.8rem; font-family:'Inter',sans-serif;"><h3 id="diaryModalTitle" style="font-family:'Cormorant Garamond',serif; font-size:1.8rem;">✍️ new memory</h3><input type="text" id="diaryEntryTitle" placeholder="Title" style="width:100%; padding:0.8rem; margin:0.6rem 0; border:1px solid #ddd6ce; border-radius:20px;"><input type="date" id="diaryEntryDate" style="width:100%; padding:0.8rem; margin:0.6rem 0; border:1px solid #ddd6ce; border-radius:20px;"><textarea id="diaryEntryContent" placeholder="Write your thoughts..." style="width:100%; padding:0.8rem; margin:0.6rem 0; border:1px solid #ddd6ce; border-radius:20px; min-height:120px; resize:vertical;"></textarea><label style="font-size:0.8rem;">📎 add image (optional)</label><input type="file" id="diaryEntryImage" accept="image/jpeg, image/png, image/webp" style="margin:0.6rem 0;"><div id="diaryImagePreview"></div><div style="display:flex; justify-content:flex-end; gap:12px; margin-top:1rem;"><button id="diaryCancelBtn" style="background:#eae5df; border:none; border-radius:40px; padding:0.5rem 1.4rem; cursor:pointer;">cancel</button><button id="diarySaveBtn" style="background:#2c2b28; color:white; border:none; border-radius:40px; padding:0.5rem 1.4rem; cursor:pointer;">save entry</button></div></div></div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
@@ -1212,8 +456,6 @@ const GROQ_MODEL = 'llama-3.3-70b-versatile'
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
 let currentUser = null
 let authMode = 'login'
-
-// Embedding model for RAG (loaded on demand)
 let embedder = null
 
 async function loadEmbedder() {
@@ -1236,118 +478,99 @@ async function generateEmbedding(text) {
   return Array.from(result.data)
 }
 
-// Process Instagram JSON format
+// ----- FIXED: Improved Instagram JSON chunking -----
 function chunkConversation(data) {
   let messages = []
-  
-  // Case 1: Instagram export format (messages array at root)
+  // Instagram export: top-level "messages" array
   if (data.messages && Array.isArray(data.messages)) {
     messages = data.messages
-  }
-  // Case 2: Array of messages directly
+    console.log(`✅ Found Instagram messages array with ${messages.length} messages`)
+  } 
+  // Fallback: try any array that looks like messages
   else if (Array.isArray(data)) {
     messages = data
-  }
-  // Case 3: Nested under a key like "conversations"
+  } 
   else {
     for (const key in data) {
-      if (Array.isArray(data[key]) && data[key][0]?.sender_name) {
+      if (Array.isArray(data[key]) && data[key][0] && (data[key][0].sender_name || data[key][0].content)) {
         messages = data[key]
+        console.log(`✅ Found messages in key "${key}" with ${messages.length} items`)
         break
       }
     }
   }
   
   if (messages.length === 0) {
-    console.error('No messages found in JSON', Object.keys(data))
-    throw new Error('No messages found in JSON. Make sure it has a "messages" array.')
+    console.error('No messages found in JSON. Structure:', Object.keys(data))
+    throw new Error('No messages found in JSON. Make sure it has a "messages" array (Instagram export).')
   }
   
-  console.log(`Found ${messages.length} messages. Grouping into chunks...`)
-  
   const chunks = []
-  const chunkSize = 12  // slightly larger for better context
+  const chunkSize = 10  // good context size
   
   for (let i = 0; i < messages.length; i += chunkSize) {
     const chunkMessages = messages.slice(i, i + chunkSize)
     let chunkText = ''
     
     for (const msg of chunkMessages) {
-      let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Friend')
+      // Get sender name
+      let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Unknown')
+      if (sender === '♡' || sender === '☾') sender = 'Me'  // clean up emoji names
+      
+      // Extract content from various possible fields
       let content = ''
+      if (msg.content) {
+        content = msg.content
+      } else if (msg.share && msg.share.share_text) {
+        content = msg.share.share_text
+      } else if (msg.photos && msg.photos.length) {
+        content = '[Image shared]'
+      } else if (msg.sticker) {
+        content = '[Sticker]'
+      } else if (msg.gif) {
+        content = '[GIF]'
+      } else {
+        continue // skip empty/unreadable messages
+      }
       
-      // Get message content
-      if (msg.content) content = msg.content
-      else if (msg.share?.share_text) content = msg.share.share_text
-      else if (msg.photos) content = '[Image]'
-      else if (msg.sticker) content = '[Sticker]'
-      else continue  // skip empty messages
-      
-      // Clean emoji and weird characters (optional but safe)
-      content = content.substring(0, 500)
-      if (content.trim().length === 0) continue
+      // Limit length and clean
+      content = content.substring(0, 500).trim()
+      if (content.length === 0) continue
       
       chunkText += `${sender}: ${content}\n`
     }
     
     if (chunkText.trim().length > 30) {
-      chunks.push({ text: chunkText, timestamp: messages[i]?.timestamp_ms || Date.now() })
+      chunks.push({ 
+        text: chunkText.trim(), 
+        timestamp: messages[i]?.timestamp_ms || Date.now() 
+      })
     }
   }
   
-  console.log(`Created ${chunks.length} non-empty chunks.`)
-  return chunks
-}
-  
-  if(messages.length === 0) throw new Error('Could not find messages in JSON')
-  
-  const chunks = []
-  const chunkSize = 8
-  
-  for(let i = 0; i < messages.length; i += chunkSize) {
-    const chunkMessages = messages.slice(i, i + chunkSize)
-    const chunkText = chunkMessages.map(msg => {
-      const sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Friend')
-      let content = msg.content || msg.text || ''
-      if(msg.share?.share_text) content = msg.share.share_text
-      if(msg.photos) content = content + ' [Image shared]'
-      return `${sender}: ${content.substring(0, 500)}`
-    }).join('\n')
-    
-    if(chunkText.trim().length > 20) {
-      chunks.push({ text: chunkText, timestamp: messages[i]?.timestamp_ms })
-    }
-  }
-  
+  console.log(`📦 Created ${chunks.length} conversation chunks from ${messages.length} messages`)
   return chunks
 }
 
 async function saveChunksToSupabase(chunks, onProgress) {
   const total = chunks.length
   let saved = 0
-  
   for(let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i]
     try {
       const embedding = await generateEmbedding(chunk.text)
       if(!embedding) continue
-      
       const { error } = await sb.from('conversation_memory').insert({
         user_id: currentUser.id,
         chunk_text: chunk.text,
         embedding: embedding,
         metadata: { source: 'json_upload', timestamp: chunk.timestamp }
       })
-      
       if(error) console.error('Insert error:', error)
-    } catch(e) {
-      console.error('Failed to save chunk:', e)
-    }
-    
+    } catch(e) { console.error('Failed to save chunk:', e) }
     saved++
     if(onProgress) onProgress((saved / total) * 100, saved, total)
   }
-  
   return saved
 }
 
@@ -1355,37 +578,26 @@ async function uploadAndLearnFromJSON(file) {
   const progressDiv = document.getElementById('jsonUploadProgress')
   const progressBar = document.getElementById('jsonProgressBar')
   const statusDiv = document.getElementById('jsonStatus')
-  
   progressDiv.style.display = 'block'
   progressBar.style.width = '0%'
   statusDiv.style.display = 'block'
   statusDiv.innerText = 'Reading file...'
-  
   try {
     const text = await file.text()
     statusDiv.innerText = 'Parsing JSON...'
     const data = JSON.parse(text)
-    
     statusDiv.innerText = 'Chunking conversation...'
     const chunks = chunkConversation(data)
+    if(chunks.length === 0) throw new Error('No valid message chunks could be created. Check console for details.')
     statusDiv.innerText = `Created ${chunks.length} chunks. Generating embeddings...`
-    
-    statusDiv.innerText = 'Clearing old memory...'
     await sb.from('conversation_memory').delete().eq('user_id', currentUser.id)
-    
     const saved = await saveChunksToSupabase(chunks, (percent, savedCount, total) => {
       progressBar.style.width = `${percent}%`
       statusDiv.innerText = `Processing: ${savedCount}/${total} chunks (${Math.round(percent)}%)`
     })
-    
     statusDiv.innerText = `✅ Done! Ivy learned from ${saved} conversation chunks.`
     toast(`Ivy now knows about your conversations! 🧠`, 'ok')
-    
-    setTimeout(() => {
-      progressDiv.style.display = 'none'
-      statusDiv.style.display = 'none'
-    }, 3000)
-    
+    setTimeout(() => { progressDiv.style.display = 'none'; statusDiv.style.display = 'none' }, 3000)
   } catch(e) {
     statusDiv.innerText = `❌ Error: ${e.message}`
     toast('Failed to process JSON: ' + e.message, 'err')
@@ -1397,28 +609,21 @@ async function getRelevantContext(question) {
   try {
     const qEmbedding = await generateEmbedding(question)
     if(!qEmbedding) return []
-    
     const { data, error } = await sb.rpc('match_conversation_memory', {
       query_embedding: qEmbedding,
       match_threshold: 0.65,
       max_results: 4
     })
-    
     if(error) throw error
     return data || []
-  } catch(e) {
-    console.error('Context search error:', e)
-    return []
-  }
+  } catch(e) { console.error('Context search error:', e); return [] }
 }
 
 function setupJSONUpload() {
   const btn = document.getElementById('selectJsonBtn')
   const fileInput = document.getElementById('jsonFileInput')
   const zone = document.getElementById('jsonUploadZone')
-  
   if(!btn) return
-  
   btn.addEventListener('click', () => fileInput.click())
   fileInput.addEventListener('change', async (e) => {
     if(e.target.files && e.target.files[0]) {
@@ -1426,55 +631,22 @@ function setupJSONUpload() {
       fileInput.value = ''
     }
   })
-  
   if(zone) {
     zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag') })
     zone.addEventListener('dragleave', () => { zone.classList.remove('drag') })
     zone.addEventListener('drop', async (e) => {
-      e.preventDefault()
-      zone.classList.remove('drag')
+      e.preventDefault(); zone.classList.remove('drag')
       const file = e.dataTransfer.files[0]
-      if(file && file.name.endsWith('.json')) {
-        await uploadAndLearnFromJSON(file)
-      } else {
-        toast('Please drop a JSON file', 'err')
-      }
+      if(file && file.name.endsWith('.json')) await uploadAndLearnFromJSON(file)
+      else toast('Please drop a JSON file', 'err')
     })
   }
 }
 
-window.switchAuth = (mode) => {
-  authMode = mode
-  document.querySelectorAll('.auth-tab').forEach((t,i) =>
-    t.classList.toggle('active',(i===0&&mode==='login')||(i===1&&mode==='signup')))
-  document.getElementById('username-field').style.display = mode==='signup'?'block':'none'
-  document.getElementById('auth-msg').textContent = ''
-}
-
-window.handleAuth = async () => {
-  const email = document.getElementById('auth-email').value.trim()
-  const pass  = document.getElementById('auth-password').value
-  const msg   = document.getElementById('auth-msg')
-  msg.className='auth-msg'; msg.textContent='...'
-  if(!email||!pass){msg.className='auth-msg error';msg.textContent='Fill in all fields';return}
-  if(authMode==='signup'){
-    const {error} = await sb.auth.signUp({email,password:pass})
-    if(error){msg.className='auth-msg error';msg.textContent=error.message;return}
-    msg.className='auth-msg success';msg.textContent='Check your email to confirm!'
-  } else {
-    const {data,error} = await sb.auth.signInWithPassword({email,password:pass})
-    if(error){msg.className='auth-msg error';msg.textContent=error.message;return}
-    bootApp(data.user)
-  }
-}
-
-window.logout = async () => {
-  await sb.auth.signOut()
-  document.getElementById('app').style.display='none'
-  document.getElementById('auth-screen').style.display='flex'
-  currentUser=null
-}
-
+// Auth and boot functions (unchanged)
+window.switchAuth = (mode) => { authMode = mode; document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&mode==='login')||(i===1&&mode==='signup'))); document.getElementById('username-field').style.display = mode==='signup'?'block':'none'; document.getElementById('auth-msg').textContent = '' }
+window.handleAuth = async () => { const email = document.getElementById('auth-email').value.trim(); const pass = document.getElementById('auth-password').value; const msg = document.getElementById('auth-msg'); msg.className='auth-msg'; msg.textContent='...'; if(!email||!pass){msg.className='auth-msg error';msg.textContent='Fill in all fields';return} if(authMode==='signup'){ const {error} = await sb.auth.signUp({email,password:pass}); if(error){msg.className='auth-msg error';msg.textContent=error.message;return} msg.className='auth-msg success';msg.textContent='Check your email to confirm!' } else { const {data,error} = await sb.auth.signInWithPassword({email,password:pass}); if(error){msg.className='auth-msg error';msg.textContent=error.message;return} bootApp(data.user) } }
+window.logout = async () => { await sb.auth.signOut(); document.getElementById('app').style.display='none'; document.getElementById('auth-screen').style.display='flex'; currentUser=null }
 sb.auth.getSession().then(({data:{session}}) => { if(session?.user) bootApp(session.user) })
 
 function bootApp(user){
@@ -1483,236 +655,51 @@ function bootApp(user){
   document.getElementById('app').style.display='block'
   document.getElementById('nav-user').textContent = user.email.split('@')[0]
   loadStats(); loadImages(); initCanvas(); initIvy(); loadDateHistory()
-  setupDiary()
-  setupJSONUpload()
+  setupDiary(); setupJSONUpload()
 }
 
 const themeClasses=['anime','soft','miraculous']
-window.setTheme=(theme)=>{
-  document.body.classList.remove(...themeClasses.map(t=>'theme-'+t))
-  document.body.classList.add('theme-'+theme)
-  document.querySelectorAll('.theme-dot').forEach(d=>d.classList.remove('active'))
-  document.querySelector('.theme-dot.'+theme).classList.add('active')
-  localStorage.setItem('dyz17-theme',theme)
-}
+window.setTheme=(theme)=>{ document.body.classList.remove(...themeClasses.map(t=>'theme-'+t)); document.body.classList.add('theme-'+theme); document.querySelectorAll('.theme-dot').forEach(d=>d.classList.remove('active')); document.querySelector('.theme-dot.'+theme).classList.add('active'); localStorage.setItem('dyz17-theme',theme) }
 ;(()=>{ const s=localStorage.getItem('dyz17-theme')||'anime'; setTheme(s) })()
 
-async function loadStats(){
-  const [{count:ic},{count:sc},{count:dc}] = await Promise.all([
-    sb.from('images').select('*',{count:'exact',head:true}),
-    sb.from('drawing_strokes').select('*',{count:'exact',head:true}),
-    sb.from('dates').select('*',{count:'exact',head:true}).eq('user_id',currentUser?.id)
-  ])
-  document.getElementById('stat-images').textContent  = ic??0
-  document.getElementById('stat-strokes').textContent = sc??0
-  document.getElementById('stat-dates').textContent   = dc??0
-}
-
-window.handleFiles = async(files)=>{
-  const progress=document.getElementById('upload-progress')
-  const bar=document.getElementById('progress-bar')
-  progress.style.display='block'; bar.style.width='0%'
-  for(let i=0;i<files.length;i++){
-    const file=files[i]; const ext=file.name.split('.').pop()
-    const path=`shared/${Date.now()}_${i}.${ext}`
-    const {error:upErr}=await sb.storage.from('images').upload(path,file,{upsert:true})
-    if(upErr){toast('Upload failed: '+upErr.message,'err');continue}
-    const {data:{publicUrl}}=sb.storage.from('images').getPublicUrl(path)
-    await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name})
-    bar.style.width=`${((i+1)/files.length)*100}%`
-  }
-  setTimeout(()=>{progress.style.display='none';bar.style.width='0%'},600)
-  toast('Memory saved! ♡','ok'); loadImages(); loadStats()
-}
-
-async function loadImages(){
-  const {data}=await sb.from('images').select('*').order('created_at',{ascending:false})
-  const grid=document.getElementById('images-grid')
-  if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — add some together!</div>';return}
-  grid.innerHTML=data.map(img=>`
-    <div class="img-card">
-      <img src="${img.url}" alt="${img.name||'memory'}" loading="lazy" onclick="openLightbox('${img.url}')">
-      <div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div>
-      <button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button>
-    </div>`).join('')
-}
-
-window.deleteImage=async(id,url)=>{
-  const parts=url.split('/object/public/images/')
-  if(parts[1]) await sb.storage.from('images').remove([parts[1]])
-  await sb.from('images').delete().eq('id',id)
-  toast('Gone, but never forgotten','ok'); loadImages(); loadStats()
-}
-
-const zone=document.getElementById('upload-zone')
-zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')})
-zone.addEventListener('dragleave',()=>zone.classList.remove('drag'))
-zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');handleFiles(e.dataTransfer.files)})
-
+async function loadStats(){ const [{count:ic},{count:sc},{count:dc}] = await Promise.all([ sb.from('images').select('*',{count:'exact',head:true}), sb.from('drawing_strokes').select('*',{count:'exact',head:true}), sb.from('dates').select('*',{count:'exact',head:true}).eq('user_id',currentUser?.id) ]); document.getElementById('stat-images').textContent = ic??0; document.getElementById('stat-strokes').textContent = sc??0; document.getElementById('stat-dates').textContent = dc??0 }
+window.handleFiles = async(files)=>{ const progress=document.getElementById('upload-progress'); const bar=document.getElementById('progress-bar'); progress.style.display='block'; bar.style.width='0%'; for(let i=0;i<files.length;i++){ const file=files[i]; const ext=file.name.split('.').pop(); const path=`shared/${Date.now()}_${i}.${ext}`; const {error:upErr}=await sb.storage.from('images').upload(path,file,{upsert:true}); if(upErr){toast('Upload failed: '+upErr.message,'err');continue} const {data:{publicUrl}}=sb.storage.from('images').getPublicUrl(path); await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name}); bar.style.width=`${((i+1)/files.length)*100}%` } setTimeout(()=>{progress.style.display='none';bar.style.width='0%'},600); toast('Memory saved! ♡','ok'); loadImages(); loadStats() }
+async function loadImages(){ const {data}=await sb.from('images').select('*').order('created_at',{ascending:false}); const grid=document.getElementById('images-grid'); if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — add some together!</div>';return} grid.innerHTML=data.map(img=>`<div class="img-card"><img src="${img.url}" alt="${img.name||'memory'}" loading="lazy" onclick="openLightbox('${img.url}')"><div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div><button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button></div>`).join('') }
+window.deleteImage=async(id,url)=>{ const parts=url.split('/object/public/images/'); if(parts[1]) await sb.storage.from('images').remove([parts[1]]); await sb.from('images').delete().eq('id',id); toast('Gone, but never forgotten','ok'); loadImages(); loadStats() }
+const zone=document.getElementById('upload-zone'); zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')}); zone.addEventListener('dragleave',()=>zone.classList.remove('drag')); zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');handleFiles(e.dataTransfer.files)})
 window.openLightbox=(url)=>{ document.getElementById('lightbox-img').src=url; document.getElementById('lightbox').classList.add('open') }
 window.closeLightbox=()=>{ document.getElementById('lightbox').classList.remove('open') }
 document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLightbox()})
 
 const DRAW_COLORS=['#111111','#ef4444','#f59e0b','#22c55e','#06b6d4','#7c3aed','#ec4899','#ffffff']
 let drawing=false,currentColor='#111111',brushSize=3,lastX=0,lastY=0,ctx,canvas,realtimeSub=null
-
-function initCanvas(){
-  canvas=document.getElementById('draw-canvas')
-  ctx=canvas.getContext('2d')
-  resizeCanvas(); window.addEventListener('resize',resizeCanvas)
-  const row=document.getElementById('color-row')
-  row.innerHTML=DRAW_COLORS.map((c,i)=>`<div class="color-swatch${i===0?' active':''}" style="background:${c};${c==='#ffffff'?'border-color:#444':''}" onclick="setColor('${c}',this)"></div>`).join('')
-  canvas.addEventListener('pointerdown',startDraw)
-  canvas.addEventListener('pointermove',doDraw)
-  canvas.addEventListener('pointerup',endDraw)
-  canvas.addEventListener('pointerleave',endDraw)
-  loadStrokes()
-  if(realtimeSub) realtimeSub.unsubscribe()
-  realtimeSub=sb.channel('drawing')
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'drawing_strokes'},p=>drawStroke(p.new.stroke))
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'drawing_strokes'},()=>ctx.clearRect(0,0,canvas.width,canvas.height))
-    .subscribe()
-}
-
-function resizeCanvas(){
-  if(!canvas) return
-  const w=canvas.parentElement.clientWidth
-  const h=Math.min(480,window.innerHeight*0.55)
-  const snap=ctx.getImageData(0,0,canvas.width,canvas.height)
-  canvas.width=w; canvas.height=h
-  try{ctx.putImageData(snap,0,0)}catch(e){}
-}
-
-async function loadStrokes(){
-  const {data}=await sb.from('drawing_strokes').select('stroke').order('created_at')
-  if(data) data.forEach(r=>drawStroke(r.stroke))
-}
-
-function drawStroke(s){
-  if(!ctx) return
-  ctx.beginPath()
-  ctx.strokeStyle=s.color; ctx.lineWidth=s.size
-  ctx.lineCap='round'; ctx.lineJoin='round'
-  ctx.moveTo(s.x0,s.y0); ctx.lineTo(s.x1,s.y1); ctx.stroke()
-}
-
-function getPos(e){
-  const r=canvas.getBoundingClientRect()
-  const src=e.touches?e.touches[0]:e
-  return[(src.clientX-r.left)*(canvas.width/r.width),(src.clientY-r.top)*(canvas.height/r.height)]
-}
-
+function initCanvas(){ canvas=document.getElementById('draw-canvas'); ctx=canvas.getContext('2d'); resizeCanvas(); window.addEventListener('resize',resizeCanvas); const row=document.getElementById('color-row'); row.innerHTML=DRAW_COLORS.map((c,i)=>`<div class="color-swatch${i===0?' active':''}" style="background:${c};${c==='#ffffff'?'border-color:#444':''}" onclick="setColor('${c}',this)"></div>`).join(''); canvas.addEventListener('pointerdown',startDraw); canvas.addEventListener('pointermove',doDraw); canvas.addEventListener('pointerup',endDraw); canvas.addEventListener('pointerleave',endDraw); loadStrokes(); if(realtimeSub) realtimeSub.unsubscribe(); realtimeSub=sb.channel('drawing').on('postgres_changes',{event:'INSERT',schema:'public',table:'drawing_strokes'},p=>drawStroke(p.new.stroke)).on('postgres_changes',{event:'DELETE',schema:'public',table:'drawing_strokes'},()=>ctx.clearRect(0,0,canvas.width,canvas.height)).subscribe() }
+function resizeCanvas(){ if(!canvas) return; const w=canvas.parentElement.clientWidth; const h=Math.min(480,window.innerHeight*0.55); const snap=ctx.getImageData(0,0,canvas.width,canvas.height); canvas.width=w; canvas.height=h; try{ctx.putImageData(snap,0,0)}catch(e){} }
+async function loadStrokes(){ const {data}=await sb.from('drawing_strokes').select('stroke').order('created_at'); if(data) data.forEach(r=>drawStroke(r.stroke)) }
+function drawStroke(s){ if(!ctx) return; ctx.beginPath(); ctx.strokeStyle=s.color; ctx.lineWidth=s.size; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.moveTo(s.x0,s.y0); ctx.lineTo(s.x1,s.y1); ctx.stroke() }
+function getPos(e){ const r=canvas.getBoundingClientRect(); const src=e.touches?e.touches[0]:e; return[(src.clientX-r.left)*(canvas.width/r.width),(src.clientY-r.top)*(canvas.height/r.height)] }
 function startDraw(e){drawing=true;[lastX,lastY]=getPos(e)}
-
-async function doDraw(e){
-  if(!drawing) return; e.preventDefault()
-  const [x,y]=getPos(e)
-  const stroke={x0:lastX,y0:lastY,x1:x,y1:y,color:currentColor,size:brushSize}
-  drawStroke(stroke)
-  await sb.from('drawing_strokes').insert({user_id:currentUser.id,stroke})
-  lastX=x; lastY=y
-}
-
+async function doDraw(e){ if(!drawing) return; e.preventDefault(); const [x,y]=getPos(e); const stroke={x0:lastX,y0:lastY,x1:x,y1:y,color:currentColor,size:brushSize}; drawStroke(stroke); await sb.from('drawing_strokes').insert({user_id:currentUser.id,stroke}); lastX=x; lastY=y }
 function endDraw(){drawing=false}
 window.setColor=(c,el)=>{ currentColor=c; document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active')); el.classList.add('active') }
 window.setSize=(s,el)=>{ brushSize=s; document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active') }
 window.saveCanvas=()=>{ const link=document.createElement('a'); link.download='our-drawing.png'; link.href=canvas.toDataURL(); link.click() }
 window.clearCanvas=async()=>{ if(!confirm('Clear the canvas for both of us?')) return; await sb.from('drawing_strokes').delete().neq('id','00000000-0000-0000-0000-000000000000'); ctx.clearRect(0,0,canvas.width,canvas.height); toast('Canvas cleared','ok'); loadStats() }
 
-// IVY CHAT
-const IVY_MEMORY_KEY = 'ivy-memories'
-const IVY_HISTORY_KEY = 'ivy-chat-history'
-let ivyChatHistory = []
-
+const IVY_MEMORY_KEY = 'ivy-memories'; const IVY_HISTORY_KEY = 'ivy-chat-history'; let ivyChatHistory = []
 function getMemories(){ return JSON.parse(localStorage.getItem(IVY_MEMORY_KEY)||'[]') }
 function saveMemory(fact){ const mems=getMemories(); mems.push({fact, savedAt:new Date().toISOString()}); localStorage.setItem(IVY_MEMORY_KEY,JSON.stringify(mems)) }
 function getAllMemoriesText(){ const mems=getMemories(); if(!mems.length) return 'No memories stored yet.'; return mems.map((m,i)=>`${i+1}. ${m.fact}`).join('\n') }
-
-function initIvy(){
-  const saved=localStorage.getItem(IVY_HISTORY_KEY)
-  if(saved){ try{ivyChatHistory=JSON.parse(saved)}catch(e){ivyChatHistory=[]} }
-  if(ivyChatHistory.length===0){ appendIvyMsg('ivy','Hi! I\'m Ivy 🌸 I\'m your personal AI! Upload your conversation JSON in the MEMORIES tab and I\'ll learn everything about your chats! Ask me anything about your conversations. ♡') }
-  else { ivyChatHistory.slice(-10).forEach(m=>appendIvyMsg(m.role==='user'?'user':'ivy',m.content,false)) }
-  const input=document.getElementById('ivy-input')
-  input.addEventListener('input',()=>{ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,120)+'px' })
-  input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendToIvy()} })
-}
-
-function appendIvyMsg(role,content,scroll=true){
-  const el=document.getElementById('ivy-messages')
-  const div=document.createElement('div')
-  div.className=`msg ${role}`
-  div.innerHTML=`<div class="msg-avatar">${role==='ivy'?'🌸':'💙'}</div><div class="msg-bubble">${content}</div>`
-  el.appendChild(div)
-  if(scroll) el.scrollTop=el.scrollHeight
-}
-
+function initIvy(){ const saved=localStorage.getItem(IVY_HISTORY_KEY); if(saved){ try{ivyChatHistory=JSON.parse(saved)}catch(e){ivyChatHistory=[]} } if(ivyChatHistory.length===0){ appendIvyMsg('ivy','Hi! I\'m Ivy 🌸 I\'m your personal AI! Upload your conversation JSON in the MEMORIES tab and I\'ll learn everything about your chats! Ask me anything about your conversations. ♡') } else { ivyChatHistory.slice(-10).forEach(m=>appendIvyMsg(m.role==='user'?'user':'ivy',m.content,false)) } const input=document.getElementById('ivy-input'); input.addEventListener('input',()=>{ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,120)+'px' }); input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendToIvy()} }) }
+function appendIvyMsg(role,content,scroll=true){ const el=document.getElementById('ivy-messages'); const div=document.createElement('div'); div.className=`msg ${role}`; div.innerHTML=`<div class="msg-avatar">${role==='ivy'?'🌸':'💙'}</div><div class="msg-bubble">${content}</div>`; el.appendChild(div); if(scroll) el.scrollTop=el.scrollHeight }
 function showIvyTyping(){ const el=document.getElementById('ivy-messages'); const div=document.createElement('div'); div.className='msg ivy'; div.id='ivy-typing'; div.innerHTML=`<div class="msg-avatar">🌸</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`; el.appendChild(div); el.scrollTop=el.scrollHeight }
 function removeIvyTyping(){ document.getElementById('ivy-typing')?.remove() }
 window.ivyQuick=(text)=>{ document.getElementById('ivy-input').value=text; sendToIvy() }
+window.sendToIvy = async()=>{ const input=document.getElementById('ivy-input'); const msg=input.value.trim(); if(!msg) return; const sendBtn=document.getElementById('ivy-send'); sendBtn.disabled=true; input.value=''; input.style.height='auto'; appendIvyMsg('user',msg); ivyChatHistory.push({role:'user',content:msg}); showIvyTyping(); try { const relevantContext = await getRelevantContext(msg); const contextText = relevantContext.map(c => c.chunk_text).join('\n\n---\n\n'); const systemPrompt = `You are Ivy, a warm AI for a couple. Use the conversation history below (from their real chats) to answer questions naturally. If the answer isn't in the conversation history, say "I don't remember us talking about that."\n\nCONVERSATIONS FROM THEIR CHAT HISTORY:\n${contextText || "No relevant conversation found."}\n\nStored memories: ${getAllMemoriesText()}\n\nAnswer based ONLY on the above. Be warm and natural.`; const messages = [{role:'system', content:systemPrompt}, ...ivyChatHistory.slice(-8).map(m=>({role:m.role==='user'?'user':'assistant', content:m.content.replace(/<[^>]*>/g,'')}))]; const res = await fetch(GROQ_URL, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`}, body:JSON.stringify({model:GROQ_MODEL, messages, max_tokens:500, temperature:0.85}) }); if(!res.ok) throw new Error(`Groq ${res.status}`); const data = await res.json(); let reply = data.choices?.[0]?.message?.content || "I'm here! Something hiccuped — try again? ♡"; removeIvyTyping(); const memMatches = reply.match(/\[SAVE_MEMORY:\s*([^\]]+)\]/g); if(memMatches){ memMatches.forEach(m=>saveMemory(m.replace(/\[SAVE_MEMORY:\s*/,'').replace(/\]/,'').trim())); reply = reply.replace(/\[SAVE_MEMORY:[^\]]+\]/g,'').trim(); toast('Ivy saved a memory! 🧠','ok') } appendIvyMsg('ivy', reply); ivyChatHistory.push({role:'assistant',content:reply}); if(ivyChatHistory.length>30) ivyChatHistory=ivyChatHistory.slice(-30); localStorage.setItem(IVY_HISTORY_KEY,JSON.stringify(ivyChatHistory)); } catch(err){ removeIvyTyping(); appendIvyMsg('ivy',`Oops! ${err.message}`) } sendBtn.disabled=false; document.getElementById('ivy-messages').scrollTop=9999 }
 
-window.sendToIvy = async()=>{
-  const input=document.getElementById('ivy-input')
-  const msg=input.value.trim()
-  if(!msg) return
-  const sendBtn=document.getElementById('ivy-send')
-  sendBtn.disabled=true; input.value=''; input.style.height='auto'
-  appendIvyMsg('user',msg)
-  ivyChatHistory.push({role:'user',content:msg})
-  showIvyTyping()
-  
-  try {
-    const relevantContext = await getRelevantContext(msg)
-    const contextText = relevantContext.map(c => c.chunk_text).join('\n\n---\n\n')
-    
-    const systemPrompt = `You are Ivy, a warm AI for a couple. Use the conversation history below (from their real chats) to answer questions naturally. If the answer isn't in the conversation history, say "I don't remember us talking about that."
-
-CONVERSATIONS FROM THEIR CHAT HISTORY:
-${contextText || "No relevant conversation found."}
-
-Stored memories: ${getAllMemoriesText()}
-
-Answer based ONLY on the above. Be warm and natural.`
-    
-    const messages = [
-      {role:'system', content:systemPrompt},
-      ...ivyChatHistory.slice(-8).map(m=>({role:m.role==='user'?'user':'assistant', content:m.content.replace(/<[^>]*>/g,'')}))
-    ]
-    
-    const res = await fetch(GROQ_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`},
-      body:JSON.stringify({model:GROQ_MODEL, messages, max_tokens:500, temperature:0.85})
-    })
-    if(!res.ok) throw new Error(`Groq ${res.status}`)
-    const data = await res.json()
-    let reply = data.choices?.[0]?.message?.content || "I'm here! Something hiccuped — try again? ♡"
-    removeIvyTyping()
-    
-    const memMatches = reply.match(/\[SAVE_MEMORY:\s*([^\]]+)\]/g)
-    if(memMatches){
-      memMatches.forEach(m=>saveMemory(m.replace(/\[SAVE_MEMORY:\s*/,'').replace(/\]/,'').trim()))
-      reply = reply.replace(/\[SAVE_MEMORY:[^\]]+\]/g,'').trim()
-      toast('Ivy saved a memory! 🧠','ok')
-    }
-    appendIvyMsg('ivy', reply)
-    ivyChatHistory.push({role:'assistant',content:reply})
-    
-    if(ivyChatHistory.length>30) ivyChatHistory=ivyChatHistory.slice(-30)
-    localStorage.setItem(IVY_HISTORY_KEY,JSON.stringify(ivyChatHistory))
-  } catch(err){
-    removeIvyTyping()
-    appendIvyMsg('ivy',`Oops! ${err.message}`)
-  }
-  sendBtn.disabled=false
-  document.getElementById('ivy-messages').scrollTop=9999
-}
-
-// DATE GAME (simplified placeholder)
+// Date game placeholders
 let activeDateHistory = [], activeDateTitle = '', dateGameBusy = false, dateGameRunning = false, dgTurnCount = 0
-window.startAIDateGame = async (title) => {
-  toast('Date game ready! Ask Ivy to plan a date in the IVY tab.', 'ok')
-}
+window.startAIDateGame = async (title) => { toast('Date game ready! Ask Ivy to plan a date in the IVY tab.', 'ok') }
 window.launchCustomDate = () => { const val = document.getElementById('date-custom').value.trim(); if(val) toast('Try asking Ivy in the IVY tab!', 'ok') }
 window.sendDateAction = () => {}
 window.endDateGame = () => {}
@@ -1721,257 +708,24 @@ function showRatingModal(){}
 window.saveDateMemory = async () => {}
 function returnToLobby(){}
 
-// DIARY MODULE
-let diaryCurrentEditId = null
-let diaryCurrentDateFilter = null
-let diaryCurrentSearchTerm = ""
-let diaryCalendarYear = new Date().getFullYear()
-let diaryCalendarMonth = new Date().getMonth()
-
-async function diaryFetchEntries() {
-  if(!currentUser) return []
-  const { data, error } = await sb.from('diary_entries').select('*').eq('user_id', currentUser.id).order('entry_date', { ascending: false })
-  if(error) { console.error(error); return [] }
-  return data
-}
-
-async function diaryGetFilteredEntries() {
-  let entries = await diaryFetchEntries()
-  if(diaryCurrentDateFilter) entries = entries.filter(e => e.entry_date === diaryCurrentDateFilter)
-  if(diaryCurrentSearchTerm.trim()) {
-    const term = diaryCurrentSearchTerm.trim().toLowerCase()
-    entries = entries.filter(e => (e.title?.toLowerCase().includes(term) || e.content?.toLowerCase().includes(term)))
-  }
-  return entries
-}
-
-async function diaryRenderEntries() {
-  const container = document.getElementById('diaryEntriesContainer')
-  const entries = await diaryGetFilteredEntries()
-  if(entries.length === 0) {
-    container.innerHTML = `<div class="empty-message"><i class="far fa-smile-wink"></i> no entries found<br><span style="font-size:0.8rem;">write something new ✨</span></div>`
-    return
-  }
-  let html = ""
-  for(const entry of entries) {
-    const displayDate = new Date(entry.entry_date).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' })
-    const imageHtml = entry.image_url ? `<img class="entry-img" src="${entry.image_url}" alt="diary image">` : ""
-    html += `
-      <div class="entry-card" data-id="${entry.id}">
-        <div class="entry-header">
-          <div class="entry-title">${escapeHtml(entry.title) || "untitled"}</div>
-          <div class="entry-date">${displayDate}</div>
-        </div>
-        <div class="entry-content">${escapeHtml(entry.content || "").replace(/\n/g, '<br>')}</div>
-        ${imageHtml}
-        <div class="entry-actions">
-          <button class="icon-btn diary-edit-btn" data-id="${entry.id}"><i class="fas fa-edit"></i> edit</button>
-          <button class="icon-btn diary-delete-btn" data-id="${entry.id}"><i class="fas fa-trash-alt"></i> delete</button>
-        </div>
-      </div>`
-  }
-  container.innerHTML = html
-  document.querySelectorAll('.diary-edit-btn').forEach(btn => {
-    btn.addEventListener('click', () => diaryOpenEditModal(btn.dataset.id))
-  })
-  document.querySelectorAll('.diary-delete-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if(confirm("Delete this entry forever?")) {
-        await sb.from('diary_entries').delete().eq('id', btn.dataset.id).eq('user_id', currentUser.id)
-        await diaryRefreshAll()
-        toast('Entry deleted', 'ok')
-      }
-    })
-  })
-}
-
-async function diaryUploadImage(file) {
-  const ext = file.name.split('.').pop()
-  const path = `diary/${currentUser.id}/${Date.now()}.${ext}`
-  const { error: uploadError } = await sb.storage.from('diary-images').upload(path, file)
-  if(uploadError) throw uploadError
-  const { data: { publicUrl } } = sb.storage.from('diary-images').getPublicUrl(path)
-  return publicUrl
-}
-
-async function diarySaveEntry(entryData) {
-  if(diaryCurrentEditId) {
-    const { error } = await sb.from('diary_entries').update(entryData).eq('id', diaryCurrentEditId).eq('user_id', currentUser.id)
-    if(error) throw error
-  } else {
-    const { error } = await sb.from('diary_entries').insert({ ...entryData, user_id: currentUser.id })
-    if(error) throw error
-  }
-}
-
-async function diaryOpenEditModal(id) {
-  const { data, error } = await sb.from('diary_entries').select('*').eq('id', id).single()
-  if(error || !data) return
-  diaryCurrentEditId = id
-  document.getElementById('diaryModalTitle').innerText = "✏️ edit memory"
-  document.getElementById('diaryEntryTitle').value = data.title || ""
-  document.getElementById('diaryEntryContent').value = data.content || ""
-  document.getElementById('diaryEntryDate').value = data.entry_date
-  document.getElementById('diaryImagePreview').innerHTML = data.image_url ? `<img src="${data.image_url}" style="max-width:100%; max-height:130px; border-radius:16px; margin-top:8px;">` : ""
-  document.getElementById('diaryEntryImage').value = ""
-  document.getElementById('diaryEntryModal').style.display = 'flex'
-}
-
-function diaryOpenAddModal() {
-  diaryCurrentEditId = null
-  document.getElementById('diaryModalTitle').innerText = "✍️ new memory"
-  document.getElementById('diaryEntryTitle').value = ""
-  document.getElementById('diaryEntryContent').value = ""
-  document.getElementById('diaryEntryDate').value = new Date().toISOString().slice(0,10)
-  document.getElementById('diaryImagePreview').innerHTML = ""
-  document.getElementById('diaryEntryImage').value = ""
-  document.getElementById('diaryEntryModal').style.display = 'flex'
-}
-
-async function diaryHandleSave() {
-  const title = document.getElementById('diaryEntryTitle').value.trim()
-  const content = document.getElementById('diaryEntryContent').value
-  const entryDate = document.getElementById('diaryEntryDate').value
-  if(!entryDate) { alert("Please select a date."); return }
-  let image_url = null
-  const fileInput = document.getElementById('diaryEntryImage')
-  if(fileInput.files && fileInput.files[0]) {
-    try {
-      image_url = await diaryUploadImage(fileInput.files[0])
-    } catch(e) { toast('Image upload failed: '+e.message, 'err'); return }
-  } else if(diaryCurrentEditId) {
-    const { data } = await sb.from('diary_entries').select('image_url').eq('id', diaryCurrentEditId).single()
-    if(data) image_url = data.image_url
-  }
-  await diarySaveEntry({ title: title || "untitled", content, entry_date: entryDate, image_url })
-  document.getElementById('diaryEntryModal').style.display = 'none'
-  await diaryRefreshAll()
-  toast('Entry saved!', 'ok')
-}
-
-async function diaryRenderCalendar() {
-  const entries = await diaryFetchEntries()
-  const entriesMap = new Map()
-  entries.forEach(e => entriesMap.set(e.entry_date, true))
-  const year = diaryCalendarYear, month = diaryCalendarMonth
-  const firstDayOfMonth = new Date(year, month, 1)
-  const startWeekday = firstDayOfMonth.getDay()
-  let daysInMonth = new Date(year, month+1, 0).getDate()
-  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-  document.getElementById('diaryCalMonthYear').innerText = `${monthNames[month]} ${year}`
-  let startOffset = (startWeekday === 0 ? 6 : startWeekday - 1)
-  let totalCells = 42
-  let html = ""
-  for(let i=0; i<totalCells; i++) {
-    let dayNumber = i - startOffset + 1
-    let isValid = (dayNumber >= 1 && dayNumber <= daysInMonth)
-    let dateStr = isValid ? `${year}-${String(month+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}` : ""
-    let hasEntry = isValid && entriesMap.has(dateStr)
-    let isSelected = (diaryCurrentDateFilter === dateStr)
-    let classes = "cal-day"
-    if(!isValid) classes += " empty-day"
-    if(hasEntry) classes += " has-entry"
-    if(isSelected) classes += " selected"
-    html += `<div class="${classes}" data-date="${dateStr}">${isValid ? dayNumber : ""}</div>`
-  }
-  document.getElementById('diaryCalendarDays').innerHTML = html
-  document.querySelectorAll('#diaryCalendarDays .cal-day[data-date]').forEach(el => {
-    el.addEventListener('click', async () => {
-      const dateVal = el.getAttribute('data-date')
-      if(dateVal) {
-        diaryCurrentDateFilter = dateVal
-        await diaryRenderEntries()
-        await diaryRenderCalendar()
-      }
-    })
-  })
-}
-
-async function diaryRefreshAll() {
-  await diaryRenderEntries()
-  await diaryRenderCalendar()
-}
-
-function diarySetupSearch() {
-  const input = document.getElementById('diarySearchInput')
-  input.addEventListener('input', async (e) => {
-    diaryCurrentSearchTerm = e.target.value
-    await diaryRenderEntries()
-  })
-}
-
-function setupDiary() {
-  diarySetupSearch()
-  document.getElementById('diaryNewEntryBtn').addEventListener('click', diaryOpenAddModal)
-  document.getElementById('closeDiaryBtn').addEventListener('click', () => {
-    document.getElementById('diaryModal').style.display = 'none'
-  })
-  document.getElementById('diaryResetDateFilterBtn').addEventListener('click', () => {
-    diaryCurrentDateFilter = null
-    diaryRefreshAll()
-  })
-  document.getElementById('diaryPrevMonthBtn').addEventListener('click', () => {
-    diaryCalendarMonth--
-    if(diaryCalendarMonth < 0) { diaryCalendarMonth = 11; diaryCalendarYear-- }
-    diaryRenderCalendar()
-  })
-  document.getElementById('diaryNextMonthBtn').addEventListener('click', () => {
-    diaryCalendarMonth++
-    if(diaryCalendarMonth > 11) { diaryCalendarMonth = 0; diaryCalendarYear++ }
-    diaryRenderCalendar()
-  })
-  document.getElementById('diarySaveBtn').addEventListener('click', diaryHandleSave)
-  document.getElementById('diaryCancelBtn').addEventListener('click', () => {
-    document.getElementById('diaryEntryModal').style.display = 'none'
-  })
-  window.onclick = function(e) {
-    const modal = document.getElementById('diaryEntryModal')
-    if(e.target === modal) modal.style.display = 'none'
-  }
-  document.getElementById('diaryTeaserBtn').addEventListener('click', async () => {
-    document.getElementById('diaryModal').style.display = 'block'
-    await diaryRefreshAll()
-  })
-}
-
+// Diary module (unchanged)
+let diaryCurrentEditId = null, diaryCurrentDateFilter = null, diaryCurrentSearchTerm = "", diaryCalendarYear = new Date().getFullYear(), diaryCalendarMonth = new Date().getMonth()
+async function diaryFetchEntries() { if(!currentUser) return []; const { data, error } = await sb.from('diary_entries').select('*').eq('user_id', currentUser.id).order('entry_date', { ascending: false }); if(error) { console.error(error); return [] } return data }
+async function diaryGetFilteredEntries() { let entries = await diaryFetchEntries(); if(diaryCurrentDateFilter) entries = entries.filter(e => e.entry_date === diaryCurrentDateFilter); if(diaryCurrentSearchTerm.trim()) { const term = diaryCurrentSearchTerm.trim().toLowerCase(); entries = entries.filter(e => (e.title?.toLowerCase().includes(term) || e.content?.toLowerCase().includes(term))) } return entries }
+async function diaryRenderEntries() { const container = document.getElementById('diaryEntriesContainer'); const entries = await diaryGetFilteredEntries(); if(entries.length === 0) { container.innerHTML = `<div class="empty-message"><i class="far fa-smile-wink"></i> no entries found<br><span style="font-size:0.8rem;">write something new ✨</span></div>`; return } let html = ""; for(const entry of entries) { const displayDate = new Date(entry.entry_date).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' }); const imageHtml = entry.image_url ? `<img class="entry-img" src="${entry.image_url}" alt="diary image">` : ""; html += `<div class="entry-card" data-id="${entry.id}"><div class="entry-header"><div class="entry-title">${escapeHtml(entry.title) || "untitled"}</div><div class="entry-date">${displayDate}</div></div><div class="entry-content">${escapeHtml(entry.content || "").replace(/\n/g, '<br>')}</div>${imageHtml}<div class="entry-actions"><button class="icon-btn diary-edit-btn" data-id="${entry.id}"><i class="fas fa-edit"></i> edit</button><button class="icon-btn diary-delete-btn" data-id="${entry.id}"><i class="fas fa-trash-alt"></i> delete</button></div></div>` } container.innerHTML = html; document.querySelectorAll('.diary-edit-btn').forEach(btn => { btn.addEventListener('click', () => diaryOpenEditModal(btn.dataset.id)) }); document.querySelectorAll('.diary-delete-btn').forEach(btn => { btn.addEventListener('click', async () => { if(confirm("Delete this entry forever?")) { await sb.from('diary_entries').delete().eq('id', btn.dataset.id).eq('user_id', currentUser.id); await diaryRefreshAll(); toast('Entry deleted', 'ok') } }) }) }
+async function diaryUploadImage(file) { const ext = file.name.split('.').pop(); const path = `diary/${currentUser.id}/${Date.now()}.${ext}`; const { error: uploadError } = await sb.storage.from('diary-images').upload(path, file); if(uploadError) throw uploadError; const { data: { publicUrl } } = sb.storage.from('diary-images').getPublicUrl(path); return publicUrl }
+async function diarySaveEntry(entryData) { if(diaryCurrentEditId) { const { error } = await sb.from('diary_entries').update(entryData).eq('id', diaryCurrentEditId).eq('user_id', currentUser.id); if(error) throw error } else { const { error } = await sb.from('diary_entries').insert({ ...entryData, user_id: currentUser.id }); if(error) throw error } }
+async function diaryOpenEditModal(id) { const { data, error } = await sb.from('diary_entries').select('*').eq('id', id).single(); if(error || !data) return; diaryCurrentEditId = id; document.getElementById('diaryModalTitle').innerText = "✏️ edit memory"; document.getElementById('diaryEntryTitle').value = data.title || ""; document.getElementById('diaryEntryContent').value = data.content || ""; document.getElementById('diaryEntryDate').value = data.entry_date; document.getElementById('diaryImagePreview').innerHTML = data.image_url ? `<img src="${data.image_url}" style="max-width:100%; max-height:130px; border-radius:16px; margin-top:8px;">` : ""; document.getElementById('diaryEntryImage').value = ""; document.getElementById('diaryEntryModal').style.display = 'flex' }
+function diaryOpenAddModal() { diaryCurrentEditId = null; document.getElementById('diaryModalTitle').innerText = "✍️ new memory"; document.getElementById('diaryEntryTitle').value = ""; document.getElementById('diaryEntryContent').value = ""; document.getElementById('diaryEntryDate').value = new Date().toISOString().slice(0,10); document.getElementById('diaryImagePreview').innerHTML = ""; document.getElementById('diaryEntryImage').value = ""; document.getElementById('diaryEntryModal').style.display = 'flex' }
+async function diaryHandleSave() { const title = document.getElementById('diaryEntryTitle').value.trim(); const content = document.getElementById('diaryEntryContent').value; const entryDate = document.getElementById('diaryEntryDate').value; if(!entryDate) { alert("Please select a date."); return } let image_url = null; const fileInput = document.getElementById('diaryEntryImage'); if(fileInput.files && fileInput.files[0]) { try { image_url = await diaryUploadImage(fileInput.files[0]) } catch(e) { toast('Image upload failed: '+e.message, 'err'); return } } else if(diaryCurrentEditId) { const { data } = await sb.from('diary_entries').select('image_url').eq('id', diaryCurrentEditId).single(); if(data) image_url = data.image_url } await diarySaveEntry({ title: title || "untitled", content, entry_date: entryDate, image_url }); document.getElementById('diaryEntryModal').style.display = 'none'; await diaryRefreshAll(); toast('Entry saved!', 'ok') }
+async function diaryRenderCalendar() { const entries = await diaryFetchEntries(); const entriesMap = new Map(); entries.forEach(e => entriesMap.set(e.entry_date, true)); const year = diaryCalendarYear, month = diaryCalendarMonth; const firstDayOfMonth = new Date(year, month, 1); const startWeekday = firstDayOfMonth.getDay(); let daysInMonth = new Date(year, month+1, 0).getDate(); const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"]; document.getElementById('diaryCalMonthYear').innerText = `${monthNames[month]} ${year}`; let startOffset = (startWeekday === 0 ? 6 : startWeekday - 1); let totalCells = 42; let html = ""; for(let i=0; i<totalCells; i++) { let dayNumber = i - startOffset + 1; let isValid = (dayNumber >= 1 && dayNumber <= daysInMonth); let dateStr = isValid ? `${year}-${String(month+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}` : ""; let hasEntry = isValid && entriesMap.has(dateStr); let isSelected = (diaryCurrentDateFilter === dateStr); let classes = "cal-day"; if(!isValid) classes += " empty-day"; if(hasEntry) classes += " has-entry"; if(isSelected) classes += " selected"; html += `<div class="${classes}" data-date="${dateStr}">${isValid ? dayNumber : ""}</div>` } document.getElementById('diaryCalendarDays').innerHTML = html; document.querySelectorAll('#diaryCalendarDays .cal-day[data-date]').forEach(el => { el.addEventListener('click', async () => { const dateVal = el.getAttribute('data-date'); if(dateVal) { diaryCurrentDateFilter = dateVal; await diaryRenderEntries(); await diaryRenderCalendar() } }) }) }
+async function diaryRefreshAll() { await diaryRenderEntries(); await diaryRenderCalendar() }
+function diarySetupSearch() { const input = document.getElementById('diarySearchInput'); input.addEventListener('input', async (e) => { diaryCurrentSearchTerm = e.target.value; await diaryRenderEntries() }) }
+function setupDiary() { diarySetupSearch(); document.getElementById('diaryNewEntryBtn').addEventListener('click', diaryOpenAddModal); document.getElementById('closeDiaryBtn').addEventListener('click', () => { document.getElementById('diaryModal').style.display = 'none' }); document.getElementById('diaryResetDateFilterBtn').addEventListener('click', () => { diaryCurrentDateFilter = null; diaryRefreshAll() }); document.getElementById('diaryPrevMonthBtn').addEventListener('click', () => { diaryCalendarMonth--; if(diaryCalendarMonth < 0) { diaryCalendarMonth = 11; diaryCalendarYear-- } diaryRenderCalendar() }); document.getElementById('diaryNextMonthBtn').addEventListener('click', () => { diaryCalendarMonth++; if(diaryCalendarMonth > 11) { diaryCalendarMonth = 0; diaryCalendarYear++ } diaryRenderCalendar() }); document.getElementById('diarySaveBtn').addEventListener('click', diaryHandleSave); document.getElementById('diaryCancelBtn').addEventListener('click', () => { document.getElementById('diaryEntryModal').style.display = 'none' }); window.onclick = function(e) { const modal = document.getElementById('diaryEntryModal'); if(e.target === modal) modal.style.display = 'none' }; document.getElementById('diaryTeaserBtn').addEventListener('click', async () => { document.getElementById('diaryModal').style.display = 'block'; await diaryRefreshAll() }) }
 function escapeHtml(str) { if(!str) return ""; return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m; }) }
 function toast(msg,type='ok'){ const t=document.getElementById('toast'); t.textContent=msg; t.className='show '+type; setTimeout(()=>t.className='',3000) }
-
-window.showPanel = (id) => {
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
-  document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>t.classList.remove('active'))
-  const panel=document.getElementById('panel-'+id)
-  if(panel) panel.classList.add('active')
-  document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>{
-    const txt=t.textContent.trim().toLowerCase()
-    if(txt.includes(id)||(id==='dates'&&txt.includes('date'))) t.classList.add('active')
-  })
-  if(id==='draw') setTimeout(resizeCanvas,50)
-}
+window.showPanel = (id) => { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>t.classList.remove('active')); const panel=document.getElementById('panel-'+id); if(panel) panel.classList.add('active'); document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>{ const txt=t.textContent.trim().toLowerCase(); if(txt.includes(id)||(id==='dates'&&txt.includes('date'))) t.classList.add('active') }); if(id==='draw') setTimeout(resizeCanvas,50) }
 window.toast = toast
-
-// Create the conversation_memory table and vector search function via SQL (run once in Supabase)
-// SQL to run in Supabase SQL editor:
-/*
-CREATE EXTENSION IF NOT EXISTS vector;
-CREATE TABLE IF NOT EXISTS public.conversation_memory (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  chunk_text TEXT NOT NULL,
-  embedding vector(384),
-  metadata JSONB,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-ALTER TABLE public.conversation_memory ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users can manage own conversation memory" ON public.conversation_memory FOR ALL USING (auth.uid() = user_id);
-CREATE OR REPLACE FUNCTION match_conversation_memory(query_embedding vector(384), match_threshold float, max_results int)
-RETURNS TABLE(chunk_text TEXT, similarity float) LANGUAGE sql AS $$
-  SELECT chunk_text, 1 - (embedding <=> query_embedding) AS similarity
-  FROM conversation_memory
-  WHERE user_id = auth.uid() AND 1 - (embedding <=> query_embedding) > match_threshold
-  ORDER BY embedding <=> query_embedding LIMIT max_results;
-$$;
-*/
 </script>
 </body>
 </html>
