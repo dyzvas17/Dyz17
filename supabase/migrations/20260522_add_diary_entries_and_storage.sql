@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS public.diary_entries (
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   title TEXT,
   content TEXT,
+  dairy TEXT,
+  "date" DATE NOT NULL,
   entry_date DATE NOT NULL,
   image_url TEXT,
   created_at TIMESTAMPTZ DEFAULT now(),
