@@ -562,6 +562,68 @@ function chunkConversation(data) {
 }
   
   if (messages.length === 0) {
+    console.error('❌ No messages found in JSON. Structure:', Object.keys(data))
+    throw new Error('No messages found in JSON. Make sure it has a "messages" array (Instagram export).')
+  }
+  
+  const chunks = []
+  const chunkSize = 8  // messages per chunk
+  
+  for (let i = 0; i < messages.length; i += chunkSize) {
+    const chunkMessages = messages.slice(i, i + chunkSize)
+    let chunkText = ''
+    
+    for (const msg of chunkMessages) {
+      // Get sender name (clean up special names)
+      let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Unknown')
+      if (sender === '♡' || sender === '☾' || sender === '✨' || sender === '🌸') {
+        sender = 'Me'
+      }
+      
+      // Extract content – try multiple fields
+      let content = ''
+      if (msg.content && msg.content.trim()) {
+        content = msg.content
+      } else if (msg.share && msg.share.share_text) {
+        content = msg.share.share_text
+      } else if (msg.photos && msg.photos.length) {
+        content = '[📷 Photo]'
+      } else if (msg.sticker) {
+        content = '[🧸 Sticker]'
+      } else if (msg.gif) {
+        content = '[🎞️ GIF]'
+      } else if (msg.reactions) {
+        // Skip reaction-only messages
+        continue
+      } else {
+        // If truly empty, skip this message (don't add empty line)
+        continue
+      }
+      
+      // Clean and truncate
+      content = content.substring(0, 500).trim()
+      if (content.length === 0) continue
+      
+      chunkText += `${sender}: ${content}\n`
+    }
+    
+    // Only add chunk if it has meaningful text (at least 10 characters)
+    if (chunkText.trim().length > 10) {
+      chunks.push({ 
+        text: chunkText.trim(), 
+        timestamp: messages[i]?.timestamp_ms || Date.now() 
+      })
+    }
+  }
+  
+  console.log(`📦 Created ${chunks.length} conversation chunks from ${messages.length} messages`)
+  if (chunks.length === 0) {
+    console.warn('⚠️ No chunks created. This might happen if all messages are empty or reactions only.')
+  }
+  return chunks
+}
+  
+  if (messages.length === 0) {
     console.error('No messages found in JSON. Structure:', Object.keys(data))
     throw new Error('No messages found in JSON. Make sure it has a "messages" array (Instagram export).')
   }
