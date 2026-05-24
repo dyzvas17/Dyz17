@@ -274,7 +274,6 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:1
   <div class="auth-box">
     <div class="auth-logo">Us ♡ DYZ17</div>
     <div class="auth-sub">// our private universe</div>
-    <!-- Only LOGIN, no signup tab -->
     <div class="field"><label>EMAIL</label><input type="email" id="auth-email" placeholder="you@example.com"></div>
     <div class="field"><label>PASSWORD</label><input type="password" id="auth-password" placeholder="••••••••"></div>
     <button class="btn" onclick="handleAuth()">COME IN ♡</button>
@@ -448,9 +447,9 @@ const GROQ_MODEL = 'llama-3.3-70b-versatile'
 
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
 let currentUser = null
-let authMode = 'login'   // always login
 let embedder = null
 
+// ---------- Embedder ----------
 async function loadEmbedder() {
   if(embedder) return embedder
   try {
@@ -458,12 +457,8 @@ async function loadEmbedder() {
     embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2')
     console.log('✅ Embedding model loaded')
     return embedder
-  } catch(e) {
-    console.error('Failed to load embedder:', e)
-    return null
-  }
+  } catch(e) { console.error('Failed to load embedder:', e); return null }
 }
-
 async function generateEmbedding(text) {
   const model = await loadEmbedder()
   if(!model) return null
@@ -471,64 +466,52 @@ async function generateEmbedding(text) {
   return Array.from(result.data)
 }
 
-// ----- FIXED: Single, clean chunkConversation function -----
+// ---------- Conversation chunking ----------
 function chunkConversation(data) {
   let messages = []
   if (data.messages && Array.isArray(data.messages)) {
     messages = data.messages
-    console.log(`✅ Found Instagram messages array with ${messages.length} messages`)
   } else if (Array.isArray(data)) {
     messages = data
   } else {
     for (const key in data) {
       if (Array.isArray(data[key]) && data[key][0] && (data[key][0].sender_name || data[key][0].content)) {
         messages = data[key]
-        console.log(`✅ Found messages in key "${key}" with ${messages.length} items`)
         break
       }
     }
   }
-  if (messages.length === 0) {
-    console.error('❌ No messages found in JSON. Structure:', Object.keys(data))
-    throw new Error('No messages found in JSON. Make sure it has a "messages" array (Instagram export).')
-  }
+  if (messages.length === 0) throw new Error('No messages found in JSON.')
   const chunks = []
   const chunkSize = 8
   for (let i = 0; i < messages.length; i += chunkSize) {
-    const chunkMessages = messages.slice(i, i + chunkSize)
+    const slice = messages.slice(i, i + chunkSize)
     let chunkText = ''
-    for (const msg of chunkMessages) {
+    for (const msg of slice) {
       let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Unknown')
-      if (sender === '♡' || sender === '☾' || sender === '✨' || sender === '🌸') sender = 'Me'
+      if (['♡','☾','✨','🌸'].includes(sender)) sender = 'Me'
       let content = ''
-      if (msg.content && msg.content.trim()) {
-        content = msg.content
-      } else if (msg.share && msg.share.share_text) {
-        content = msg.share.share_text
-      } else if (msg.photos && msg.photos.length) {
-        content = '[📷 Photo]'
-      } else if (msg.sticker) {
-        content = '[🧸 Sticker]'
-      } else if (msg.gif) {
-        content = '[🎞️ GIF]'
-      } else if (msg.reactions) {
-        continue
-      } else {
-        continue
-      }
+      if (msg.content) content = msg.content.trim()
+      else if (msg.share?.share_text) content = msg.share.share_text
+      else if (msg.photos?.length) content = '[📷 Photo]'
+      else if (msg.sticker) content = '[🧸 Sticker]'
+      else if (msg.gif) content = '[🎞️ GIF]'
+      else if (msg.reactions) continue
+      else continue
       content = content.substring(0, 500).trim()
       if (content.length === 0) continue
       chunkText += `${sender}: ${content}\n`
     }
     if (chunkText.trim().length > 10) {
-      chunks.push({ text: chunkText.trim(), timestamp: messages[i]?.timestamp_ms || Date.now() })
+      chunks.push({ text: chunkText.trim(), timestamp: slice[0]?.timestamp_ms || Date.now() })
     }
   }
-  console.log(`📦 Created ${chunks.length} conversation chunks from ${messages.length} messages`)
+  console.log(`📦 Created ${chunks.length} chunks`)
   return chunks
 }
 
-async function saveChunksToSupabase(chunks, onProgress) {
+// ---------- Save chunks with source ----------
+async function saveChunksToSupabase(chunks, onProgress, source = 'json_upload') {
   const total = chunks.length
   let saved = 0
   for(let i = 0; i < chunks.length; i++) {
@@ -540,7 +523,7 @@ async function saveChunksToSupabase(chunks, onProgress) {
         user_id: currentUser.id,
         chunk_text: chunk.text,
         embedding: embedding,
-        metadata: { source: 'json_upload', timestamp: chunk.timestamp }
+        metadata: { source, timestamp: chunk.timestamp }
       })
       if(error) console.error('Insert error:', error)
     } catch(e) { console.error('Failed to save chunk:', e) }
@@ -550,6 +533,7 @@ async function saveChunksToSupabase(chunks, onProgress) {
   return saved
 }
 
+// ---------- Manual upload (deletes only 'json_upload' source) ----------
 async function uploadAndLearnFromJSON(file) {
   const progressDiv = document.getElementById('jsonUploadProgress')
   const progressBar = document.getElementById('jsonProgressBar')
@@ -564,13 +548,13 @@ async function uploadAndLearnFromJSON(file) {
     const data = JSON.parse(text)
     statusDiv.innerText = 'Chunking conversation...'
     const chunks = chunkConversation(data)
-    if(chunks.length === 0) throw new Error('No valid message chunks could be created. Check console for details.')
+    if(chunks.length === 0) throw new Error('No valid message chunks.')
     statusDiv.innerText = `Created ${chunks.length} chunks. Generating embeddings...`
-    await sb.from('conversation_memory').delete().eq('user_id', currentUser.id)
+    await sb.from('conversation_memory').delete().eq('user_id', currentUser.id).eq('metadata->>source', 'json_upload')
     const saved = await saveChunksToSupabase(chunks, (percent, savedCount, total) => {
       progressBar.style.width = `${percent}%`
       statusDiv.innerText = `Processing: ${savedCount}/${total} chunks (${Math.round(percent)}%)`
-    })
+    }, 'json_upload')
     statusDiv.innerText = `✅ Done! Ivy learned from ${saved} conversation chunks.`
     toast(`Ivy now knows about your conversations! 🧠`, 'ok')
     setTimeout(() => { progressDiv.style.display = 'none'; statusDiv.style.display = 'none' }, 3000)
@@ -581,6 +565,39 @@ async function uploadAndLearnFromJSON(file) {
   }
 }
 
+// ---------- Auto-load from repo (files 1.json, 2.json, 3.json) ----------
+async function autoLoadRepoJSONs() {
+  const files = ['1.json', '2.json', '3.json']
+  let anyLoaded = false
+  for (const fileName of files) {
+    try {
+      const resp = await fetch(fileName)
+      if (!resp.ok) {
+        console.log(`⚠️ ${fileName} not found (status ${resp.status})`)
+        continue
+      }
+      const text = await resp.text()
+      const data = JSON.parse(text)
+      const chunks = chunkConversation(data)
+      if (chunks.length === 0) {
+        console.log(`⚠️ ${fileName} had no valid chunks`)
+        continue
+      }
+      // Replace only this file's previous chunks
+      await sb.from('conversation_memory').delete().eq('user_id', currentUser.id).eq('metadata->>source', fileName)
+      await saveChunksToSupabase(chunks, null, fileName)
+      console.log(`✅ Loaded ${chunks.length} chunks from ${fileName}`)
+      anyLoaded = true
+    } catch (e) {
+      console.log(`❌ Error loading ${fileName}:`, e.message)
+    }
+  }
+  if (anyLoaded) {
+    toast('Ivy learned from your repo files! 🧠', 'ok')
+  }
+}
+
+// ---------- Context search ----------
 async function getRelevantContext(question) {
   try {
     const qEmbedding = await generateEmbedding(question)
@@ -595,6 +612,7 @@ async function getRelevantContext(question) {
   } catch(e) { console.error('Context search error:', e); return [] }
 }
 
+// ---------- JSON upload UI ----------
 function setupJSONUpload() {
   const btn = document.getElementById('selectJsonBtn')
   const fileInput = document.getElementById('jsonFileInput')
@@ -602,7 +620,7 @@ function setupJSONUpload() {
   if(!btn) return
   btn.addEventListener('click', () => fileInput.click())
   fileInput.addEventListener('change', async (e) => {
-    if(e.target.files && e.target.files[0]) {
+    if(e.target.files?.[0]) {
       await uploadAndLearnFromJSON(e.target.files[0])
       fileInput.value = ''
     }
@@ -619,88 +637,247 @@ function setupJSONUpload() {
   }
 }
 
-// ------------------ AUTH (only login) ------------------
+// ---------- AUTH (login only) ----------
 window.handleAuth = async () => {
-  const email = document.getElementById('auth-email').value.trim();
-  const pass  = document.getElementById('auth-password').value;
-  const msg   = document.getElementById('auth-msg');
-
-  msg.className = 'auth-msg';
-  msg.textContent = '...';
-
+  const email = document.getElementById('auth-email').value.trim()
+  const pass  = document.getElementById('auth-password').value
+  const msg   = document.getElementById('auth-msg')
+  msg.className = 'auth-msg'
+  msg.textContent = '...'
   if (!email || !pass) {
-    msg.className = 'auth-msg error';
-    msg.textContent = 'Fill in all fields';
-    return;
+    msg.className = 'auth-msg error'
+    msg.textContent = 'Fill in all fields'
+    return
   }
-
-  // ONLY LOGIN
-  const { data, error } = await sb.auth.signInWithPassword({
-    email: email,
-    password: pass,
-  });
-
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass })
   if (error) {
-    msg.className = 'auth-msg error';
-    msg.textContent = error.message;
-    return;
+    msg.className = 'auth-msg error'
+    msg.textContent = error.message
+    return
   }
+  bootApp(data.user)
+}
 
-  bootApp(data.user);
-};
+window.logout = async () => {
+  await sb.auth.signOut()
+  document.getElementById('app').style.display = 'none'
+  document.getElementById('auth-screen').style.display = 'flex'
+  currentUser = null
+}
 
-window.logout = async () => { await sb.auth.signOut(); document.getElementById('app').style.display='none'; document.getElementById('auth-screen').style.display='flex'; currentUser=null }
+// ---------- Session check ----------
 sb.auth.getSession().then(({data:{session}}) => { if(session?.user) bootApp(session.user) })
 
 function bootApp(user){
   currentUser = user
-  document.getElementById('auth-screen').style.display='none'
-  document.getElementById('app').style.display='block'
+  document.getElementById('auth-screen').style.display = 'none'
+  document.getElementById('app').style.display = 'block'
   document.getElementById('nav-user').textContent = user.email.split('@')[0]
   loadStats(); loadImages(); initCanvas(); initIvy(); loadDateHistory()
   setupDiary(); setupJSONUpload()
+  // Auto-load repo JSONs
+  autoLoadRepoJSONs()
 }
 
+// ---------- Theme & stats ----------
 const themeClasses=['anime','soft','miraculous']
-window.setTheme=(theme)=>{ document.body.classList.remove(...themeClasses.map(t=>'theme-'+t)); document.body.classList.add('theme-'+theme); document.querySelectorAll('.theme-dot').forEach(d=>d.classList.remove('active')); document.querySelector('.theme-dot.'+theme).classList.add('active'); localStorage.setItem('dyz17-theme',theme) }
+window.setTheme=(theme)=>{
+  document.body.classList.remove(...themeClasses.map(t=>'theme-'+t))
+  document.body.classList.add('theme-'+theme)
+  document.querySelectorAll('.theme-dot').forEach(d=>d.classList.remove('active'))
+  document.querySelector('.theme-dot.'+theme).classList.add('active')
+  localStorage.setItem('dyz17-theme',theme)
+}
 ;(()=>{ const s=localStorage.getItem('dyz17-theme')||'anime'; setTheme(s) })()
 
-async function loadStats(){ const [{count:ic},{count:sc},{count:dc}] = await Promise.all([ sb.from('images').select('*',{count:'exact',head:true}), sb.from('drawing_strokes').select('*',{count:'exact',head:true}), sb.from('dates').select('*',{count:'exact',head:true}).eq('user_id',currentUser?.id) ]); document.getElementById('stat-images').textContent = ic??0; document.getElementById('stat-strokes').textContent = sc??0; document.getElementById('stat-dates').textContent = dc??0 }
-window.handleFiles = async(files)=>{ const progress=document.getElementById('upload-progress'); const bar=document.getElementById('progress-bar'); progress.style.display='block'; bar.style.width='0%'; for(let i=0;i<files.length;i++){ const file=files[i]; const ext=file.name.split('.').pop(); const path=`shared/${Date.now()}_${i}.${ext}`; const {error:upErr}=await sb.storage.from('images').upload(path,file,{upsert:true}); if(upErr){toast('Upload failed: '+upErr.message,'err');continue} const {data:{publicUrl}}=sb.storage.from('images').getPublicUrl(path); await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name}); bar.style.width=`${((i+1)/files.length)*100}%` } setTimeout(()=>{progress.style.display='none';bar.style.width='0%'},600); toast('Memory saved! ♡','ok'); loadImages(); loadStats() }
-async function loadImages(){ const {data}=await sb.from('images').select('*').order('created_at',{ascending:false}); const grid=document.getElementById('images-grid'); if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — add some together!</div>';return} grid.innerHTML=data.map(img=>`<div class="img-card"><img src="${img.url}" alt="${img.name||'memory'}" loading="lazy" onclick="openLightbox('${img.url}')"><div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div><button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button></div>`).join('') }
-window.deleteImage=async(id,url)=>{ const parts=url.split('/object/public/images/'); if(parts[1]) await sb.storage.from('images').remove([parts[1]]); await sb.from('images').delete().eq('id',id); toast('Gone, but never forgotten','ok'); loadImages(); loadStats() }
-const zone=document.getElementById('upload-zone'); zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')}); zone.addEventListener('dragleave',()=>zone.classList.remove('drag')); zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');handleFiles(e.dataTransfer.files)})
+async function loadStats(){
+  const [{count:ic},{count:sc},{count:dc}] = await Promise.all([
+    sb.from('images').select('*',{count:'exact',head:true}),
+    sb.from('drawing_strokes').select('*',{count:'exact',head:true}),
+    sb.from('dates').select('*',{count:'exact',head:true}).eq('user_id',currentUser?.id)
+  ])
+  document.getElementById('stat-images').textContent = ic??0
+  document.getElementById('stat-strokes').textContent = sc??0
+  document.getElementById('stat-dates').textContent = dc??0
+}
+
+// ---------- Images ----------
+window.handleFiles = async(files)=>{
+  const progress=document.getElementById('upload-progress')
+  const bar=document.getElementById('progress-bar')
+  progress.style.display='block'; bar.style.width='0%'
+  for(let i=0;i<files.length;i++){
+    const file=files[i]
+    const ext=file.name.split('.').pop()
+    const path=`shared/${Date.now()}_${i}.${ext}`
+    const {error:upErr}=await sb.storage.from('images').upload(path,file,{upsert:true})
+    if(upErr){ toast('Upload failed: '+upErr.message,'err'); continue }
+    const {data:{publicUrl}}=sb.storage.from('images').getPublicUrl(path)
+    await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name})
+    bar.style.width=`${((i+1)/files.length)*100}%`
+  }
+  setTimeout(()=>{progress.style.display='none';bar.style.width='0%'},600)
+  toast('Memory saved! ♡','ok')
+  loadImages(); loadStats()
+}
+async function loadImages(){
+  const {data}=await sb.from('images').select('*').order('created_at',{ascending:false})
+  const grid=document.getElementById('images-grid')
+  if(!data?.length){grid.innerHTML='<div style="color:var(--muted);font-size:0.8rem">No memories yet — add some together!</div>';return}
+  grid.innerHTML=data.map(img=>`<div class="img-card"><img src="${img.url}" alt="${img.name||'memory'}" loading="lazy" onclick="openLightbox('${img.url}')"><div class="img-card-info"><div class="img-card-name">${img.name||'memory'}</div></div><button class="img-del" onclick="deleteImage('${img.id}','${img.url}')">✕</button></div>`).join('')
+}
+window.deleteImage=async(id,url)=>{
+  const parts=url.split('/object/public/images/')
+  if(parts[1]) await sb.storage.from('images').remove([parts[1]])
+  await sb.from('images').delete().eq('id',id)
+  toast('Gone, but never forgotten','ok')
+  loadImages(); loadStats()
+}
+const zone=document.getElementById('upload-zone')
+zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')})
+zone.addEventListener('dragleave',()=>zone.classList.remove('drag'))
+zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');handleFiles(e.dataTransfer.files)})
 window.openLightbox=(url)=>{ document.getElementById('lightbox-img').src=url; document.getElementById('lightbox').classList.add('open') }
 window.closeLightbox=()=>{ document.getElementById('lightbox').classList.remove('open') }
 document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLightbox()})
 
+// ---------- Draw ----------
 const DRAW_COLORS=['#111111','#ef4444','#f59e0b','#22c55e','#06b6d4','#7c3aed','#ec4899','#ffffff']
 let drawing=false,currentColor='#111111',brushSize=3,lastX=0,lastY=0,ctx,canvas,realtimeSub=null
-function initCanvas(){ canvas=document.getElementById('draw-canvas'); ctx=canvas.getContext('2d'); resizeCanvas(); window.addEventListener('resize',resizeCanvas); const row=document.getElementById('color-row'); row.innerHTML=DRAW_COLORS.map((c,i)=>`<div class="color-swatch${i===0?' active':''}" style="background:${c};${c==='#ffffff'?'border-color:#444':''}" onclick="setColor('${c}',this)"></div>`).join(''); canvas.addEventListener('pointerdown',startDraw); canvas.addEventListener('pointermove',doDraw); canvas.addEventListener('pointerup',endDraw); canvas.addEventListener('pointerleave',endDraw); loadStrokes(); if(realtimeSub) realtimeSub.unsubscribe(); realtimeSub=sb.channel('drawing').on('postgres_changes',{event:'INSERT',schema:'public',table:'drawing_strokes'},p=>drawStroke(p.new.stroke)).on('postgres_changes',{event:'DELETE',schema:'public',table:'drawing_strokes'},()=>ctx.clearRect(0,0,canvas.width,canvas.height)).subscribe() }
-function resizeCanvas(){ if(!canvas) return; const w=canvas.parentElement.clientWidth; const h=Math.min(480,window.innerHeight*0.55); const snap=ctx.getImageData(0,0,canvas.width,canvas.height); canvas.width=w; canvas.height=h; try{ctx.putImageData(snap,0,0)}catch(e){} }
-async function loadStrokes(){ const {data}=await sb.from('drawing_strokes').select('stroke').order('created_at'); if(data) data.forEach(r=>drawStroke(r.stroke)) }
-function drawStroke(s){ if(!ctx) return; ctx.beginPath(); ctx.strokeStyle=s.color; ctx.lineWidth=s.size; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.moveTo(s.x0,s.y0); ctx.lineTo(s.x1,s.y1); ctx.stroke() }
-function getPos(e){ const r=canvas.getBoundingClientRect(); const src=e.touches?e.touches[0]:e; return[(src.clientX-r.left)*(canvas.width/r.width),(src.clientY-r.top)*(canvas.height/r.height)] }
-function startDraw(e){drawing=true;[lastX,lastY]=getPos(e)}
-async function doDraw(e){ if(!drawing) return; e.preventDefault(); const [x,y]=getPos(e); const stroke={x0:lastX,y0:lastY,x1:x,y1:y,color:currentColor,size:brushSize}; drawStroke(stroke); await sb.from('drawing_strokes').insert({user_id:currentUser.id,stroke}); lastX=x; lastY=y }
-function endDraw(){drawing=false}
+function initCanvas(){
+  canvas=document.getElementById('draw-canvas'); ctx=canvas.getContext('2d')
+  resizeCanvas(); window.addEventListener('resize',resizeCanvas)
+  const row=document.getElementById('color-row')
+  row.innerHTML=DRAW_COLORS.map((c,i)=>`<div class="color-swatch${i===0?' active':''}" style="background:${c};${c==='#ffffff'?'border-color:#444':''}" onclick="setColor('${c}',this)"></div>`).join('')
+  canvas.addEventListener('pointerdown',startDraw)
+  canvas.addEventListener('pointermove',doDraw)
+  canvas.addEventListener('pointerup',endDraw)
+  canvas.addEventListener('pointerleave',endDraw)
+  loadStrokes()
+  if(realtimeSub) realtimeSub.unsubscribe()
+  realtimeSub=sb.channel('drawing').on('postgres_changes',{event:'INSERT',schema:'public',table:'drawing_strokes'},p=>drawStroke(p.new.stroke)).on('postgres_changes',{event:'DELETE',schema:'public',table:'drawing_strokes'},()=>ctx.clearRect(0,0,canvas.width,canvas.height)).subscribe()
+}
+function resizeCanvas(){
+  if(!canvas) return
+  const w=canvas.parentElement.clientWidth
+  const h=Math.min(480,window.innerHeight*0.55)
+  const snap=ctx.getImageData(0,0,canvas.width,canvas.height)
+  canvas.width=w; canvas.height=h
+  try{ctx.putImageData(snap,0,0)}catch(e){}
+}
+async function loadStrokes(){
+  const {data}=await sb.from('drawing_strokes').select('stroke').order('created_at')
+  if(data) data.forEach(r=>drawStroke(r.stroke))
+}
+function drawStroke(s){
+  if(!ctx) return
+  ctx.beginPath(); ctx.strokeStyle=s.color; ctx.lineWidth=s.size; ctx.lineCap='round'; ctx.lineJoin='round'
+  ctx.moveTo(s.x0,s.y0); ctx.lineTo(s.x1,s.y1); ctx.stroke()
+}
+function getPos(e){
+  const r=canvas.getBoundingClientRect()
+  const src=e.touches?e.touches[0]:e
+  return[(src.clientX-r.left)*(canvas.width/r.width),(src.clientY-r.top)*(canvas.height/r.height)]
+}
+function startDraw(e){ drawing=true;[lastX,lastY]=getPos(e) }
+async function doDraw(e){
+  if(!drawing) return; e.preventDefault()
+  const [x,y]=getPos(e)
+  const stroke={x0:lastX,y0:lastY,x1:x,y1:y,color:currentColor,size:brushSize}
+  drawStroke(stroke)
+  await sb.from('drawing_strokes').insert({user_id:currentUser.id,stroke})
+  lastX=x; lastY=y
+}
+function endDraw(){ drawing=false }
 window.setColor=(c,el)=>{ currentColor=c; document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active')); el.classList.add('active') }
 window.setSize=(s,el)=>{ brushSize=s; document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active') }
 window.saveCanvas=()=>{ const link=document.createElement('a'); link.download='our-drawing.png'; link.href=canvas.toDataURL(); link.click() }
-window.clearCanvas=async()=>{ if(!confirm('Clear the canvas for both of us?')) return; await sb.from('drawing_strokes').delete().neq('id','00000000-0000-0000-0000-000000000000'); ctx.clearRect(0,0,canvas.width,canvas.height); toast('Canvas cleared','ok'); loadStats() }
+window.clearCanvas=async()=>{
+  if(!confirm('Clear the canvas for both of us?')) return
+  await sb.from('drawing_strokes').delete().neq('id','00000000-0000-0000-0000-000000000000')
+  ctx.clearRect(0,0,canvas.width,canvas.height)
+  toast('Canvas cleared','ok'); loadStats()
+}
 
-const IVY_MEMORY_KEY = 'ivy-memories'; const IVY_HISTORY_KEY = 'ivy-chat-history'; let ivyChatHistory = []
+// ---------- Ivy ----------
+const IVY_MEMORY_KEY = 'ivy-memories', IVY_HISTORY_KEY = 'ivy-chat-history'
+let ivyChatHistory = []
 function getMemories(){ return JSON.parse(localStorage.getItem(IVY_MEMORY_KEY)||'[]') }
 function saveMemory(fact){ const mems=getMemories(); mems.push({fact, savedAt:new Date().toISOString()}); localStorage.setItem(IVY_MEMORY_KEY,JSON.stringify(mems)) }
 function getAllMemoriesText(){ const mems=getMemories(); if(!mems.length) return 'No memories stored yet.'; return mems.map((m,i)=>`${i+1}. ${m.fact}`).join('\n') }
-function initIvy(){ const saved=localStorage.getItem(IVY_HISTORY_KEY); if(saved){ try{ivyChatHistory=JSON.parse(saved)}catch(e){ivyChatHistory=[]} } if(ivyChatHistory.length===0){ appendIvyMsg('ivy','Hi! I\'m Ivy 🌸 I\'m your personal AI! Upload your conversation JSON in the MEMORIES tab and I\'ll learn everything about your chats! Ask me anything about your conversations. ♡') } else { ivyChatHistory.slice(-10).forEach(m=>appendIvyMsg(m.role==='user'?'user':'ivy',m.content,false)) } const input=document.getElementById('ivy-input'); input.addEventListener('input',()=>{ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,120)+'px' }); input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendToIvy()} }) }
-function appendIvyMsg(role,content,scroll=true){ const el=document.getElementById('ivy-messages'); const div=document.createElement('div'); div.className=`msg ${role}`; div.innerHTML=`<div class="msg-avatar">${role==='ivy'?'🌸':'💙'}</div><div class="msg-bubble">${content}</div>`; el.appendChild(div); if(scroll) el.scrollTop=el.scrollHeight }
-function showIvyTyping(){ const el=document.getElementById('ivy-messages'); const div=document.createElement('div'); div.className='msg ivy'; div.id='ivy-typing'; div.innerHTML=`<div class="msg-avatar">🌸</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`; el.appendChild(div); el.scrollTop=el.scrollHeight }
+function initIvy(){
+  const saved=localStorage.getItem(IVY_HISTORY_KEY)
+  if(saved){ try{ivyChatHistory=JSON.parse(saved)}catch(e){ivyChatHistory=[]} }
+  if(ivyChatHistory.length===0){
+    appendIvyMsg('ivy','Hi! I\'m Ivy 🌸 I\'m your personal AI! Upload your conversation JSON in the MEMORIES tab and I\'ll learn everything about your chats! Ask me anything about your conversations. ♡')
+  } else {
+    ivyChatHistory.slice(-10).forEach(m=>appendIvyMsg(m.role==='user'?'user':'ivy',m.content,false))
+  }
+  const input=document.getElementById('ivy-input')
+  input.addEventListener('input',()=>{ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,120)+'px' })
+  input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendToIvy()} })
+}
+function appendIvyMsg(role,content,scroll=true){
+  const el=document.getElementById('ivy-messages')
+  const div=document.createElement('div')
+  div.className=`msg ${role}`
+  div.innerHTML=`<div class="msg-avatar">${role==='ivy'?'🌸':'💙'}</div><div class="msg-bubble">${content}</div>`
+  el.appendChild(div)
+  if(scroll) el.scrollTop=el.scrollHeight
+}
+function showIvyTyping(){
+  const el=document.getElementById('ivy-messages')
+  const div=document.createElement('div')
+  div.className='msg ivy'; div.id='ivy-typing'
+  div.innerHTML=`<div class="msg-avatar">🌸</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`
+  el.appendChild(div); el.scrollTop=el.scrollHeight
+}
 function removeIvyTyping(){ document.getElementById('ivy-typing')?.remove() }
 window.ivyQuick=(text)=>{ document.getElementById('ivy-input').value=text; sendToIvy() }
-window.sendToIvy = async()=>{ const input=document.getElementById('ivy-input'); const msg=input.value.trim(); if(!msg) return; const sendBtn=document.getElementById('ivy-send'); sendBtn.disabled=true; input.value=''; input.style.height='auto'; appendIvyMsg('user',msg); ivyChatHistory.push({role:'user',content:msg}); showIvyTyping(); try { const relevantContext = await getRelevantContext(msg); const contextText = relevantContext.map(c => c.chunk_text).join('\n\n---\n\n'); const systemPrompt = `You are Ivy, a warm AI for a couple. Use the conversation history below (from their real chats) to answer questions naturally. If the answer isn't in the conversation history, say "I don't remember us talking about that."\n\nCONVERSATIONS FROM THEIR CHAT HISTORY:\n${contextText || "No relevant conversation found."}\n\nStored memories: ${getAllMemoriesText()}\n\nAnswer based ONLY on the above. Be warm and natural.`; const messages = [{role:'system', content:systemPrompt}, ...ivyChatHistory.slice(-8).map(m=>({role:m.role==='user'?'user':'assistant', content:m.content.replace(/<[^>]*>/g,'')}))]; const res = await fetch(GROQ_URL, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`}, body:JSON.stringify({model:GROQ_MODEL, messages, max_tokens:500, temperature:0.85}) }); if(!res.ok) throw new Error(`Groq ${res.status}`); const data = await res.json(); let reply = data.choices?.[0]?.message?.content || "I'm here! Something hiccuped — try again? ♡"; removeIvyTyping(); const memMatches = reply.match(/\[SAVE_MEMORY:\s*([^\]]+)\]/g); if(memMatches){ memMatches.forEach(m=>saveMemory(m.replace(/\[SAVE_MEMORY:\s*/,'').replace(/\]/,'').trim())); reply = reply.replace(/\[SAVE_MEMORY:[^\]]+\]/g,'').trim(); toast('Ivy saved a memory! 🧠','ok') } appendIvyMsg('ivy', reply); ivyChatHistory.push({role:'assistant',content:reply}); if(ivyChatHistory.length>30) ivyChatHistory=ivyChatHistory.slice(-30); localStorage.setItem(IVY_HISTORY_KEY,JSON.stringify(ivyChatHistory)); } catch(err){ removeIvyTyping(); appendIvyMsg('ivy',`Oops! ${err.message}`) } sendBtn.disabled=false; document.getElementById('ivy-messages').scrollTop=9999 }
+window.sendToIvy = async()=>{
+  const input=document.getElementById('ivy-input')
+  const msg=input.value.trim()
+  if(!msg) return
+  const sendBtn=document.getElementById('ivy-send')
+  sendBtn.disabled=true; input.value=''; input.style.height='auto'
+  appendIvyMsg('user',msg); ivyChatHistory.push({role:'user',content:msg})
+  showIvyTyping()
+  try {
+    const relevantContext = await getRelevantContext(msg)
+    const contextText = relevantContext.map(c => c.chunk_text).join('\n\n---\n\n')
+    const systemPrompt = `You are Ivy, a warm AI for a couple. Use the conversation history below (from their real chats) to answer questions naturally. If the answer isn't in the conversation history, say "I don't remember us talking about that."\n\nCONVERSATIONS FROM THEIR CHAT HISTORY:\n${contextText || "No relevant conversation found."}\n\nStored memories: ${getAllMemoriesText()}\n\nAnswer based ONLY on the above. Be warm and natural.`
+    const messages = [
+      {role:'system', content:systemPrompt},
+      ...ivyChatHistory.slice(-8).map(m=>({role:m.role==='user'?'user':'assistant', content:m.content.replace(/<[^>]*>/g,'')}))
+    ]
+    const res = await fetch(GROQ_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`},
+      body:JSON.stringify({model:GROQ_MODEL, messages, max_tokens:500, temperature:0.85})
+    })
+    if(!res.ok) throw new Error(`Groq ${res.status}`)
+    const data = await res.json()
+    let reply = data.choices?.[0]?.message?.content || "I'm here! Something hiccuped — try again? ♡"
+    removeIvyTyping()
+    const memMatches = reply.match(/\[SAVE_MEMORY:\s*([^\]]+)\]/g)
+    if(memMatches){
+      memMatches.forEach(m=>saveMemory(m.replace(/\[SAVE_MEMORY:\s*/,'').replace(/\]/,'').trim()))
+      reply = reply.replace(/\[SAVE_MEMORY:[^\]]+\]/g,'').trim()
+      toast('Ivy saved a memory! 🧠','ok')
+    }
+    appendIvyMsg('ivy', reply)
+    ivyChatHistory.push({role:'assistant',content:reply})
+    if(ivyChatHistory.length>30) ivyChatHistory=ivyChatHistory.slice(-30)
+    localStorage.setItem(IVY_HISTORY_KEY,JSON.stringify(ivyChatHistory))
+  } catch(err){
+    removeIvyTyping()
+    appendIvyMsg('ivy',`Oops! ${err.message}`)
+  }
+  sendBtn.disabled=false
+  document.getElementById('ivy-messages').scrollTop=9999
+}
 
-// Date game placeholders
+// ---------- Date (placeholders) ----------
 let activeDateHistory = [], activeDateTitle = '', dateGameBusy = false, dateGameRunning = false, dgTurnCount = 0
 window.startAIDateGame = async (title) => { toast('Date game ready! Ask Ivy to plan a date in the IVY tab.', 'ok') }
 window.launchCustomDate = () => { const val = document.getElementById('date-custom').value.trim(); if(val) toast('Try asking Ivy in the IVY tab!', 'ok') }
@@ -711,23 +888,176 @@ function showRatingModal(){}
 window.saveDateMemory = async () => {}
 function returnToLobby(){}
 
-// Diary module
+// ---------- Diary ----------
 let diaryCurrentEditId = null, diaryCurrentDateFilter = null, diaryCurrentSearchTerm = "", diaryCalendarYear = new Date().getFullYear(), diaryCalendarMonth = new Date().getMonth()
-async function diaryFetchEntries() { if(!currentUser) return []; const { data, error } = await sb.from('diary_entries').select('*').eq('user_id', currentUser.id).order('entry_date', { ascending: false }); if(error) { console.error(error); return [] } return data }
-async function diaryGetFilteredEntries() { let entries = await diaryFetchEntries(); if(diaryCurrentDateFilter) entries = entries.filter(e => e.entry_date === diaryCurrentDateFilter); if(diaryCurrentSearchTerm.trim()) { const term = diaryCurrentSearchTerm.trim().toLowerCase(); entries = entries.filter(e => (e.title?.toLowerCase().includes(term) || e.content?.toLowerCase().includes(term))) } return entries }
-async function diaryRenderEntries() { const container = document.getElementById('diaryEntriesContainer'); const entries = await diaryGetFilteredEntries(); if(entries.length === 0) { container.innerHTML = `<div class="empty-message"><i class="far fa-smile-wink"></i> no entries found<br><span style="font-size:0.8rem;">write something new ✨</span></div>`; return } let html = ""; for(const entry of entries) { const displayDate = new Date(entry.entry_date).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' }); const imageHtml = entry.image_url ? `<img class="entry-img" src="${entry.image_url}" alt="diary image">` : ""; html += `<div class="entry-card" data-id="${entry.id}"><div class="entry-header"><div class="entry-title">${escapeHtml(entry.title) || "untitled"}</div><div class="entry-date">${displayDate}</div></div><div class="entry-content">${escapeHtml(entry.content || "").replace(/\n/g, '<br>')}</div>${imageHtml}<div class="entry-actions"><button class="icon-btn diary-edit-btn" data-id="${entry.id}"><i class="fas fa-edit"></i> edit</button><button class="icon-btn diary-delete-btn" data-id="${entry.id}"><i class="fas fa-trash-alt"></i> delete</button></div></div>` } container.innerHTML = html; document.querySelectorAll('.diary-edit-btn').forEach(btn => { btn.addEventListener('click', () => diaryOpenEditModal(btn.dataset.id)) }); document.querySelectorAll('.diary-delete-btn').forEach(btn => { btn.addEventListener('click', async () => { if(confirm("Delete this entry forever?")) { await sb.from('diary_entries').delete().eq('id', btn.dataset.id).eq('user_id', currentUser.id); await diaryRefreshAll(); toast('Entry deleted', 'ok') } }) }) }
-async function diaryUploadImage(file) { const ext = file.name.split('.').pop(); const path = `diary/${currentUser.id}/${Date.now()}.${ext}`; const { error: uploadError } = await sb.storage.from('diary-images').upload(path, file); if(uploadError) throw uploadError; const { data: { publicUrl } } = sb.storage.from('diary-images').getPublicUrl(path); return publicUrl }
-async function diarySaveEntry(entryData) { if(diaryCurrentEditId) { const { error } = await sb.from('diary_entries').update(entryData).eq('id', diaryCurrentEditId).eq('user_id', currentUser.id); if(error) throw error } else { const { error } = await sb.from('diary_entries').insert({ ...entryData, user_id: currentUser.id }); if(error) throw error } }
-async function diaryOpenEditModal(id) { const { data, error } = await sb.from('diary_entries').select('*').eq('id', id).single(); if(error || !data) return; diaryCurrentEditId = id; document.getElementById('diaryModalTitle').innerText = "✏️ edit memory"; document.getElementById('diaryEntryTitle').value = data.title || ""; document.getElementById('diaryEntryContent').value = data.content || ""; document.getElementById('diaryEntryDate').value = data.entry_date; document.getElementById('diaryImagePreview').innerHTML = data.image_url ? `<img src="${data.image_url}" style="max-width:100%; max-height:130px; border-radius:16px; margin-top:8px;">` : ""; document.getElementById('diaryEntryImage').value = ""; document.getElementById('diaryEntryModal').style.display = 'flex' }
-function diaryOpenAddModal() { diaryCurrentEditId = null; document.getElementById('diaryModalTitle').innerText = "✍️ new memory"; document.getElementById('diaryEntryTitle').value = ""; document.getElementById('diaryEntryContent').value = ""; document.getElementById('diaryEntryDate').value = new Date().toISOString().slice(0,10); document.getElementById('diaryImagePreview').innerHTML = ""; document.getElementById('diaryEntryImage').value = ""; document.getElementById('diaryEntryModal').style.display = 'flex' }
-async function diaryHandleSave() { const title = document.getElementById('diaryEntryTitle').value.trim(); const content = document.getElementById('diaryEntryContent').value; const entryDate = document.getElementById('diaryEntryDate').value; if(!entryDate) { alert("Please select a date."); return } let image_url = null; const fileInput = document.getElementById('diaryEntryImage'); if(fileInput.files && fileInput.files[0]) { try { image_url = await diaryUploadImage(fileInput.files[0]) } catch(e) { toast('Image upload failed: '+e.message, 'err'); return } } else if(diaryCurrentEditId) { const { data } = await sb.from('diary_entries').select('image_url').eq('id', diaryCurrentEditId).single(); if(data) image_url = data.image_url } await diarySaveEntry({ title: title || "untitled", content, entry_date: entryDate, image_url }); document.getElementById('diaryEntryModal').style.display = 'none'; await diaryRefreshAll(); toast('Entry saved!', 'ok') }
-async function diaryRenderCalendar() { const entries = await diaryFetchEntries(); const entriesMap = new Map(); entries.forEach(e => entriesMap.set(e.entry_date, true)); const year = diaryCalendarYear, month = diaryCalendarMonth; const firstDayOfMonth = new Date(year, month, 1); const startWeekday = firstDayOfMonth.getDay(); let daysInMonth = new Date(year, month+1, 0).getDate(); const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"]; document.getElementById('diaryCalMonthYear').innerText = `${monthNames[month]} ${year}`; let startOffset = (startWeekday === 0 ? 6 : startWeekday - 1); let totalCells = 42; let html = ""; for(let i=0; i<totalCells; i++) { let dayNumber = i - startOffset + 1; let isValid = (dayNumber >= 1 && dayNumber <= daysInMonth); let dateStr = isValid ? `${year}-${String(month+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}` : ""; let hasEntry = isValid && entriesMap.has(dateStr); let isSelected = (diaryCurrentDateFilter === dateStr); let classes = "cal-day"; if(!isValid) classes += " empty-day"; if(hasEntry) classes += " has-entry"; if(isSelected) classes += " selected"; html += `<div class="${classes}" data-date="${dateStr}">${isValid ? dayNumber : ""}</div>` } document.getElementById('diaryCalendarDays').innerHTML = html; document.querySelectorAll('#diaryCalendarDays .cal-day[data-date]').forEach(el => { el.addEventListener('click', async () => { const dateVal = el.getAttribute('data-date'); if(dateVal) { diaryCurrentDateFilter = dateVal; await diaryRenderEntries(); await diaryRenderCalendar() } }) }) }
+async function diaryFetchEntries() {
+  if(!currentUser) return []
+  const { data, error } = await sb.from('diary_entries').select('*').eq('user_id', currentUser.id).order('entry_date', { ascending: false })
+  if(error) { console.error(error); return [] }
+  return data
+}
+async function diaryGetFilteredEntries() {
+  let entries = await diaryFetchEntries()
+  if(diaryCurrentDateFilter) entries = entries.filter(e => e.entry_date === diaryCurrentDateFilter)
+  if(diaryCurrentSearchTerm.trim()) {
+    const term = diaryCurrentSearchTerm.trim().toLowerCase()
+    entries = entries.filter(e => (e.title?.toLowerCase().includes(term) || e.content?.toLowerCase().includes(term)))
+  }
+  return entries
+}
+async function diaryRenderEntries() {
+  const container = document.getElementById('diaryEntriesContainer')
+  const entries = await diaryGetFilteredEntries()
+  if(entries.length === 0) {
+    container.innerHTML = `<div class="empty-message"><i class="far fa-smile-wink"></i> no entries found<br><span style="font-size:0.8rem;">write something new ✨</span></div>`
+    return
+  }
+  let html = ""
+  for(const entry of entries) {
+    const displayDate = new Date(entry.entry_date).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' })
+    const imageHtml = entry.image_url ? `<img class="entry-img" src="${entry.image_url}" alt="diary image">` : ""
+    html += `<div class="entry-card" data-id="${entry.id}">
+      <div class="entry-header"><div class="entry-title">${escapeHtml(entry.title) || "untitled"}</div><div class="entry-date">${displayDate}</div></div>
+      <div class="entry-content">${escapeHtml(entry.content || "").replace(/\n/g, '<br>')}</div>${imageHtml}
+      <div class="entry-actions">
+        <button class="icon-btn diary-edit-btn" data-id="${entry.id}"><i class="fas fa-edit"></i> edit</button>
+        <button class="icon-btn diary-delete-btn" data-id="${entry.id}"><i class="fas fa-trash-alt"></i> delete</button>
+      </div>
+    </div>`
+  }
+  container.innerHTML = html
+  document.querySelectorAll('.diary-edit-btn').forEach(btn => btn.addEventListener('click', () => diaryOpenEditModal(btn.dataset.id)))
+  document.querySelectorAll('.diary-delete-btn').forEach(btn => btn.addEventListener('click', async () => {
+    if(confirm("Delete this entry forever?")) {
+      await sb.from('diary_entries').delete().eq('id', btn.dataset.id).eq('user_id', currentUser.id)
+      await diaryRefreshAll()
+      toast('Entry deleted', 'ok')
+    }
+  }))
+}
+async function diaryUploadImage(file) {
+  const ext = file.name.split('.').pop()
+  const path = `diary/${currentUser.id}/${Date.now()}.${ext}`
+  const { error: uploadError } = await sb.storage.from('diary-images').upload(path, file)
+  if(uploadError) throw uploadError
+  const { data: { publicUrl } } = sb.storage.from('diary-images').getPublicUrl(path)
+  return publicUrl
+}
+async function diarySaveEntry(entryData) {
+  if(diaryCurrentEditId) {
+    const { error } = await sb.from('diary_entries').update(entryData).eq('id', diaryCurrentEditId).eq('user_id', currentUser.id)
+    if(error) throw error
+  } else {
+    const { error } = await sb.from('diary_entries').insert({ ...entryData, user_id: currentUser.id })
+    if(error) throw error
+  }
+}
+async function diaryOpenEditModal(id) {
+  const { data, error } = await sb.from('diary_entries').select('*').eq('id', id).single()
+  if(error || !data) return
+  diaryCurrentEditId = id
+  document.getElementById('diaryModalTitle').innerText = "✏️ edit memory"
+  document.getElementById('diaryEntryTitle').value = data.title || ""
+  document.getElementById('diaryEntryContent').value = data.content || ""
+  document.getElementById('diaryEntryDate').value = data.entry_date
+  document.getElementById('diaryImagePreview').innerHTML = data.image_url ? `<img src="${data.image_url}" style="max-width:100%; max-height:130px; border-radius:16px; margin-top:8px;">` : ""
+  document.getElementById('diaryEntryImage').value = ""
+  document.getElementById('diaryEntryModal').style.display = 'flex'
+}
+function diaryOpenAddModal() {
+  diaryCurrentEditId = null
+  document.getElementById('diaryModalTitle').innerText = "✍️ new memory"
+  document.getElementById('diaryEntryTitle').value = ""
+  document.getElementById('diaryEntryContent').value = ""
+  document.getElementById('diaryEntryDate').value = new Date().toISOString().slice(0,10)
+  document.getElementById('diaryImagePreview').innerHTML = ""
+  document.getElementById('diaryEntryImage').value = ""
+  document.getElementById('diaryEntryModal').style.display = 'flex'
+}
+async function diaryHandleSave() {
+  const title = document.getElementById('diaryEntryTitle').value.trim()
+  const content = document.getElementById('diaryEntryContent').value
+  const entryDate = document.getElementById('diaryEntryDate').value
+  if(!entryDate) { alert("Please select a date."); return }
+  let image_url = null
+  const fileInput = document.getElementById('diaryEntryImage')
+  if(fileInput.files?.[0]) {
+    try { image_url = await diaryUploadImage(fileInput.files[0]) } catch(e) { toast('Image upload failed: '+e.message, 'err'); return }
+  } else if(diaryCurrentEditId) {
+    const { data } = await sb.from('diary_entries').select('image_url').eq('id', diaryCurrentEditId).single()
+    if(data) image_url = data.image_url
+  }
+  await diarySaveEntry({ title: title || "untitled", content, entry_date: entryDate, image_url })
+  document.getElementById('diaryEntryModal').style.display = 'none'
+  await diaryRefreshAll()
+  toast('Entry saved!', 'ok')
+}
+async function diaryRenderCalendar() {
+  const entries = await diaryFetchEntries()
+  const entriesMap = new Map(); entries.forEach(e => entriesMap.set(e.entry_date, true))
+  const year = diaryCalendarYear, month = diaryCalendarMonth
+  const firstDayOfMonth = new Date(year, month, 1)
+  const startWeekday = firstDayOfMonth.getDay()
+  const daysInMonth = new Date(year, month+1, 0).getDate()
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  document.getElementById('diaryCalMonthYear').innerText = `${monthNames[month]} ${year}`
+  const startOffset = (startWeekday === 0 ? 6 : startWeekday - 1)
+  let html = ""
+  for(let i=0; i<42; i++) {
+    const dayNumber = i - startOffset + 1
+    const isValid = dayNumber >= 1 && dayNumber <= daysInMonth
+    const dateStr = isValid ? `${year}-${String(month+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}` : ""
+    const hasEntry = isValid && entriesMap.has(dateStr)
+    const isSelected = diaryCurrentDateFilter === dateStr
+    let classes = "cal-day"
+    if(!isValid) classes += " empty-day"
+    if(hasEntry) classes += " has-entry"
+    if(isSelected) classes += " selected"
+    html += `<div class="${classes}" data-date="${dateStr}">${isValid ? dayNumber : ""}</div>`
+  }
+  document.getElementById('diaryCalendarDays').innerHTML = html
+  document.querySelectorAll('#diaryCalendarDays .cal-day[data-date]').forEach(el => {
+    el.addEventListener('click', async () => {
+      const dateVal = el.getAttribute('data-date')
+      if(dateVal) { diaryCurrentDateFilter = dateVal; await diaryRenderEntries(); await diaryRenderCalendar() }
+    })
+  })
+}
 async function diaryRefreshAll() { await diaryRenderEntries(); await diaryRenderCalendar() }
-function diarySetupSearch() { const input = document.getElementById('diarySearchInput'); input.addEventListener('input', async (e) => { diaryCurrentSearchTerm = e.target.value; await diaryRenderEntries() }) }
-function setupDiary() { diarySetupSearch(); document.getElementById('diaryNewEntryBtn').addEventListener('click', diaryOpenAddModal); document.getElementById('closeDiaryBtn').addEventListener('click', () => { document.getElementById('diaryModal').style.display = 'none' }); document.getElementById('diaryResetDateFilterBtn').addEventListener('click', () => { diaryCurrentDateFilter = null; diaryRefreshAll() }); document.getElementById('diaryPrevMonthBtn').addEventListener('click', () => { diaryCalendarMonth--; if(diaryCalendarMonth < 0) { diaryCalendarMonth = 11; diaryCalendarYear-- } diaryRenderCalendar() }); document.getElementById('diaryNextMonthBtn').addEventListener('click', () => { diaryCalendarMonth++; if(diaryCalendarMonth > 11) { diaryCalendarMonth = 0; diaryCalendarYear++ } diaryRenderCalendar() }); document.getElementById('diarySaveBtn').addEventListener('click', diaryHandleSave); document.getElementById('diaryCancelBtn').addEventListener('click', () => { document.getElementById('diaryEntryModal').style.display = 'none' }); window.onclick = function(e) { const modal = document.getElementById('diaryEntryModal'); if(e.target === modal) modal.style.display = 'none' }; document.getElementById('diaryTeaserBtn').addEventListener('click', async () => { document.getElementById('diaryModal').style.display = 'block'; await diaryRefreshAll() }) }
-function escapeHtml(str) { if(!str) return ""; return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m; }) }
+function diarySetupSearch() {
+  const input = document.getElementById('diarySearchInput')
+  input.addEventListener('input', async (e) => { diaryCurrentSearchTerm = e.target.value; await diaryRenderEntries() })
+}
+function setupDiary() {
+  diarySetupSearch()
+  document.getElementById('diaryNewEntryBtn').addEventListener('click', diaryOpenAddModal)
+  document.getElementById('closeDiaryBtn').addEventListener('click', () => { document.getElementById('diaryModal').style.display = 'none' })
+  document.getElementById('diaryResetDateFilterBtn').addEventListener('click', () => { diaryCurrentDateFilter = null; diaryRefreshAll() })
+  document.getElementById('diaryPrevMonthBtn').addEventListener('click', () => { diaryCalendarMonth--; if(diaryCalendarMonth<0){ diaryCalendarMonth=11; diaryCalendarYear-- } diaryRenderCalendar() })
+  document.getElementById('diaryNextMonthBtn').addEventListener('click', () => { diaryCalendarMonth++; if(diaryCalendarMonth>11){ diaryCalendarMonth=0; diaryCalendarYear++ } diaryRenderCalendar() })
+  document.getElementById('diarySaveBtn').addEventListener('click', diaryHandleSave)
+  document.getElementById('diaryCancelBtn').addEventListener('click', () => { document.getElementById('diaryEntryModal').style.display = 'none' })
+  window.onclick = function(e) { const modal = document.getElementById('diaryEntryModal'); if(e.target === modal) modal.style.display = 'none' }
+  document.getElementById('diaryTeaserBtn').addEventListener('click', async () => { document.getElementById('diaryModal').style.display = 'block'; await diaryRefreshAll() })
+}
+function escapeHtml(str) {
+  if(!str) return ""
+  return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m])
+}
+
+// ---------- Toast ----------
 function toast(msg,type='ok'){ const t=document.getElementById('toast'); t.textContent=msg; t.className='show '+type; setTimeout(()=>t.className='',3000) }
-window.showPanel = (id) => { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>t.classList.remove('active')); const panel=document.getElementById('panel-'+id); if(panel) panel.classList.add('active'); document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>{ const txt=t.textContent.trim().toLowerCase(); if(txt.includes(id)||(id==='dates'&&txt.includes('date'))) t.classList.add('active') }); if(id==='draw') setTimeout(resizeCanvas,50) }
+window.showPanel = (id) => {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>t.classList.remove('active'))
+  const panel=document.getElementById('panel-'+id)
+  if(panel) panel.classList.add('active')
+  document.querySelectorAll('.nav-tab,.mobile-tab').forEach(t=>{
+    const txt=t.textContent.trim().toLowerCase()
+    if(txt.includes(id)||(id==='dates'&&txt.includes('date'))) t.classList.add('active')
+  })
+  if(id==='draw') setTimeout(resizeCanvas,50)
+}
 window.toast = toast
 </script>
 </body>
