@@ -455,6 +455,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:16px 3
       <span class="ivy-badge on">WEB SEARCH</span>
       <span class="ivy-badge on">SITE CONTROL</span>
     </div>
+
+    <!-- JSON Upload for Ivy -->
+    <div id="jsonUploadZone" style="background:var(--surface);border:1px dashed var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <div style="font-size:1.4rem;">🧠</div>
+      <div style="flex:1;min-width:160px;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;margin-bottom:2px;">Feed Ivy your chats</div>
+        <div style="font-size:0.72rem;color:var(--muted);">Upload Instagram/WhatsApp JSON — she'll read every message</div>
+        <div id="jsonStatus" style="font-size:0.7rem;margin-top:4px;color:var(--accent);display:none;"></div>
+        <div id="jsonUploadProgress" style="display:none;background:var(--surface2);border-radius:8px;overflow:hidden;height:3px;margin-top:6px;"><div id="jsonProgressBar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 0.3s;"></div></div>
+      </div>
+      <button id="selectJsonBtn" style="background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;color:white;padding:8px 16px;font-family:'DM Mono',monospace;font-size:0.75rem;cursor:pointer;white-space:nowrap;">📂 Upload JSON</button>
+      <input type="file" id="jsonFileInput" accept=".json" style="display:none;">
+    </div>
+
     <div class="ivy-caps">
       <span class="ivy-cap" onclick="ivyQuick('What do you remember about us?')">🧠 What do you remember?</span>
       <span class="ivy-cap" onclick="ivyQuick('Search the web for a romantic date idea for tonight')">🔍 Find a date idea</span>
@@ -542,7 +556,7 @@ function bootApp(user){
   document.getElementById('auth-screen').style.display='none'
   document.getElementById('app').style.display='block'
   document.getElementById('nav-user').textContent=user.email.split('@')[0]
-  loadStats(); loadImages(); initCanvas(); initIvy()
+  loadStats(); loadImages(); initCanvas(); initIvy(); setupJSONUpload()
 }
 
 // ── THEME ─────────────────────────────────────────────────────
