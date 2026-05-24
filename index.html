@@ -23,9 +23,6 @@ body.theme-miraculous::after { background-image:url("data:image/svg+xml,%3Csvg x
 .auth-box::before { content:''; position:absolute; top:-1px; left:20px; right:20px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:2px; }
 .auth-logo { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
 .auth-sub { color:var(--muted); font-size:0.8rem; margin-bottom:32px; }
-.auth-tabs { display:flex; gap:4px; margin-bottom:28px; background:var(--surface2); border-radius:8px; padding:4px; }
-.auth-tab { flex:1; padding:8px; text-align:center; cursor:pointer; border-radius:6px; font-size:0.8rem; font-family:'DM Mono',monospace; color:var(--muted); transition:all 0.2s; border:none; background:none; }
-.auth-tab.active { background:var(--accent); color:white; }
 .field { margin-bottom:16px; }
 .field label { display:block; font-size:0.75rem; color:var(--muted); margin-bottom:6px; letter-spacing:0.05em; }
 .field input { width:100%; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Mono',monospace; font-size:0.85rem; outline:none; transition:border-color 0.2s; }
@@ -277,13 +274,9 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:1
   <div class="auth-box">
     <div class="auth-logo">Us ♡ DYZ17</div>
     <div class="auth-sub">// our private universe</div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuth('login')">LOGIN</button>
-      <button class="auth-tab" onclick="switchAuth('signup')">SIGN UP</button>
-    </div>
+    <!-- Only LOGIN, no signup tab -->
     <div class="field"><label>EMAIL</label><input type="email" id="auth-email" placeholder="you@example.com"></div>
     <div class="field"><label>PASSWORD</label><input type="password" id="auth-password" placeholder="••••••••"></div>
-    <div class="field" id="username-field" style="display:none"><label>USERNAME</label><input type="text" id="auth-username" placeholder="ournickname"></div>
     <button class="btn" onclick="handleAuth()">COME IN ♡</button>
     <div class="auth-msg" id="auth-msg"></div>
   </div>
@@ -455,7 +448,7 @@ const GROQ_MODEL = 'llama-3.3-70b-versatile'
 
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
 let currentUser = null
-let authMode = 'login'
+let authMode = 'login'   // always login
 let embedder = null
 
 async function loadEmbedder() {
@@ -626,9 +619,36 @@ function setupJSONUpload() {
   }
 }
 
-// Auth and boot functions
-window.switchAuth = (mode) => { authMode = mode; document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&mode==='login')||(i===1&&mode==='signup'))); document.getElementById('username-field').style.display = mode==='signup'?'block':'none'; document.getElementById('auth-msg').textContent = '' }
-window.handleAuth = async () => { const email = document.getElementById('auth-email').value.trim(); const pass = document.getElementById('auth-password').value; const msg = document.getElementById('auth-msg'); msg.className='auth-msg'; msg.textContent='...'; if(!email||!pass){msg.className='auth-msg error';msg.textContent='Fill in all fields';return} if(authMode==='signup'){ const {error} = await sb.auth.signUp({email,password:pass}); if(error){msg.className='auth-msg error';msg.textContent=error.message;return} msg.className='auth-msg success';msg.textContent='Check your email to confirm!' } else { const {data,error} = await sb.auth.signInWithPassword({email,password:pass}); if(error){msg.className='auth-msg error';msg.textContent=error.message;return} bootApp(data.user) } }
+// ------------------ AUTH (only login) ------------------
+window.handleAuth = async () => {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-password').value;
+  const msg   = document.getElementById('auth-msg');
+
+  msg.className = 'auth-msg';
+  msg.textContent = '...';
+
+  if (!email || !pass) {
+    msg.className = 'auth-msg error';
+    msg.textContent = 'Fill in all fields';
+    return;
+  }
+
+  // ONLY LOGIN
+  const { data, error } = await sb.auth.signInWithPassword({
+    email: email,
+    password: pass,
+  });
+
+  if (error) {
+    msg.className = 'auth-msg error';
+    msg.textContent = error.message;
+    return;
+  }
+
+  bootApp(data.user);
+};
+
 window.logout = async () => { await sb.auth.signOut(); document.getElementById('app').style.display='none'; document.getElementById('auth-screen').style.display='flex'; currentUser=null }
 sb.auth.getSession().then(({data:{session}}) => { if(session?.user) bootApp(session.user) })
 
