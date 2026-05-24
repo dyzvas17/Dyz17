@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:opsz@14..32&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-/* ========== STYLES (same as original, compact for space) ========== */
+/* ========== STYLES (same as before, unchanged) ========== */
 :root { --bg: #1a0f18; --surface: #2a1e28; --surface2: #362730; --accent: #ff7ba6; --accent2: #c44569; --accent3: #f5a623; --text: #fce4ec; --muted: #b08c96; --border: #4d3548; --danger: #ef4444; --pattern-opacity: 0.15; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:'DM Mono',monospace; min-height:100vh; overflow-x:hidden; position:relative; transition:background 0.4s,color 0.4s; }
@@ -18,6 +18,7 @@ body.theme-soft { --bg:#f8f0f4; --surface:#fff5f9; --surface2:#fbeff2; --accent:
 body.theme-soft::after { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23f8a5c2' fill-opacity='0.6'%3E%3Cpath d='M10 18c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm-30 20c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6zm20 0c-3 0-6 3-6 6 0 4 3 8 6 10 3-2 6-6 6-10 0-3-3-6-6-6z'/%3E%3C/g%3E%3C/svg%3E"); }
 body.theme-miraculous { --bg:#2e1214; --surface:#3d1f20; --surface2:#4e2a2b; --accent:#e11d48; --accent2:#ff2d55; --accent3:#fbbf24; --text:#fce4e4; --muted:#c19b9b; --border:#6a3a3c; --pattern-opacity:0.18; }
 body.theme-miraculous::after { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='20' r='12' fill='%231f0a0c' fill-opacity='0.8'/%3E%3Ccircle cx='70' cy='70' r='14' fill='%231f0a0c' fill-opacity='0.8'/%3E%3Ccircle cx='90' cy='20' r='10' fill='%231f0a0c' fill-opacity='0.6'/%3E%3Ccircle cx='10' cy='80' r='10' fill='%231f0a0c' fill-opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='18' fill='%23ff2d55' fill-opacity='0.4'/%3E%3C/svg%3E"); }
+/* ... rest of the CSS is identical ... */
 #auth-screen { position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; background:var(--bg); }
 .auth-box { width:100%; max-width:420px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px; position:relative; }
 .auth-box::before { content:''; position:absolute; top:-1px; left:20px; right:20px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:2px; }
@@ -447,27 +448,12 @@ const GROQ_MODEL = 'llama-3.3-70b-versatile'
 
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
 let currentUser = null
-let embedder = null
 
-// ---------- Embedder ----------
-async function loadEmbedder() {
-  if(embedder) return embedder
-  try {
-    const { pipeline } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/src/transformers.js')
-    embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2')
-    console.log('✅ Embedding model loaded')
-    return embedder
-  } catch(e) { console.error('Failed to load embedder:', e); return null }
-}
-async function generateEmbedding(text) {
-  const model = await loadEmbedder()
-  if(!model) return null
-  const result = await model(text, { pooling: 'mean', normalize: true })
-  return Array.from(result.data)
-}
+// ---------- Ivy's conversation memory (direct, no database needed) ----------
+let conversationMemoryText = ''  // will hold the raw conversation history from JSON files
 
-// ---------- Conversation chunking ----------
-function chunkConversation(data) {
+// ---------- Helper: extract all messages from a JSON (Instagram style) ----------
+function extractConversationFromJSON(data) {
   let messages = []
   if (data.messages && Array.isArray(data.messages)) {
     messages = data.messages
@@ -482,58 +468,53 @@ function chunkConversation(data) {
     }
   }
   if (messages.length === 0) throw new Error('No messages found in JSON.')
-  const chunks = []
-  const chunkSize = 8
-  for (let i = 0; i < messages.length; i += chunkSize) {
-    const slice = messages.slice(i, i + chunkSize)
-    let chunkText = ''
-    for (const msg of slice) {
-      let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Unknown')
-      if (['♡','☾','✨','🌸'].includes(sender)) sender = 'Me'
-      let content = ''
-      if (msg.content) content = msg.content.trim()
-      else if (msg.share?.share_text) content = msg.share.share_text
-      else if (msg.photos?.length) content = '[📷 Photo]'
-      else if (msg.sticker) content = '[🧸 Sticker]'
-      else if (msg.gif) content = '[🎞️ GIF]'
-      else if (msg.reactions) continue
-      else continue
-      content = content.substring(0, 500).trim()
-      if (content.length === 0) continue
-      chunkText += `${sender}: ${content}\n`
-    }
-    if (chunkText.trim().length > 10) {
-      chunks.push({ text: chunkText.trim(), timestamp: slice[0]?.timestamp_ms || Date.now() })
-    }
+  let textLines = []
+  for (const msg of messages) {
+    let sender = msg.sender_name || (msg.from === 'me' ? 'Me' : 'Unknown')
+    if (['♡','☾','✨','🌸'].includes(sender)) sender = 'Me'
+    let content = ''
+    if (msg.content) content = msg.content.trim()
+    else if (msg.share?.share_text) content = msg.share.share_text
+    else if (msg.photos?.length) content = '[📷 Photo]'
+    else if (msg.sticker) content = '[🧸 Sticker]'
+    else if (msg.gif) content = '[🎞️ GIF]'
+    else if (msg.reactions) continue
+    else continue
+    content = content.substring(0, 500).trim()
+    if (content.length === 0) continue
+    textLines.push(`${sender}: ${content}`)
   }
-  console.log(`📦 Created ${chunks.length} chunks`)
-  return chunks
+  return textLines.join('\n')
 }
 
-// ---------- Save chunks with source ----------
-async function saveChunksToSupabase(chunks, onProgress, source = 'json_upload') {
-  const total = chunks.length
-  let saved = 0
-  for(let i = 0; i < chunks.length; i++) {
-    const chunk = chunks[i]
-    try {
-      const embedding = await generateEmbedding(chunk.text)
-      if(!embedding) continue
-      const { error } = await sb.from('conversation_memory').insert({
-        user_id: currentUser.id,
-        chunk_text: chunk.text,
-        embedding: embedding,
-        metadata: { source, timestamp: chunk.timestamp }
-      })
-      if(error) console.error('Insert error:', error)
-    } catch(e) { console.error('Failed to save chunk:', e) }
-    saved++
-    if(onProgress) onProgress((saved / total) * 100, saved, total)
+// ---------- Load JSON from a URL and add to memory ----------
+async function loadAndAddMemory(url) {
+  try {
+    const resp = await fetch(url)
+    if (!resp.ok) throw new Error(`Status ${resp.status}`)
+    const data = await resp.json()
+    const text = extractConversationFromJSON(data)
+    conversationMemoryText += `\n\n--- From ${url} ---\n${text}`
+    console.log(`✅ Added memory from ${url} (${text.length} chars)`)
+    return text
+  } catch (e) {
+    console.log(`❌ Could not load ${url}: ${e.message}`)
+    return null
   }
-  return saved
 }
 
-// ---------- Manual upload (deletes only 'json_upload' source) ----------
+// ---------- Auto-load the 1.json, 2.json, 3.json files on boot ----------
+async function autoLoadRepoJSONs() {
+  const files = ['1.json', '2.json', '3.json']
+  for (const file of files) {
+    await loadAndAddMemory(file)
+  }
+  if (conversationMemoryText.trim()) {
+    toast('Ivy learned from your repo files! 🧠', 'ok')
+  }
+}
+
+// ---------- Manual JSON upload (also adds to the same memory string) ----------
 async function uploadAndLearnFromJSON(file) {
   const progressDiv = document.getElementById('jsonUploadProgress')
   const progressBar = document.getElementById('jsonProgressBar')
@@ -546,17 +527,13 @@ async function uploadAndLearnFromJSON(file) {
     const text = await file.text()
     statusDiv.innerText = 'Parsing JSON...'
     const data = JSON.parse(text)
-    statusDiv.innerText = 'Chunking conversation...'
-    const chunks = chunkConversation(data)
-    if(chunks.length === 0) throw new Error('No valid message chunks.')
-    statusDiv.innerText = `Created ${chunks.length} chunks. Generating embeddings...`
-    await sb.from('conversation_memory').delete().eq('user_id', currentUser.id).eq('metadata->>source', 'json_upload')
-    const saved = await saveChunksToSupabase(chunks, (percent, savedCount, total) => {
-      progressBar.style.width = `${percent}%`
-      statusDiv.innerText = `Processing: ${savedCount}/${total} chunks (${Math.round(percent)}%)`
-    }, 'json_upload')
-    statusDiv.innerText = `✅ Done! Ivy learned from ${saved} conversation chunks.`
-    toast(`Ivy now knows about your conversations! 🧠`, 'ok')
+    statusDiv.innerText = 'Extracting messages...'
+    const convText = extractConversationFromJSON(data)
+    if (!convText.trim()) throw new Error('No messages found.')
+    conversationMemoryText += `\n\n--- From manual upload (${file.name}) ---\n${convText}`
+    progressBar.style.width = '100%'
+    statusDiv.innerText = `✅ Added to Ivy's memory!`
+    toast(`Ivy now knows the conversations from ${file.name}! 🧠`, 'ok')
     setTimeout(() => { progressDiv.style.display = 'none'; statusDiv.style.display = 'none' }, 3000)
   } catch(e) {
     statusDiv.innerText = `❌ Error: ${e.message}`
@@ -565,54 +542,7 @@ async function uploadAndLearnFromJSON(file) {
   }
 }
 
-// ---------- Auto-load from repo (files 1.json, 2.json, 3.json) ----------
-async function autoLoadRepoJSONs() {
-  const files = ['1.json', '2.json', '3.json']
-  let anyLoaded = false
-  for (const fileName of files) {
-    try {
-      const resp = await fetch(fileName)
-      if (!resp.ok) {
-        console.log(`⚠️ ${fileName} not found (status ${resp.status})`)
-        continue
-      }
-      const text = await resp.text()
-      const data = JSON.parse(text)
-      const chunks = chunkConversation(data)
-      if (chunks.length === 0) {
-        console.log(`⚠️ ${fileName} had no valid chunks`)
-        continue
-      }
-      // Replace only this file's previous chunks
-      await sb.from('conversation_memory').delete().eq('user_id', currentUser.id).eq('metadata->>source', fileName)
-      await saveChunksToSupabase(chunks, null, fileName)
-      console.log(`✅ Loaded ${chunks.length} chunks from ${fileName}`)
-      anyLoaded = true
-    } catch (e) {
-      console.log(`❌ Error loading ${fileName}:`, e.message)
-    }
-  }
-  if (anyLoaded) {
-    toast('Ivy learned from your repo files! 🧠', 'ok')
-  }
-}
-
-// ---------- Context search ----------
-async function getRelevantContext(question) {
-  try {
-    const qEmbedding = await generateEmbedding(question)
-    if(!qEmbedding) return []
-    const { data, error } = await sb.rpc('match_conversation_memory', {
-      query_embedding: qEmbedding,
-      match_threshold: 0.65,
-      max_results: 4
-    })
-    if(error) throw error
-    return data || []
-  } catch(e) { console.error('Context search error:', e); return [] }
-}
-
-// ---------- JSON upload UI ----------
+// ---------- UI for manual upload ----------
 function setupJSONUpload() {
   const btn = document.getElementById('selectJsonBtn')
   const fileInput = document.getElementById('jsonFileInput')
@@ -665,7 +595,6 @@ window.logout = async () => {
   currentUser = null
 }
 
-// ---------- Session check ----------
 sb.auth.getSession().then(({data:{session}}) => { if(session?.user) bootApp(session.user) })
 
 function bootApp(user){
@@ -675,7 +604,7 @@ function bootApp(user){
   document.getElementById('nav-user').textContent = user.email.split('@')[0]
   loadStats(); loadImages(); initCanvas(); initIvy(); loadDateHistory()
   setupDiary(); setupJSONUpload()
-  // Auto-load repo JSONs
+  // Auto-load repo JSONs after login
   autoLoadRepoJSONs()
 }
 
@@ -799,17 +728,18 @@ window.clearCanvas=async()=>{
   toast('Canvas cleared','ok'); loadStats()
 }
 
-// ---------- Ivy ----------
+// ---------- Ivy (now using direct memory) ----------
 const IVY_MEMORY_KEY = 'ivy-memories', IVY_HISTORY_KEY = 'ivy-chat-history'
 let ivyChatHistory = []
 function getMemories(){ return JSON.parse(localStorage.getItem(IVY_MEMORY_KEY)||'[]') }
 function saveMemory(fact){ const mems=getMemories(); mems.push({fact, savedAt:new Date().toISOString()}); localStorage.setItem(IVY_MEMORY_KEY,JSON.stringify(mems)) }
 function getAllMemoriesText(){ const mems=getMemories(); if(!mems.length) return 'No memories stored yet.'; return mems.map((m,i)=>`${i+1}. ${m.fact}`).join('\n') }
+
 function initIvy(){
   const saved=localStorage.getItem(IVY_HISTORY_KEY)
   if(saved){ try{ivyChatHistory=JSON.parse(saved)}catch(e){ivyChatHistory=[]} }
   if(ivyChatHistory.length===0){
-    appendIvyMsg('ivy','Hi! I\'m Ivy 🌸 I\'m your personal AI! Upload your conversation JSON in the MEMORIES tab and I\'ll learn everything about your chats! Ask me anything about your conversations. ♡')
+    appendIvyMsg('ivy','Hi! I\'m Ivy 🌸 I\'m your personal AI! I already know our conversations from the files you placed (1.json, 2.json, 3.json). Ask me anything about our chats! ♡')
   } else {
     ivyChatHistory.slice(-10).forEach(m=>appendIvyMsg(m.role==='user'?'user':'ivy',m.content,false))
   }
@@ -834,6 +764,7 @@ function showIvyTyping(){
 }
 function removeIvyTyping(){ document.getElementById('ivy-typing')?.remove() }
 window.ivyQuick=(text)=>{ document.getElementById('ivy-input').value=text; sendToIvy() }
+
 window.sendToIvy = async()=>{
   const input=document.getElementById('ivy-input')
   const msg=input.value.trim()
@@ -843,9 +774,17 @@ window.sendToIvy = async()=>{
   appendIvyMsg('user',msg); ivyChatHistory.push({role:'user',content:msg})
   showIvyTyping()
   try {
-    const relevantContext = await getRelevantContext(msg)
-    const contextText = relevantContext.map(c => c.chunk_text).join('\n\n---\n\n')
-    const systemPrompt = `You are Ivy, a warm AI for a couple. Use the conversation history below (from their real chats) to answer questions naturally. If the answer isn't in the conversation history, say "I don't remember us talking about that."\n\nCONVERSATIONS FROM THEIR CHAT HISTORY:\n${contextText || "No relevant conversation found."}\n\nStored memories: ${getAllMemoriesText()}\n\nAnswer based ONLY on the above. Be warm and natural.`
+    // Prepare the system prompt with direct conversation memory
+    let memorySection = ''
+    if (conversationMemoryText.trim()) {
+      // Limit to ~6000 characters to keep within token limits
+      const trimmed = conversationMemoryText.length > 6000
+        ? conversationMemoryText.substring(0, 6000) + '\n... (more conversations exist)'
+        : conversationMemoryText
+      memorySection = `\n\nCONVERSATIONS FROM OUR CHATS:\n${trimmed}`
+    }
+    const systemPrompt = `You are Ivy, a warm AI for a couple. You have access to the following real conversation history between them. Use it to answer questions naturally. If the answer isn't in the conversation history, say "I don't remember us talking about that."\n\nStored memories: ${getAllMemoriesText()}${memorySection}\n\nAnswer based ONLY on the above. Be warm and natural.`
+
     const messages = [
       {role:'system', content:systemPrompt},
       ...ivyChatHistory.slice(-8).map(m=>({role:m.role==='user'?'user':'assistant', content:m.content.replace(/<[^>]*>/g,'')}))
