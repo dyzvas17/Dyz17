@@ -12,16 +12,11 @@
             --glass-bg: rgba(255, 248, 250, 0.72);
             --glass-border: rgba(255, 255, 255, 0.65);
             --glass-blur: blur(22px);
-            --card-bg: rgba(255, 245, 248, 0.7);
-            --card-border: rgba(255, 220, 235, 0.55);
             --shadow-sm: 0 2px 12px rgba(180, 140, 160, 0.12);
             --shadow-md: 0 8px 30px rgba(180, 140, 160, 0.18);
             --shadow-lg: 0 18px 50px rgba(160, 120, 145, 0.22);
             --shadow-glow: 0 0 35px rgba(255, 140, 180, 0.3);
             --window-radius: 1.6rem;
-            --icon-radius: 1.2rem;
-            --transition-smooth: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-            --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             --primary: #ff7ba6;
             --primary2: #e66791;
             --accent-gold: #f5a623;
@@ -30,159 +25,561 @@
             --danger: #ef4444;
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Nunito', 'Quicksand', sans-serif;
-            min-height: 100vh; overflow: hidden;
-            cursor: default; user-select: none; -webkit-user-select: none;
-            position: relative; color: var(--text-main); background: #fce4ec;
+            min-height: 100vh;
+            overflow: hidden;
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            color: var(--text-main);
+            background: #fce4ec;
         }
+
         /* BACKGROUND */
         .bg-layer {
-            position: fixed; inset:0; z-index:0; pointer-events: none;
-            background-image: var(--bg-img); background-size: cover; background-position: center;
-            background-repeat: no-repeat; transition: background-image 0.8s ease-in-out;
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: var(--bg-img);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.8s ease-in-out;
             filter: brightness(1.05) saturate(1.1);
         }
         .bg-overlay {
-            position: fixed; inset:0; z-index:1; pointer-events: none;
-            background: linear-gradient(180deg, rgba(255,235,242,0.35) 0%, rgba(255,240,245,0.28) 25%, rgba(255,245,248,0.32) 50%, rgba(255,238,244,0.3) 75%, rgba(255,230,240,0.38) 100%);
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255, 235, 242, 0.35) 0%, rgba(255, 240, 245, 0.28) 25%, rgba(255, 245, 248, 0.32) 50%, rgba(255, 238, 244, 0.3) 75%, rgba(255, 230, 240, 0.38) 100%);
         }
-        /* FLOATING DECOR */
-        .floating-hearts { position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
-        .floating-heart { position:absolute; font-size:1.4rem; animation:floatUp 8s linear infinite; opacity:0; filter:drop-shadow(0 2px 6px rgba(255,150,180,0.4)); }
+        .floating-hearts {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .floating-heart {
+            position: absolute;
+            font-size: 1.4rem;
+            animation: floatUp 8s linear infinite;
+            opacity: 0;
+            filter: drop-shadow(0 2px 6px rgba(255, 150, 180, 0.4));
+        }
         @keyframes floatUp {
-            0%{transform:translateY(105vh) rotate(0deg) scale(0.5);opacity:0;}
-            8%{opacity:0.7;} 40%{opacity:0.55;transform:translateY(50vh) rotate(180deg) scale(1.1);}
-            85%{opacity:0.2;} 100%{transform:translateY(-10vh) rotate(360deg) scale(0.3);opacity:0;}
+            0% { transform: translateY(105vh) rotate(0deg) scale(0.5); opacity: 0; }
+            8% { opacity: 0.7; }
+            40% { opacity: 0.55; transform: translateY(50vh) rotate(180deg) scale(1.1); }
+            85% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(0.3); opacity: 0; }
         }
-        .sparkle-dot { position:fixed; z-index:3; pointer-events:none; font-size:0.9rem; animation:sparklePop 3.5s ease-in-out infinite; opacity:0; }
+        .sparkle-dot {
+            position: fixed;
+            z-index: 3;
+            pointer-events: none;
+            font-size: 0.9rem;
+            animation: sparklePop 3.5s ease-in-out infinite;
+            opacity: 0;
+        }
         @keyframes sparklePop {
-            0%,100%{opacity:0;transform:scale(0) translateY(0);}
-            15%{opacity:0.9;transform:scale(1) translateY(-8px);}
-            50%{opacity:0.5;transform:scale(0.7) translateY(-20px);}
-            85%{opacity:0;transform:scale(0) translateY(-35px);}
+            0%, 100% { opacity: 0; transform: scale(0) translateY(0); }
+            15% { opacity: 0.9; transform: scale(1) translateY(-8px); }
+            50% { opacity: 0.5; transform: scale(0.7) translateY(-20px); }
+            85% { opacity: 0; transform: scale(0) translateY(-35px); }
         }
+
         /* AUTH SCREEN */
         #auth-screen {
-            position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
-            background: rgba(0,0,0,0.35); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
         .auth-box {
-            width:100%; max-width:430px; background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-            border:1.5px solid var(--glass-border); border-radius:2rem; padding:44px 36px;
-            box-shadow: var(--shadow-lg), var(--shadow-glow); animation:windowOpen 0.55s cubic-bezier(0.34,1.56,0.64,1);
+            width: 100%;
+            max-width: 430px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 2rem;
+            padding: 44px 36px;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            animation: windowOpen 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes windowOpen { from{opacity:0;transform:scale(0.82) translateY(30px);} to{opacity:1;transform:scale(1) translateY(0);} }
+        @keyframes windowOpen {
+            from { opacity: 0; transform: scale(0.82) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
         .auth-box::before {
-            content:''; position:absolute; top:-2px; left:30px; right:30px; height:3px;
-            background:linear-gradient(90deg, var(--primary), var(--primary2), var(--accent-gold)); border-radius:3px;
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 30px;
+            right: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary2), var(--accent-gold));
+            border-radius: 3px;
         }
-        .auth-logo { font-family:'Great Vibes',cursive; font-size:2.6rem; background:linear-gradient(135deg,var(--primary),var(--primary2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-align:center; margin-bottom:4px; }
-        .auth-sub { color:var(--text-muted); font-size:0.78rem; margin-bottom:32px; text-align:center; }
-        .field { margin-bottom:16px; } .field label { display:block; font-size:0.72rem; color:var(--text-muted); margin-bottom:6px; font-weight:600; }
-        .field input { width:100%; padding:11px 16px; background:rgba(255,255,255,0.55); border:1.5px solid rgba(220,180,195,0.45); border-radius:1.2rem; color:var(--text-main); font-family:'Nunito',sans-serif; font-size:0.85rem; outline:none; transition:0.3s; }
-        .field input:focus { border-color:var(--primary); box-shadow:0 0 0 4px rgba(255,123,166,0.1); background:rgba(255,255,255,0.75); }
-        .btn { width:100%; padding:13px; background:linear-gradient(135deg,var(--primary),var(--primary2)); border:none; border-radius:3rem; color:white; font-family:'Nunito',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; transition:0.3s; margin-top:8px; box-shadow:0 6px 25px rgba(255,123,166,0.35); }
-        .btn:hover { opacity:0.92; transform:translateY(-2px); box-shadow:0 10px 35px rgba(255,123,166,0.5); }
-        .auth-msg { font-size:0.76rem; margin-top:14px; text-align:center; min-height:18px; }
-        .auth-msg.error { color:var(--danger); } .auth-msg.success { color:var(--primary2); }
+        .auth-logo {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .auth-sub {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .field {
+            margin-bottom: 16px;
+        }
+        .field label {
+            display: block;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .field input {
+            width: 100%;
+            padding: 11px 16px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1.5px solid rgba(220, 180, 195, 0.45);
+            border-radius: 1.2rem;
+            color: var(--text-main);
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .field input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 123, 166, 0.1);
+            background: rgba(255, 255, 255, 0.75);
+        }
+        .btn {
+            padding: 13px;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            border: none;
+            border-radius: 3rem;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 6px 25px rgba(255, 123, 166, 0.35);
+        }
+        .btn:hover {
+            opacity: 0.92;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(255, 123, 166, 0.5);
+        }
+        .auth-msg {
+            font-size: 0.76rem;
+            margin-top: 14px;
+            text-align: center;
+            min-height: 18px;
+        }
+        .auth-msg.error {
+            color: var(--danger);
+        }
+        .auth-msg.success {
+            color: var(--primary2);
+        }
 
         /* DESKTOP */
-        #app { display:none; position:relative; z-index:10; height:100vh; overflow:hidden; }
-        .desktop-container { position:relative; width:100%; height:100%; }
+        #app {
+            display: none;
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .desktop-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
 
         /* SIDEBAR */
         .sidebar {
-            position:fixed; left:1rem; top:50%; transform:translateY(-50%); z-index:50;
-            display:flex; flex-direction:column; gap:0.6rem;
-            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-            border-radius:2.5rem; padding:0.6rem 0.4rem; border:1.5px solid var(--glass-border);
+            position: fixed;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 2.5rem;
+            padding: 0.6rem 0.4rem;
+            border: 1.5px solid var(--glass-border);
             box-shadow: var(--shadow-md);
         }
         .sidebar-icon {
-            width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:0.3s; color:var(--text-muted); font-size:1rem;
-            background:transparent; border:none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-muted);
+            font-size: 1rem;
+            background: transparent;
+            border: none;
+            position: relative;
         }
-        .sidebar-icon:hover { background:rgba(255,200,220,0.4); color:var(--primary); transform:scale(1.1); box-shadow:var(--shadow-glow); }
-        .sidebar-icon.active { background:rgba(255,180,200,0.5); color:var(--primary); }
-        .tooltip {
-            position:absolute; left:55px; background:rgba(80,40,55,0.9); color:#fff; padding:0.3rem 0.8rem;
-            border-radius:1rem; font-size:0.7rem; white-space:nowrap; opacity:0; pointer-events:none; transition:0.25s;
+        .sidebar-icon:hover {
+            background: rgba(255, 200, 220, 0.4);
+            color: var(--primary);
+            transform: scale(1.1);
+            box-shadow: var(--shadow-glow);
         }
-        .sidebar-icon:hover .tooltip { opacity:1; }
+        .sidebar-icon .tooltip {
+            position: absolute;
+            left: 55px;
+            background: rgba(80, 40, 55, 0.9);
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s;
+        }
+        .sidebar-icon:hover .tooltip {
+            opacity: 1;
+        }
 
         /* DESKTOP ICONS */
         .desktop-icons {
-            position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-            display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; z-index:20; padding:1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            z-index: 20;
+            padding: 1rem;
         }
         .app-icon-card {
-            width:90px; height:100px; background:rgba(255,245,250,0.8); backdrop-filter:blur(8px);
-            border-radius:var(--icon-radius); display:flex; flex-direction:column; align-items:center;
-            justify-content:center; gap:0.5rem; cursor:pointer; border:1.5px solid rgba(255,255,255,0.65);
-            box-shadow:var(--shadow-sm); transition:var(--transition-spring); text-align:center;
+            width: 90px;
+            height: 100px;
+            background: rgba(255, 245, 250, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: var(--icon-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: 1.5px solid rgba(255, 255, 255, 0.65);
+            box-shadow: var(--shadow-sm);
+            transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
         }
-        .app-icon-card:hover { transform:scale(1.12); box-shadow:var(--shadow-glow),var(--shadow-lg); border-color:rgba(255,200,220,0.8); background:rgba(255,240,248,0.9); z-index:5; }
-        .app-icon-card .icon-emoji { font-size:2.2rem; transition:0.3s; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-        .app-icon-card:hover .icon-emoji { transform:scale(1.2); filter:drop-shadow(0 4px 10px rgba(255,150,180,0.5)); }
-        .app-icon-card .icon-label { font-size:0.7rem; font-weight:600; color:var(--text-muted); }
+        .app-icon-card:hover {
+            transform: scale(1.12);
+            box-shadow: var(--shadow-glow), var(--shadow-lg);
+            border-color: rgba(255, 200, 220, 0.8);
+            background: rgba(255, 240, 248, 0.9);
+            z-index: 5;
+        }
+        .app-icon-card .icon-emoji {
+            font-size: 2.2rem;
+            transition: 0.3s;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        .app-icon-card:hover .icon-emoji {
+            transform: scale(1.2);
+            filter: drop-shadow(0 4px 10px rgba(255, 150, 180, 0.5));
+        }
+        .app-icon-card .icon-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
 
-        /* WINDOWS LAYER */
-        .windows-layer { position:fixed; inset:0; z-index:30; pointer-events:none; }
+        /* WINDOWS */
+        .windows-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            pointer-events: none;
+        }
         .app-window {
-            position:absolute; pointer-events:all; background:var(--glass-bg); backdrop-filter:var(--glass-blur);
-            border-radius:var(--window-radius); border:1.5px solid var(--glass-border);
-            box-shadow:var(--shadow-lg); display:none; flex-direction:column; overflow:hidden;
-            min-width:320px; min-height:250px; animation:windowOpen 0.4s ease;
+            position: absolute;
+            pointer-events: all;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: var(--window-radius);
+            border: 1.5px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 320px;
+            min-height: 250px;
+            animation: windowOpen 0.4s ease;
         }
-        .app-window.open { display:flex; }
+        .app-window.open {
+            display: flex;
+        }
         .window-titlebar {
-            display:flex; align-items:center; padding:0.7rem 1rem; background:rgba(255,245,250,0.7);
-            border-bottom:1px solid rgba(240,200,215,0.4); cursor:grab; gap:0.6rem; flex-shrink:0;
+            display: flex;
+            align-items: center;
+            padding: 0.7rem 1rem;
+            background: rgba(255, 245, 250, 0.7);
+            border-bottom: 1px solid rgba(240, 200, 215, 0.4);
+            cursor: grab;
+            gap: 0.6rem;
+            flex-shrink: 0;
         }
-        .traffic-lights { display:flex; gap:0.45rem; }
-        .traffic-light { width:13px; height:13px; border-radius:50%; cursor:pointer; border:none; }
-        .traffic-light.red { background:#ff5f57; } .traffic-light.yellow { background:#ffbd2e; } .traffic-light.green { background:#28c840; }
-        .window-title { flex:1; text-align:center; font-weight:700; font-size:0.85rem; color:var(--text-muted); pointer-events:none; }
-        .window-body { flex:1; overflow-y:auto; padding:1rem; }
+        .traffic-lights {
+            display: flex;
+            gap: 0.45rem;
+        }
+        .traffic-light {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .traffic-light.red {
+            background: #ff5f57;
+        }
+        .traffic-light.yellow {
+            background: #ffbd2e;
+        }
+        .traffic-light.green {
+            background: #28c840;
+        }
+        .window-title {
+            flex: 1;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        .window-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
 
-        /* Specific window content styles preserved from original but adapted */
-        .panel-title { font-family:'Great Vibes',cursive; font-size:2rem; margin-bottom:4px; background:linear-gradient(135deg,var(--primary),var(--primary2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .panel-sub { color:var(--text-muted); font-size:0.75rem; margin-bottom:20px; }
-        .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
-        .stat-card { background:rgba(255,255,255,0.4); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:1rem; padding:18px; }
-        .welcome-card { background:rgba(255,255,255,0.5); backdrop-filter:blur(10px); border-radius:1rem; padding:20px; margin-top:10px; }
-
-        .upload-zone { border:2px dashed rgba(220,170,190,0.5); border-radius:1rem; padding:25px; text-align:center; cursor:pointer; margin-bottom:16px; }
-        .images-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; }
-        .img-card { border-radius:1rem; overflow:hidden; transition:0.3s; }
-        .img-card img { width:100%; aspect-ratio:1; object-fit:cover; }
-        .draw-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
-        .canvas-wrap { border-radius:1rem; overflow:hidden; border:1px solid var(--glass-border); background:#fff; }
-        #draw-canvas { display:block; width:100%; cursor:crosshair; }
-
-        .ivy-chat-wrap { display:flex; flex-direction:column; height:400px; background:rgba(255,255,255,0.5); border-radius:1rem; }
-        .ivy-messages { flex:1; overflow-y:auto; padding:14px; }
-        .msg { display:flex; gap:8px; margin-bottom:10px; }
-        .msg.user { flex-direction:row-reverse; }
-        .msg-bubble { padding:8px 12px; border-radius:12px; font-size:0.8rem; background:rgba(255,255,255,0.7); }
-        .msg.user .msg-bubble { background:linear-gradient(135deg,var(--primary),var(--primary2)); color:white; }
-
-        .date-presets { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px; }
-        .preset-card { background:rgba(255,255,255,0.5); border-radius:1rem; padding:14px; cursor:pointer; transition:0.3s; }
-        .preset-card:hover { background:rgba(255,240,245,0.8); transform:translateY(-2px); }
-
-        .diary-teaser { background:var(--glass-bg); backdrop-filter:blur(12px); border-radius:1rem; padding:16px; display:flex; align-items:center; gap:14px; cursor:pointer; }
-        .json-upload-zone { border:2px dashed rgba(220,170,190,0.5); border-radius:1rem; padding:20px; text-align:center; margin-bottom:16px; }
+        /* SPECIFIC WINDOW STYLES */
+        .panel-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .panel-sub {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 18px;
+        }
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 20px;
+            margin-top: 10px;
+        }
+        .upload-zone {
+            border: 2px dashed rgba(220, 170, 190, 0.5);
+            border-radius: 1rem;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .img-card {
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .img-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .draw-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .canvas-wrap {
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background: #fff;
+        }
+        #draw-canvas {
+            display: block;
+            width: 100%;
+            cursor: crosshair;
+        }
+        .ivy-chat-wrap {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 1rem;
+        }
+        .ivy-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+        }
+        .msg {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .msg.user {
+            flex-direction: row-reverse;
+        }
+        .msg-bubble {
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .msg.user .msg-bubble {
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            color: white;
+        }
+        .date-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 8px;
+        }
+        .preset-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 1rem;
+            padding: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .preset-card:hover {
+            background: rgba(255, 240, 245, 0.8);
+            transform: translateY(-2px);
+        }
+        .diary-teaser {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        .json-upload-zone {
+            border: 2px dashed rgba(220, 170, 190, 0.5);
+            border-radius: 1rem;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .size-btn {
+            padding: 5px 12px;
+            border-radius: 1rem;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            background: white;
+            font-size: 0.75rem;
+        }
+        .size-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
 
         @media (max-width: 768px) {
-            .sidebar { left:0.2rem; padding:0.3rem; }
-            .sidebar-icon { width:32px; height:32px; font-size:0.8rem; }
-            .desktop-icons { grid-template-columns:repeat(3,1fr); gap:0.8rem; }
-            .app-icon-card { width:70px; height:80px; }
-            .app-window { left:5%!important; right:5%!important; top:10%!important; width:90%!important; min-width:auto; }
+            .sidebar {
+                left: 0.2rem;
+                padding: 0.3rem;
+            }
+            .sidebar-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+            .desktop-icons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+            }
+            .app-icon-card {
+                width: 70px;
+                height: 80px;
+            }
+            .app-window {
+                left: 5% !important;
+                right: 5% !important;
+                top: 10% !important;
+                width: 90% !important;
+                min-width: auto;
+            }
         }
     </style>
 </head>
@@ -190,296 +587,581 @@
 
 <!-- AUTH SCREEN -->
 <div id="auth-screen">
-  <div class="auth-box">
-    <div class="auth-logo">Us ♡ DYZ17</div>
-    <div class="auth-sub">// our private universe</div>
-    <div class="field"><label>EMAIL</label><input type="email" id="auth-email" placeholder="you@example.com"></div>
-    <div class="field"><label>PASSWORD</label><input type="password" id="auth-password" placeholder="••••••••"></div>
-    <button class="btn" onclick="handleAuth()">COME IN ♡</button>
-    <div class="auth-msg" id="auth-msg"></div>
-  </div>
+    <div class="auth-box">
+        <div class="auth-logo">Us ♡ DYZ17</div>
+        <div class="auth-sub">// our private universe</div>
+        <div class="field"><label>EMAIL</label><input type="email" id="auth-email" placeholder="you@example.com"></div>
+        <div class="field"><label>PASSWORD</label><input type="password" id="auth-password" placeholder="••••••••"></div>
+        <button class="btn" id="auth-btn" style="width:100%;">COME IN ♡</button>
+        <div class="auth-msg" id="auth-msg"></div>
+    </div>
 </div>
 
-<!-- MAIN APP (DESKTOP) -->
+<!-- MAIN APP -->
 <div id="app">
-  <div class="desktop-container">
-    <!-- Background -->
-    <div class="bg-layer" id="bgLayer"></div>
-    <div class="bg-overlay"></div>
-    <div class="floating-hearts" id="floatingHearts"></div>
-    <div id="sparklesContainer"></div>
+    <div class="desktop-container">
+        <div class="bg-layer" id="bgLayer"></div>
+        <div class="bg-overlay"></div>
+        <div class="floating-hearts" id="floatingHearts"></div>
+        <div id="sparklesContainer"></div>
 
-    <!-- Sidebar -->
-    <nav class="sidebar">
-      <button class="sidebar-icon active" title="Home"><i class="fas fa-home"></i><span class="tooltip">Home</span></button>
-      <button class="sidebar-icon" onclick="openWindow('memories')"><i class="fas fa-images"></i><span class="tooltip">Memories</span></button>
-      <button class="sidebar-icon" onclick="openWindow('draw')"><i class="fas fa-paint-brush"></i><span class="tooltip">Draw</span></button>
-      <button class="sidebar-icon" onclick="openWindow('dates')"><i class="fas fa-calendar-alt"></i><span class="tooltip">Dates</span></button>
-      <button class="sidebar-icon" onclick="openWindow('ivy')"><i class="fas fa-robot"></i><span class="tooltip">Ivy</span></button>
-      <button class="sidebar-icon" id="powerBtn" title="Logout"><i class="fas fa-power-off"></i><span class="tooltip">Logout</span></button>
-    </nav>
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <button class="sidebar-icon" onclick="openWindow('home')"><i class="fas fa-home"></i><span class="tooltip">Home</span></button>
+            <button class="sidebar-icon" onclick="openWindow('memories')"><i class="fas fa-images"></i><span class="tooltip">Memories</span></button>
+            <button class="sidebar-icon" onclick="openWindow('draw')"><i class="fas fa-paint-brush"></i><span class="tooltip">Draw</span></button>
+            <button class="sidebar-icon" onclick="openWindow('dates')"><i class="fas fa-calendar-alt"></i><span class="tooltip">Dates</span></button>
+            <button class="sidebar-icon" onclick="openWindow('ivy')"><i class="fas fa-robot"></i><span class="tooltip">Ivy</span></button>
+            <button class="sidebar-icon" id="powerBtn"><i class="fas fa-power-off"></i><span class="tooltip">Logout</span></button>
+        </nav>
 
-    <!-- Desktop Icons -->
-    <div class="desktop-icons">
-      <div class="app-icon-card" onclick="openWindow('home')"><span class="icon-emoji">🏠</span><span class="icon-label">Home</span></div>
-      <div class="app-icon-card" onclick="openWindow('memories')"><span class="icon-emoji">📸</span><span class="icon-label">Memories</span></div>
-      <div class="app-icon-card" onclick="openWindow('draw')"><span class="icon-emoji">🎨</span><span class="icon-label">Draw</span></div>
-      <div class="app-icon-card" onclick="openWindow('dates')"><span class="icon-emoji">🎭</span><span class="icon-label">Dates</span></div>
-      <div class="app-icon-card" onclick="openWindow('ivy')"><span class="icon-emoji">🌸</span><span class="icon-label">Ivy</span></div>
-    </div>
-  </div>
-
-  <!-- WINDOWS LAYER -->
-  <div class="windows-layer" id="windowsLayer">
-    <!-- HOME WINDOW -->
-    <div class="app-window" id="window-home" style="top:8%;left:15%;width:480px;height:440px;">
-      <div class="window-titlebar"><div class="traffic-lights"><button class="traffic-light red close-window" data-window="home"></button><button class="traffic-light yellow"></button><button class="traffic-light green"></button></div><span class="window-title">🏠 Home</span></div>
-      <div class="window-body">
-        <div class="panel-title">✦ Our Space ✦</div>
-        <div class="panel-sub">// you + me</div>
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">MEMORIES</div><div class="stat-value" id="stat-images">—</div></div>
-          <div class="stat-card"><div class="stat-label">STROKES</div><div class="stat-value" id="stat-strokes">—</div></div>
-          <div class="stat-card"><div class="stat-label">DATES</div><div class="stat-value" id="stat-dates">—</div></div>
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+            <div class="app-icon-card" onclick="openWindow('home')"><span class="icon-emoji">🏠</span><span class="icon-label">Home</span></div>
+            <div class="app-icon-card" onclick="openWindow('memories')"><span class="icon-emoji">📸</span><span class="icon-label">Memories</span></div>
+            <div class="app-icon-card" onclick="openWindow('draw')"><span class="icon-emoji">🎨</span><span class="icon-label">Draw</span></div>
+            <div class="app-icon-card" onclick="openWindow('dates')"><span class="icon-emoji">🎭</span><span class="icon-label">Dates</span></div>
+            <div class="app-icon-card" onclick="openWindow('ivy')"><span class="icon-emoji">🌸</span><span class="icon-label">Ivy</span></div>
         </div>
-        <div class="welcome-card">
-          <div style="font-weight:700;margin-bottom:6px;">A secret place, just for us.</div>
-          <div style="font-size:0.8rem;color:var(--text-muted);">Everything here belongs to you and me. Upload our photos, draw on the live canvas, and chat with Ivy ♡</div>
-        </div>
-      </div>
     </div>
 
-    <!-- MEMORIES WINDOW -->
-    <div class="app-window" id="window-memories" style="top:6%;left:12%;width:550px;height:500px;">
-      <div class="window-titlebar"><div class="traffic-lights"><button class="traffic-light red close-window" data-window="memories"></button><button class="traffic-light yellow"></button><button class="traffic-light green"></button></div><span class="window-title">📸 Memories</span></div>
-      <div class="window-body">
-        <div class="diary-teaser" id="diaryTeaserBtn"><i class="fas fa-book-open" style="font-size:2rem;color:var(--primary);"></i><div><strong>Personal Diary</strong><br><small>Write thoughts, add photos</small></div><i class="fas fa-arrow-right"></i></div>
-        <div class="json-upload-zone" id="jsonUploadZone">
-          <input type="file" id="jsonFileInput" accept=".json" style="display:none;">
-          <div>🧠 <strong>Upload Conversation JSON</strong><br><small>Ivy learns from your chats</small></div>
-          <button class="btn" id="selectJsonBtn" style="width:auto;padding:8px 20px;font-size:0.8rem;margin-top:6px;">📂 Select JSON</button>
-          <div id="jsonStatus" style="font-size:0.7rem;margin-top:6px;"></div>
+    <!-- Windows Layer -->
+    <div class="windows-layer" id="windowsLayer">
+        <!-- HOME WINDOW -->
+        <div class="app-window" id="window-home" style="top:8%;left:15%;width:480px;height:440px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <button class="traffic-light red close-window" data-window="home"></button>
+                    <button class="traffic-light yellow"></button>
+                    <button class="traffic-light green"></button>
+                </div>
+                <span class="window-title">🏠 Home</span>
+            </div>
+            <div class="window-body">
+                <div class="panel-title">✦ Our Space ✦</div>
+                <div class="panel-sub">// you + me</div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-label">MEMORIES</div><div class="stat-value" id="stat-images">—</div></div>
+                    <div class="stat-card"><div class="stat-label">STROKES</div><div class="stat-value" id="stat-strokes">—</div></div>
+                    <div class="stat-card"><div class="stat-label">DATES</div><div class="stat-value" id="stat-dates">—</div></div>
+                </div>
+                <div class="welcome-card">
+                    <div style="font-weight:700;margin-bottom:6px;">A secret place, just for us.</div>
+                    <div style="font-size:0.8rem;color:var(--text-muted);">Everything here belongs to you and me. Upload our photos, draw on the live canvas, and chat with Ivy ♡</div>
+                </div>
+            </div>
         </div>
-        <div class="upload-zone" id="upload-zone">
-          <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
-          <div>💕 Drop photos here</div>
-          <small>or click to browse</small>
-        </div>
-        <div class="images-grid" id="images-grid"></div>
-      </div>
-    </div>
 
-    <!-- DRAW WINDOW -->
-    <div class="app-window" id="window-draw" style="top:8%;left:10%;width:500px;height:450px;">
-      <div class="window-titlebar"><div class="traffic-lights"><button class="traffic-light red close-window" data-window="draw"></button><button class="traffic-light yellow"></button><button class="traffic-light green"></button></div><span class="window-title">🎨 Draw Together</span></div>
-      <div class="window-body">
-        <div class="draw-controls" id="color-row"></div>
-        <div style="display:flex;gap:4px;margin-bottom:8px;">
-          <button class="size-btn active" onclick="setSize(3,this)">S</button>
-          <button class="size-btn" onclick="setSize(8,this)">M</button>
-          <button class="size-btn" onclick="setSize(18,this)">L</button>
-          <button class="size-btn" onclick="setSize(36,this)">XL</button>
+        <!-- MEMORIES WINDOW -->
+        <div class="app-window" id="window-memories" style="top:6%;left:12%;width:550px;height:500px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <button class="traffic-light red close-window" data-window="memories"></button>
+                    <button class="traffic-light yellow"></button>
+                    <button class="traffic-light green"></button>
+                </div>
+                <span class="window-title">📸 Memories</span>
+            </div>
+            <div class="window-body">
+                <div class="diary-teaser" id="diaryTeaserBtn">
+                    <i class="fas fa-book-open" style="font-size:2rem;color:var(--primary);"></i>
+                    <div><strong>Personal Diary</strong><br><small>Write thoughts, add photos</small></div>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="json-upload-zone" id="jsonUploadZone">
+                    <input type="file" id="jsonFileInput" accept=".json" style="display:none;">
+                    <div>🧠 <strong>Upload Conversation JSON</strong><br><small>Ivy learns from your chats</small></div>
+                    <button class="btn" id="selectJsonBtn" style="width:auto;padding:8px 20px;font-size:0.8rem;margin-top:6px;">📂 Select JSON</button>
+                    <div id="jsonStatus" style="font-size:0.7rem;margin-top:6px;"></div>
+                </div>
+                <div class="upload-zone" id="upload-zone">
+                    <input type="file" id="file-input" accept="image/*" multiple style="display:none;">
+                    <div class="upload-icon" style="font-size:2rem;">💕</div>
+                    <div>Drop our photos here</div>
+                    <small>or click to browse</small>
+                </div>
+                <div class="images-grid" id="images-grid"></div>
+            </div>
         </div>
-        <div class="canvas-wrap"><canvas id="draw-canvas"></canvas></div>
-        <div style="display:flex;gap:8px;margin-top:8px;">
-          <button class="btn" style="width:auto;padding:8px 16px;font-size:0.8rem;" onclick="saveCanvas()">💾 Save PNG</button>
-          <button class="btn" style="width:auto;padding:8px 16px;font-size:0.8rem;background:#999;" onclick="clearCanvas()">🗑️ Clear</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- DATES WINDOW -->
-    <div class="app-window" id="window-dates" style="top:7%;left:18%;width:560px;height:500px;">
-      <div class="window-titlebar"><div class="traffic-lights"><button class="traffic-light red close-window" data-window="dates"></button><button class="traffic-light yellow"></button><button class="traffic-light green"></button></div><span class="window-title">🎭 Date Zone</span></div>
-      <div class="window-body">
-        <div id="date-lobby">
-          <h2 style="font-family:'Great Vibes',cursive;">Start a Date Adventure</h2>
-          <div class="date-presets">
-            <div class="preset-card" onclick="startAIDateGame('A moonlit fantasy quest')">🏰 Fantasy Quest</div>
-            <div class="preset-card" onclick="startAIDateGame('A cozy mystery date')">🕵️ Cozy Mystery</div>
-            <div class="preset-card" onclick="startAIDateGame('A romantic space odyssey')">🚀 Space Odyssey</div>
-          </div>
-          <input class="field-input" id="date-custom" placeholder="Or describe your date..." style="width:100%;padding:10px;border-radius:1rem;border:1px solid #ddd;margin:10px 0;">
-          <button class="btn" onclick="launchCustomDate()">✨ Begin</button>
+        <!-- DRAW WINDOW -->
+        <div class="app-window" id="window-draw" style="top:8%;left:10%;width:500px;height:450px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <button class="traffic-light red close-window" data-window="draw"></button>
+                    <button class="traffic-light yellow"></button>
+                    <button class="traffic-light green"></button>
+                </div>
+                <span class="window-title">🎨 Draw Together</span>
+            </div>
+            <div class="window-body">
+                <div class="draw-controls" id="color-row"></div>
+                <div style="display:flex;gap:4px;margin-bottom:8px;">
+                    <button class="size-btn active" onclick="setSize(3,this)">S</button>
+                    <button class="size-btn" onclick="setSize(8,this)">M</button>
+                    <button class="size-btn" onclick="setSize(18,this)">L</button>
+                    <button class="size-btn" onclick="setSize(36,this)">XL</button>
+                </div>
+                <div class="canvas-wrap"><canvas id="draw-canvas"></canvas></div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                    <button class="btn" style="width:auto;padding:8px 16px;font-size:0.8rem;" onclick="saveCanvas()">💾 Save PNG</button>
+                    <button class="btn" style="width:auto;padding:8px 16px;font-size:0.8rem;background:#999;" onclick="clearCanvas()">🗑️ Clear</button>
+                </div>
+            </div>
         </div>
-        <div id="date-game-ui" style="display:none; flex-direction:column; height:350px;">
-          <div id="dg-log" style="flex:1;overflow-y:auto;padding:10px;"></div>
-          <div style="display:flex;gap:6px;padding:10px;"><input id="dg-input" placeholder="Your action..." style="flex:1;padding:8px;border-radius:1rem;border:1px solid #ddd;"><button class="btn" style="width:auto;padding:8px 16px;" onclick="sendDateAction()">Send</button></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- IVY WINDOW -->
-    <div class="app-window" id="window-ivy" style="top:5%;left:15%;width:520px;height:520px;">
-      <div class="window-titlebar"><div class="traffic-lights"><button class="traffic-light red close-window" data-window="ivy"></button><button class="traffic-light yellow"></button><button class="traffic-light green"></button></div><span class="window-title">🌸 Ivy AI</span></div>
-      <div class="window-body" style="display:flex;flex-direction:column;padding:0;">
-        <div class="ivy-chat-wrap" style="flex:1;">
-          <div class="ivy-messages" id="ivy-messages"></div>
-          <div style="display:flex;gap:6px;padding:10px;border-top:1px solid rgba(0,0,0,0.1);">
-            <input id="ivy-input" placeholder="Talk to Ivy..." style="flex:1;padding:8px;border-radius:1rem;border:1px solid #ddd;">
-            <button class="btn" style="width:auto;padding:8px 16px;" onclick="sendToIvy()">Send</button>
-          </div>
+        <!-- DATES WINDOW -->
+        <div class="app-window" id="window-dates" style="top:7%;left:18%;width:560px;height:500px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <button class="traffic-light red close-window" data-window="dates"></button>
+                    <button class="traffic-light yellow"></button>
+                    <button class="traffic-light green"></button>
+                </div>
+                <span class="window-title">🎭 Date Zone</span>
+            </div>
+            <div class="window-body">
+                <div id="date-lobby">
+                    <h2 style="font-family:'Great Vibes',cursive;">Start a Date Adventure</h2>
+                    <div class="date-presets">
+                        <div class="preset-card" onclick="startAIDateGame('A moonlit fantasy quest')">🏰 Fantasy Quest</div>
+                        <div class="preset-card" onclick="startAIDateGame('A cozy mystery date')">🕵️ Cozy Mystery</div>
+                        <div class="preset-card" onclick="startAIDateGame('A romantic space odyssey')">🚀 Space Odyssey</div>
+                    </div>
+                    <input class="field-input" id="date-custom" placeholder="Or describe your date..." style="width:100%;padding:10px;border-radius:1rem;border:1px solid #ddd;margin:10px 0;">
+                    <button class="btn" onclick="launchCustomDate()" style="width:100%;">✨ Begin</button>
+                </div>
+                <div id="date-game-ui" style="display:none; flex-direction:column; height:350px;">
+                    <div id="dg-log" style="flex:1;overflow-y:auto;padding:10px;"></div>
+                    <div style="display:flex;gap:6px;padding:10px;"><input id="dg-input" placeholder="Your action..." style="flex:1;padding:8px;border-radius:1rem;border:1px solid #ddd;"><button class="btn" style="width:auto;padding:8px 16px;" onclick="sendDateAction()">Send</button></div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- IVY WINDOW -->
+        <div class="app-window" id="window-ivy" style="top:5%;left:15%;width:520px;height:520px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <button class="traffic-light red close-window" data-window="ivy"></button>
+                    <button class="traffic-light yellow"></button>
+                    <button class="traffic-light green"></button>
+                </div>
+                <span class="window-title">🌸 Ivy AI</span>
+            </div>
+            <div class="window-body" style="display:flex;flex-direction:column;padding:0;">
+                <div class="ivy-chat-wrap" style="flex:1;">
+                    <div class="ivy-messages" id="ivy-messages"></div>
+                    <div style="display:flex;gap:6px;padding:10px;border-top:1px solid rgba(0,0,0,0.1);">
+                        <input id="ivy-input" placeholder="Talk to Ivy..." style="flex:1;padding:8px;border-radius:1rem;border:1px solid #ddd;">
+                        <button class="btn" style="width:auto;padding:8px 16px;" onclick="sendToIvy()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- LIGHTBOX -->
-<div id="lightbox" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;"><span onclick="closeLightbox()" style="position:absolute; top:20px; right:30px; color:white; font-size:2rem; cursor:pointer;">✕</span><img id="lightbox-img" style="max-width:90vw; max-height:80vh; border-radius:1rem;"></div>
-<div id="toast" style="position:fixed; bottom:20px; right:20px; z-index:999; background:white; padding:12px 20px; border-radius:1rem; box-shadow:0 4px 12px rgba(0,0,0,0.15); transform:translateY(80px); opacity:0; transition:0.3s;"></div>
-<!-- DIARY MODAL (fullscreen) -->
+<div id="lightbox" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+    <span onclick="closeLightbox()" style="position:absolute; top:20px; right:30px; color:white; font-size:2rem; cursor:pointer;">✕</span>
+    <img id="lightbox-img" style="max-width:90vw; max-height:80vh; border-radius:1rem;">
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed; bottom:24px; right:24px; z-index:999; background:var(--glass-bg); backdrop-filter:var(--glass-blur); padding:12px 20px; border-radius:1rem; box-shadow:var(--shadow-md); transform:translateY(80px); opacity:0; transition:0.3s; font-size:0.8rem;"></div>
+
+<!-- DIARY MODAL (placeholder) -->
 <div id="diaryModal" style="display:none; position:fixed; top:0;left:0;width:100%;height:100%;background:rgba(250,245,242,0.96); backdrop-filter:blur(20px); z-index:2000; overflow-y:auto; padding:2rem;">
-  <button onclick="document.getElementById('diaryModal').style.display='none'" style="position:fixed; top:20px; right:30px; background:var(--primary); color:white; border:none; border-radius:2rem; padding:8px 18px; cursor:pointer;">✕ Close diary</button>
-  <div style="max-width:1000px; margin:0 auto;">
-    <h1>📖 Diary</h1>
-    <div id="diaryEntriesContainer"></div>
-  </div>
+    <button onclick="document.getElementById('diaryModal').style.display='none'" style="position:fixed; top:20px; right:30px; background:var(--primary); color:white; border:none; border-radius:2rem; padding:8px 18px; cursor:pointer;">✕ Close diary</button>
+    <div style="max-width:1000px; margin:0 auto;">
+        <h1 style="font-family:'Great Vibes',cursive; font-size:3rem;">📖 My Diary</h1>
+        <div id="diaryEntriesContainer">Diary entries will appear here (feature placeholder)</div>
+    </div>
 </div>
 
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-const SUPABASE_URL = 'https://aybycwtnfunwimvipjdj.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5Ynljd3RuZnVud2ltdmlwamRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MTEwMzEsImV4cCI6MjA4NjI4NzAzMX0.ILCQwtmy92953fPKgWiiT8mljmu2VXVej3B0Y71tDZ8'
-const GROQ_API_KEY = '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'
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
-const GROQ_MODEL = 'llama-3.3-70b-versatile'
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
-// Background config
-const GITHUB_USERNAME = 'YOUR_USERNAME', GITHUB_REPO = 'YOUR_REPO', BG_FILENAME = 'bg.jpg'
-const BG_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${BG_FILENAME}?v=${Math.floor(Date.now()/1800000)}`
-document.documentElement.style.setProperty('--bg-img', `url('${BG_URL}')`)
-document.getElementById('bgLayer').style.backgroundImage = `url('${BG_URL}')`
+    const SUPABASE_URL = 'https://aybycwtnfunwimvipjdj.supabase.co'
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5Ynljd3RuZnVud2ltdmlwamRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MTEwMzEsImV4cCI6MjA4NjI4NzAzMX0.ILCQwtmy92953fPKgWiiT8mljmu2VXVej3B0Y71tDZ8'
+    const GROQ_API_KEY = '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'
+    const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+    const GROQ_MODEL = 'llama-3.3-70b-versatile'
 
-// Floating decor
-function createHearts(){const c=document.getElementById('floatingHearts'); for(let i=0;i<14;i++){const h=document.createElement('span');h.className='floating-heart';h.textContent=['❤️','💕','💖','💗','💝','🌸'][i%6];h.style.left=Math.random()*95+'%';h.style.animationDuration=(Math.random()*10+7)+'s';h.style.animationDelay=Math.random()*12+'s';c.appendChild(h)}}
-function createSparkles(){const c=document.getElementById('sparklesContainer'); for(let i=0;i<10;i++){const s=document.createElement('span');s.className='sparkle-dot';s.textContent=['✨','⭐','💫'][i%3];s.style.left=Math.random()*92+'%';s.style.top=Math.random()*88+'%';s.style.animationDuration=(Math.random()*5+3)+'s';s.style.animationDelay=Math.random()*6+'s';c.appendChild(s)}}
-createHearts(); createSparkles();
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+    let currentUser = null
+    let conversationMemory = ''
+    let ivyHistory = []
 
-// Auth
-let currentUser = null;
-window.handleAuth = async () => {
-  const email = document.getElementById('auth-email').value.trim(), pass = document.getElementById('auth-password').value, msg = document.getElementById('auth-msg');
-  if(!email||!pass){ msg.className='auth-msg error'; msg.textContent='Fill all fields'; return; }
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(error){ msg.className='auth-msg error'; msg.textContent=error.message; return; }
-  bootApp(data.user);
-};
-window.logout = async () => { await sb.auth.signOut(); document.getElementById('app').style.display='none'; document.getElementById('auth-screen').style.display='flex'; currentUser=null; };
-sb.auth.getSession().then(({data:{session}})=>{ if(session?.user) bootApp(session.user); });
+    // Background configuration
+    const GITHUB_USERNAME = 'YOUR_USERNAME'
+    const GITHUB_REPO = 'YOUR_REPO'
+    const BG_FILENAME = 'bg.jpg'
+    const BG_CACHE_BUST = Math.floor(Date.now() / 1800000)
+    const BG_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${BG_FILENAME}?v=${BG_CACHE_BUST}`
+    document.documentElement.style.setProperty('--bg-img', `url('${BG_URL}')`)
+    document.getElementById('bgLayer').style.backgroundImage = `url('${BG_URL}')`
 
-function bootApp(user){
-  currentUser=user;
-  document.getElementById('auth-screen').style.display='none';
-  document.getElementById('app').style.display='block';
-  loadStats(); loadImages(); initCanvas(); initIvy();
-  document.getElementById('powerBtn').onclick = logout;
-}
+    // Floating decorations
+    function createHearts() {
+        const container = document.getElementById('floatingHearts')
+        const hearts = ['❤️', '💕', '💖', '💗', '💝', '🌸']
+        for (let i = 0; i < 14; i++) {
+            const heart = document.createElement('span')
+            heart.className = 'floating-heart'
+            heart.textContent = hearts[i % hearts.length]
+            heart.style.left = Math.random() * 95 + '%'
+            heart.style.animationDuration = (Math.random() * 10 + 7) + 's'
+            heart.style.animationDelay = Math.random() * 12 + 's'
+            container.appendChild(heart)
+        }
+    }
 
-// Window management
-function openWindow(name){
-  const win = document.getElementById('window-'+name);
-  if(!win) return;
-  win.classList.add('open'); win.style.display='flex';
-  bringToFront(win);
-}
-function bringToFront(win){ win.style.zIndex = Math.max(...Array.from(document.querySelectorAll('.app-window.open')).map(w=>parseInt(w.style.zIndex)||30), 30)+1; }
-document.querySelectorAll('.close-window').forEach(b=>b.addEventListener('click',(e)=>{
-  const win = document.getElementById('window-'+b.dataset.window);
-  if(win){ win.classList.remove('open'); win.style.display='none'; }
-}));
-// Dragging
-let dragWin=null, offsetX,offsetY;
-document.addEventListener('mousedown',e=>{
-  const titlebar = e.target.closest('.window-titlebar');
-  if(titlebar){ dragWin=titlebar.closest('.app-window'); if(dragWin){ const r=dragWin.getBoundingClientRect(); offsetX=e.clientX-r.left; offsetY=e.clientY-r.top; bringToFront(dragWin); } }
-});
-document.addEventListener('mousemove',e=>{ if(dragWin){ dragWin.style.left=(e.clientX-offsetX)+'px'; dragWin.style.top=(e.clientY-offsetY)+'px'; } });
-document.addEventListener('mouseup',()=>{ dragWin=null; });
+    function createSparkles() {
+        const container = document.getElementById('sparklesContainer')
+        const sparkles = ['✨', '⭐', '💫']
+        for (let i = 0; i < 10; i++) {
+            const spark = document.createElement('span')
+            spark.className = 'sparkle-dot'
+            spark.textContent = sparkles[i % sparkles.length]
+            spark.style.left = Math.random() * 92 + '%'
+            spark.style.top = Math.random() * 88 + '%'
+            spark.style.animationDuration = (Math.random() * 5 + 3) + 's'
+            spark.style.animationDelay = Math.random() * 6 + 's'
+            container.appendChild(spark)
+        }
+    }
+    createHearts()
+    createSparkles()
 
-// Stats
-async function loadStats(){
-  const [{count:ic},{count:sc},{count:dc}] = await Promise.all([
-    sb.from('images').select('*',{count:'exact',head:true}),
-    sb.from('drawing_strokes').select('*',{count:'exact',head:true}),
-    sb.from('dates').select('*',{count:'exact',head:true}).eq('user_id',currentUser?.id)
-  ]);
-  document.getElementById('stat-images').textContent=ic??0;
-  document.getElementById('stat-strokes').textContent=sc??0;
-  document.getElementById('stat-dates').textContent=dc??0;
-}
+    // Toast
+    function toast(msg, type = 'ok') {
+        const t = document.getElementById('toast')
+        t.textContent = msg
+        t.style.transform = 'translateY(0)'
+        t.style.opacity = '1'
+        clearTimeout(t._timeout)
+        t._timeout = setTimeout(() => {
+            t.style.transform = 'translateY(80px)'
+            t.style.opacity = '0'
+        }, 2500)
+    }
+    window.toast = toast
 
-// Images
-window.handleFiles = async (files) => {
-  for(let i=0;i<files.length;i++){
-    const file=files[i], ext=file.name.split('.').pop(), path=`shared/${Date.now()}_${i}.${ext}`;
-    await sb.storage.from('images').upload(path,file,{upsert:true});
-    const {data:{publicUrl}}=sb.storage.from('images').getPublicUrl(path);
-    await sb.from('images').insert({user_id:currentUser.id,url:publicUrl,name:file.name});
-  }
-  loadImages(); loadStats();
-};
-async function loadImages(){
-  const {data}=await sb.from('images').select('*').order('created_at',{ascending:false});
-  const grid=document.getElementById('images-grid');
-  if(!data?.length){ grid.innerHTML='<p>No memories yet</p>'; return; }
-  grid.innerHTML=data.map(img=>`<div class="img-card"><img src="${img.url}" onclick="openLightbox('${img.url}')"><small>${img.name||''}</small></div>`).join('');
-}
-window.deleteImage=async(id,url)=>{ /* implement if needed */ };
-window.openLightbox=(url)=>{ document.getElementById('lightbox-img').src=url; document.getElementById('lightbox').style.display='flex'; }
-window.closeLightbox=()=>{ document.getElementById('lightbox').style.display='none'; }
+    // Auth
+    document.getElementById('auth-btn').addEventListener('click', async () => {
+        const email = document.getElementById('auth-email').value.trim()
+        const password = document.getElementById('auth-password').value
+        const msg = document.getElementById('auth-msg')
+        if (!email || !password) {
+            msg.className = 'auth-msg error'
+            msg.textContent = 'Fill in all fields'
+            return
+        }
+        msg.textContent = 'Signing in...'
+        const { data, error } = await sb.auth.signInWithPassword({ email, password })
+        if (error) {
+            msg.className = 'auth-msg error'
+            msg.textContent = error.message
+            return
+        }
+        bootApp(data.user)
+    })
 
-// Drawing
-const DRAW_COLORS=['#111','#ef4444','#f59e0b','#22c55e','#06b6d4','#7c3aed','#ec4899','#fff'];
-let drawCtx,drawCanvas,drawing=false,currentColor='#111',brushSize=3;
-function initCanvas(){
-  drawCanvas=document.getElementById('draw-canvas'); drawCtx=drawCanvas.getContext('2d');
-  function resize(){ const w=drawCanvas.parentElement.clientWidth; drawCanvas.width=w; drawCanvas.height=Math.min(400,window.innerHeight*0.4); }
-  resize(); window.addEventListener('resize',resize);
-  const row=document.getElementById('color-row'); row.innerHTML=DRAW_COLORS.map(c=>`<div style="width:24px;height:24px;border-radius:50%;background:${c};cursor:pointer;border:2px solid ${c==='#111'?'white':'transparent'}" onclick="setColor('${c}',this)"></div>`).join('');
-  drawCanvas.addEventListener('pointerdown',e=>{ drawing=true; const r=drawCanvas.getBoundingClientRect(); lastX=(e.clientX-r.left)*(drawCanvas.width/r.width); lastY=(e.clientY-r.top)*(drawCanvas.height/r.height); });
-  drawCanvas.addEventListener('pointermove',e=>{ if(!drawing)return; const r=drawCanvas.getBoundingClientRect(); const x=(e.clientX-r.left)*(drawCanvas.width/r.width); const y=(e.clientY-r.top)*(drawCanvas.height/r.height); drawCtx.beginPath(); drawCtx.strokeStyle=currentColor; drawCtx.lineWidth=brushSize; drawCtx.moveTo(lastX,lastY); drawCtx.lineTo(x,y); drawCtx.stroke(); lastX=x; lastY=y; });
-  drawCanvas.addEventListener('pointerup',()=>{ drawing=false; });
-}
-window.setColor=(c,el)=>{ currentColor=c; document.querySelectorAll('#color-row div').forEach(d=>d.style.borderColor='transparent'); el.style.borderColor='white'; };
-window.setSize=(s,el)=>{ brushSize=s; document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); };
-window.saveCanvas=()=>{ const a=document.createElement('a'); a.download='drawing.png'; a.href=drawCanvas.toDataURL(); a.click(); };
-window.clearCanvas=()=>{ drawCtx.clearRect(0,0,drawCanvas.width,drawCanvas.height); };
+    window.logout = async () => {
+        await sb.auth.signOut()
+        document.getElementById('app').style.display = 'none'
+        document.getElementById('auth-screen').style.display = 'flex'
+        currentUser = null
+        document.querySelectorAll('.app-window.open').forEach(w => { w.classList.remove('open'); w.style.display = 'none' })
+    }
+    document.getElementById('powerBtn').addEventListener('click', logout)
 
-// Ivy
-let ivyHistory=[], conversationMemory='';
-function initIvy(){ const saved=localStorage.getItem('ivy-history'); if(saved) ivyHistory=JSON.parse(saved); if(!ivyHistory.length) appendIvy('ivy','Hi! I'm Ivy 🌸'); }
-function appendIvy(role,text){ const el=document.getElementById('ivy-messages'); const d=document.createElement('div'); d.className=`msg ${role}`; d.innerHTML=`<div class="msg-bubble">${text}</div>`; el.appendChild(d); el.scrollTop=el.scrollHeight; }
-window.sendToIvy=async()=>{
-  const input=document.getElementById('ivy-input'); const msg=input.value.trim(); if(!msg)return;
-  appendIvy('user',msg); ivyHistory.push({role:'user',content:msg}); input.value='';
-  const system=`You are Ivy, a warm AI. Conversations: ${conversationMemory.substring(0,4000)}`;
-  const res=await fetch(GROQ_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`},body:JSON.stringify({model:GROQ_MODEL,messages:[{role:'system',content:system},...ivyHistory.slice(-6)],max_tokens:300})});
-  const data=await res.json(); const reply=data.choices[0].message.content;
-  appendIvy('ivy',reply); ivyHistory.push({role:'assistant',content:reply}); localStorage.setItem('ivy-history',JSON.stringify(ivyHistory));
-};
+    // Check existing session
+    sb.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) bootApp(session.user)
+    })
 
-// JSON upload
-document.getElementById('selectJsonBtn')?.addEventListener('click',()=>document.getElementById('jsonFileInput').click());
-document.getElementById('jsonFileInput')?.addEventListener('change',async(e)=>{
-  const file=e.target.files[0]; if(!file)return;
-  const text=await file.text(); const json=JSON.parse(text);
-  let messages=[]; if(json.messages) messages=json.messages; else if(Array.isArray(json)) messages=json;
-  conversationMemory+=messages.map(m=>`${m.sender_name||'User'}: ${m.content||''}`).join('\n');
-  document.getElementById('jsonStatus').textContent='✅ Added!';
-});
+    function bootApp(user) {
+        currentUser = user
+        document.getElementById('auth-screen').style.display = 'none'
+        document.getElementById('app').style.display = 'block'
+        loadStats()
+        loadImages()
+        initCanvas()
+        initIvy()
+    }
 
-// Diary teaser
-document.getElementById('diaryTeaserBtn')?.addEventListener('click',()=>{ document.getElementById('diaryModal').style.display='block'; });
+    // Window management
+    window.openWindow = function(name) {
+        const win = document.getElementById('window-' + name)
+        if (!win) return
+        win.classList.add('open')
+        win.style.display = 'flex'
+        bringToFront(win)
+    }
 
-// Dates placeholders
-window.startAIDateGame=(title)=>{ alert('Date: '+title); };
-window.launchCustomDate=()=>{ alert('Custom date launched'); };
-window.sendDateAction=()=>{};
+    function bringToFront(win) {
+        const all = document.querySelectorAll('.app-window.open')
+        let maxZ = 30
+        all.forEach(w => { const z = parseInt(w.style.zIndex) || 30; if (z > maxZ) maxZ = z })
+        win.style.zIndex = maxZ + 1
+    }
 
-// Toast
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+    // Close buttons
+    document.querySelectorAll('.close-window').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const winId = btn.dataset.window
+            const win = document.getElementById('window-' + winId)
+            if (win) {
+                win.classList.remove('open')
+                win.style.display = 'none'
+            }
+        })
+    })
+
+    // Dragging windows
+    let dragTarget = null, offsetX, offsetY
+    document.addEventListener('mousedown', e => {
+        const titlebar = e.target.closest('.window-titlebar')
+        if (titlebar) {
+            const win = titlebar.closest('.app-window')
+            if (win && win.classList.contains('open')) {
+                dragTarget = win
+                const rect = win.getBoundingClientRect()
+                offsetX = e.clientX - rect.left
+                offsetY = e.clientY - rect.top
+                bringToFront(win)
+                e.preventDefault()
+            }
+        }
+    })
+    document.addEventListener('mousemove', e => {
+        if (!dragTarget) return
+        dragTarget.style.left = (e.clientX - offsetX) + 'px'
+        dragTarget.style.top = (e.clientY - offsetY) + 'px'
+        dragTarget.style.right = 'auto'
+        dragTarget.style.bottom = 'auto'
+    })
+    document.addEventListener('mouseup', () => { dragTarget = null })
+
+    // Stats
+    async function loadStats() {
+        const [{ count: ic }, { count: sc }, { count: dc }] = await Promise.all([
+            sb.from('images').select('*', { count: 'exact', head: true }),
+            sb.from('drawing_strokes').select('*', { count: 'exact', head: true }),
+            sb.from('dates').select('*', { count: 'exact', head: true }).eq('user_id', currentUser?.id)
+        ])
+        document.getElementById('stat-images').textContent = ic ?? 0
+        document.getElementById('stat-strokes').textContent = sc ?? 0
+        document.getElementById('stat-dates').textContent = dc ?? 0
+    }
+
+    // Images
+    const uploadZone = document.getElementById('upload-zone')
+    const fileInput = document.getElementById('file-input')
+    uploadZone.addEventListener('click', () => fileInput.click())
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files))
+
+    window.handleFiles = async (files) => {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+            const ext = file.name.split('.').pop()
+            const path = `shared/${Date.now()}_${i}.${ext}`
+            const { error } = await sb.storage.from('images').upload(path, file, { upsert: true })
+            if (error) { toast('Upload failed', 'err'); continue }
+            const { data: { publicUrl } } = sb.storage.from('images').getPublicUrl(path)
+            await sb.from('images').insert({ user_id: currentUser.id, url: publicUrl, name: file.name })
+        }
+        loadImages()
+        loadStats()
+    }
+
+    async function loadImages() {
+        const { data } = await sb.from('images').select('*').order('created_at', { ascending: false })
+        const grid = document.getElementById('images-grid')
+        if (!data?.length) { grid.innerHTML = '<p style="color:var(--text-muted);">No memories yet</p>'; return }
+        grid.innerHTML = data.map(img => `
+            <div class="img-card" onclick="openLightbox('${img.url}')">
+                <img src="${img.url}" alt="${img.name || 'memory'}" loading="lazy">
+                <small style="display:block;text-align:center;padding:4px;">${img.name || ''}</small>
+            </div>
+        `).join('')
+    }
+
+    window.openLightbox = (url) => {
+        document.getElementById('lightbox-img').src = url
+        document.getElementById('lightbox').style.display = 'flex'
+    }
+    window.closeLightbox = () => {
+        document.getElementById('lightbox').style.display = 'none'
+    }
+
+    // Drawing
+    const DRAW_COLORS = ['#111111', '#ef4444', '#f59e0b', '#22c55e', '#06b6d4', '#7c3aed', '#ec4899', '#ffffff']
+    let drawCanvas, drawCtx, drawing = false, currentColor = '#111111', brushSize = 3, lastX, lastY
+
+    function initCanvas() {
+        drawCanvas = document.getElementById('draw-canvas')
+        drawCtx = drawCanvas.getContext('2d')
+        const resizeCanvas = () => {
+            const w = drawCanvas.parentElement.clientWidth
+            drawCanvas.width = w
+            drawCanvas.height = Math.min(400, window.innerHeight * 0.4)
+        }
+        resizeCanvas()
+        window.addEventListener('resize', resizeCanvas)
+
+        const colorRow = document.getElementById('color-row')
+        colorRow.innerHTML = DRAW_COLORS.map(c => `
+            <div style="width:24px;height:24px;border-radius:50%;background:${c};cursor:pointer;border:2px solid ${c === '#111111' ? 'white' : 'transparent'};" 
+                 onclick="setColor('${c}', this)"></div>
+        `).join('')
+
+        drawCanvas.addEventListener('pointerdown', (e) => {
+            drawing = true
+            const rect = drawCanvas.getBoundingClientRect()
+            lastX = (e.clientX - rect.left) * (drawCanvas.width / rect.width)
+            lastY = (e.clientY - rect.top) * (drawCanvas.height / rect.height)
+        })
+        drawCanvas.addEventListener('pointermove', (e) => {
+            if (!drawing) return
+            const rect = drawCanvas.getBoundingClientRect()
+            const x = (e.clientX - rect.left) * (drawCanvas.width / rect.width)
+            const y = (e.clientY - rect.top) * (drawCanvas.height / rect.height)
+            drawCtx.beginPath()
+            drawCtx.strokeStyle = currentColor
+            drawCtx.lineWidth = brushSize
+            drawCtx.lineCap = 'round'
+            drawCtx.moveTo(lastX, lastY)
+            drawCtx.lineTo(x, y)
+            drawCtx.stroke()
+            lastX = x
+            lastY = y
+        })
+        drawCanvas.addEventListener('pointerup', () => { drawing = false })
+    }
+
+    window.setColor = (color, el) => {
+        currentColor = color
+        document.querySelectorAll('#color-row div').forEach(d => d.style.borderColor = 'transparent')
+        el.style.borderColor = 'white'
+    }
+    window.setSize = (size, el) => {
+        brushSize = size
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'))
+        el.classList.add('active')
+    }
+    window.saveCanvas = () => {
+        const link = document.createElement('a')
+        link.download = 'our-drawing.png'
+        link.href = drawCanvas.toDataURL()
+        link.click()
+    }
+    window.clearCanvas = () => {
+        drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height)
+    }
+
+    // Ivy AI
+    function initIvy() {
+        const saved = localStorage.getItem('ivy-history')
+        if (saved) { try { ivyHistory = JSON.parse(saved) } catch { ivyHistory = [] } }
+        if (ivyHistory.length === 0) {
+            appendIvyMsg('ivy', "Hi! I'm Ivy 🌸 I'm your personal AI! I already know our conversations from the files you uploaded. Ask me anything!")
+        } else {
+            ivyHistory.forEach(m => appendIvyMsg(m.role === 'user' ? 'user' : 'ivy', m.content, false))
+        }
+    }
+
+    function appendIvyMsg(role, content, scroll = true) {
+        const container = document.getElementById('ivy-messages')
+        const div = document.createElement('div')
+        div.className = `msg ${role}`
+        div.innerHTML = `<div class="msg-bubble">${content}</div>`
+        container.appendChild(div)
+        if (scroll) container.scrollTop = container.scrollHeight
+    }
+
+    window.sendToIvy = async () => {
+        const input = document.getElementById('ivy-input')
+        const msg = input.value.trim()
+        if (!msg) return
+        appendIvyMsg('user', msg)
+        ivyHistory.push({ role: 'user', content: msg })
+        input.value = ''
+
+        const systemPrompt = `You are Ivy, a warm AI for a couple. You have the following conversation history:\n${conversationMemory.substring(0, 4000)}\n\nBe loving and supportive.`
+        try {
+            const res = await fetch(GROQ_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                body: JSON.stringify({
+                    model: GROQ_MODEL,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        ...ivyHistory.slice(-6).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content }))
+                    ],
+                    max_tokens: 300,
+                    temperature: 0.85
+                })
+            })
+            const data = await res.json()
+            const reply = data.choices[0].message.content
+            appendIvyMsg('ivy', reply)
+            ivyHistory.push({ role: 'assistant', content: reply })
+            if (ivyHistory.length > 30) ivyHistory = ivyHistory.slice(-30)
+            localStorage.setItem('ivy-history', JSON.stringify(ivyHistory))
+        } catch (e) {
+            appendIvyMsg('ivy', 'Oops! Something went wrong. Try again.')
+        }
+    }
+
+    // JSON upload
+    document.getElementById('selectJsonBtn').addEventListener('click', () => document.getElementById('jsonFileInput').click())
+    document.getElementById('jsonFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+        try {
+            const text = await file.text()
+            const json = JSON.parse(text)
+            let messages = []
+            if (json.messages && Array.isArray(json.messages)) messages = json.messages
+            else if (Array.isArray(json)) messages = json
+            else {
+                for (const key in json) {
+                    if (Array.isArray(json[key]) && json[key][0]?.sender_name) { messages = json[key]; break }
+                }
+            }
+            const lines = messages.map(m => `${m.sender_name || 'User'}: ${m.content || ''}`).join('\n')
+            conversationMemory += `\n--- ${file.name} ---\n${lines}`
+            document.getElementById('jsonStatus').textContent = '✅ Added to Ivy\'s memory!'
+            toast('Ivy learned from your JSON!')
+        } catch (err) {
+            document.getElementById('jsonStatus').textContent = '❌ Invalid JSON'
+            toast('Failed to process JSON')
+        }
+        e.target.value = ''
+    })
+
+    // Diary teaser
+    document.getElementById('diaryTeaserBtn').addEventListener('click', () => {
+        document.getElementById('diaryModal').style.display = 'block'
+    })
+
+    // Dates placeholders
+    window.startAIDateGame = (title) => {
+        toast(`Date "${title}" requested! Ask Ivy to plan it.`)
+    }
+    window.launchCustomDate = () => {
+        const val = document.getElementById('date-custom').value.trim()
+        if (val) toast(`Custom date: ${val}`)
+    }
+    window.sendDateAction = () => {
+        toast('Date game action sent (placeholder)')
+    }
+
+    console.log('🌸 Love OS ready! All windows draggable, features live.')
+    console.log('🖼️ Background image aspect ratio recommendation: 16:9 (1920x1080px)')
 </script>
 </body>
 </html>
